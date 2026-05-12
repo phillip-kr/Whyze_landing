@@ -841,6 +841,10 @@
         display: none;
       }
 
+      .nav-cta {
+        display: none;
+      }
+
       .nav-inner {
         height: 68px;
       }
@@ -850,11 +854,23 @@
       }
 
       h1 {
-        font-size: 44px;
+        font-size: 36px;
+        letter-spacing: -0.065em;
       }
 
       .hero-copy {
         font-size: 16px;
+      }
+
+      h1,
+      h2,
+      .hero-copy,
+      .section-head p,
+      .card h3,
+      .card p,
+      .signup-box p {
+        word-break: normal;
+        overflow-wrap: break-word;
       }
 
       .hero-actions {
@@ -868,6 +884,31 @@
 
       .preview-main {
         padding: 16px;
+      }
+
+      .mockup-shell {
+        padding: 10px;
+        border-radius: 26px;
+      }
+
+      .preview-topbar {
+        padding: 0 14px;
+      }
+
+      .preview-title {
+        font-size: 12px;
+      }
+
+      .preview-topbar .pill {
+        display: none;
+      }
+
+      .preview-heading {
+        flex-direction: column;
+      }
+
+      .pill {
+        white-space: normal;
       }
 
       .preview-cards,
@@ -1127,7 +1168,9 @@
   </footer>
 
   <script>
+    // Beta signup recipient: change this value to receive form submissions.
     const OWNER_EMAIL = "jhw9805016@naver.com";
+
     const form = document.getElementById("waitlistForm");
     const message = document.getElementById("formMessage");
 
