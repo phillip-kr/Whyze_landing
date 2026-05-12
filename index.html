@@ -161,6 +161,12 @@
       transform: translateY(-1px);
     }
 
+    .primary-btn:disabled {
+      cursor: not-allowed;
+      opacity: 0.72;
+      transform: none;
+    }
+
     .hero {
       padding: 86px 0 54px;
       position: relative;
@@ -764,15 +770,6 @@
       margin-top: 4px;
     }
 
-    .form-help {
-      margin-top: 12px;
-      color: #8a949b;
-      font-size: 12px;
-      line-height: 1.55;
-      letter-spacing: -0.03em;
-      font-weight: 700;
-    }
-
     .form-message {
       display: none;
       margin-top: 12px;
@@ -783,6 +780,11 @@
       font-size: 13px;
       font-weight: 850;
       letter-spacing: -0.035em;
+    }
+
+    .form-message.error {
+      color: #a33a11;
+      background: #fff3eb;
     }
 
     .footer {
@@ -1131,7 +1133,7 @@
         <form class="form-card" id="waitlistForm">
           <div class="field">
             <label for="name">이름</label>
-            <input id="name" name="name" type="text" placeholder="정현우" required />
+            <input id="name" name="name" type="text" placeholder="홍길동" required />
           </div>
           <div class="field">
             <label for="email">이메일</label>
@@ -1150,11 +1152,8 @@
             <label for="message">남기고 싶은 말</label>
             <textarea id="message" name="message" placeholder="어떤 투자 판단을 검증해보고 싶은지 적어주세요."></textarea>
           </div>
-          <button class="primary-btn" type="submit">베타 신청하기</button>
-          <p class="form-help">
-            정적 HTML 버전에서는 입력값을 메일 앱으로 전달합니다. 실제 서버 수집을 원하면 Formspree, Google Apps Script, Supabase로 연결하면 됩니다.
-          </p>
-          <div class="form-message" id="formMessage">메일 앱이 열리면 내용을 확인한 뒤 전송해주세요.</div>
+          <button class="primary-btn" id="submitButton" type="submit">베타 신청하기</button>
+          <div class="form-message" id="formMessage" aria-live="polite"></div>
         </form>
       </div>
     </section>
@@ -1167,35 +1166,78 @@
     </div>
   </footer>
 
-  <script>
-    // Beta signup recipient: change this value to receive form submissions.
-    const OWNER_EMAIL = "jhw9805016@naver.com";
+  <script type="module">
+    import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 
+    // Supabase public config. Use only the anon key in browser code.
+    const SUPABASE_URL = "여기에_SUPABASE_PROJECT_URL";
+    const SUPABASE_ANON_KEY = "여기에_SUPABASE_ANON_KEY";
+    const WAITLIST_TABLE = "waitlist";
+
+    const isSupabaseConfigured =
+      SUPABASE_URL.startsWith("https://") &&
+      !SUPABASE_URL.includes("여기에_") &&
+      !SUPABASE_ANON_KEY.includes("여기에_");
+    const supabase = isSupabaseConfigured
+      ? createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+      : null;
     const form = document.getElementById("waitlistForm");
     const message = document.getElementById("formMessage");
+    const submitButton = document.getElementById("submitButton");
+    const defaultButtonText = submitButton.textContent;
+    let isSubmitting = false;
 
-    form.addEventListener("submit", function (event) {
+    function setFormMessage(text, type = "success") {
+      message.textContent = text;
+      message.classList.toggle("error", type === "error");
+      message.style.display = "block";
+    }
+
+    form.addEventListener("submit", async function (event) {
       event.preventDefault();
+      if (isSubmitting) return;
 
       const data = new FormData(form);
-      const name = data.get("name")?.trim() || "이름 없음";
-      const email = data.get("email")?.trim() || "이메일 없음";
-      const type = data.get("type") || "관심 기능 미선택";
-      const userMessage = data.get("message")?.trim() || "남긴 말 없음";
+      const name = data.get("name")?.trim();
+      const email = data.get("email")?.trim();
+      const interest = data.get("type") || "";
+      const userMessage = data.get("message")?.trim() || "";
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-      const subject = encodeURIComponent(`[Whyze 베타 신청] ${name}`);
-      const body = encodeURIComponent(
-        `Whyze 베타 신청이 도착했습니다.\n\n` +
-        `이름: ${name}\n` +
-        `이메일: ${email}\n` +
-        `관심 기능: ${type}\n\n` +
-        `남긴 말:\n${userMessage}\n\n` +
-        `---\n이 메일은 Whyze 랜딩페이지 신청 폼에서 생성되었습니다.`
-      );
+      if (!name || !emailPattern.test(email)) {
+        setFormMessage("이름과 올바른 이메일을 입력해주세요.", "error");
+        return;
+      }
 
-      window.location.href = `mailto:${OWNER_EMAIL}?subject=${subject}&body=${body}`;
-      message.style.display = "block";
-      form.reset();
+      isSubmitting = true;
+      submitButton.disabled = true;
+      submitButton.textContent = "신청 중...";
+
+      try {
+        if (!supabase) throw new Error("Supabase is not configured.");
+
+        const { error } = await supabase
+          .from(WAITLIST_TABLE)
+          .insert({
+            name,
+            email,
+            interest,
+            message: userMessage,
+            source: "whyze_landing",
+          });
+
+        if (error) throw error;
+
+        form.reset();
+        setFormMessage("신청이 완료되었습니다. 베타 오픈 시 가장 먼저 안내드릴게요.");
+      } catch (error) {
+        console.error("Waitlist submit failed:", error);
+        setFormMessage("신청 중 문제가 발생했습니다. 잠시 후 다시 시도해주세요.", "error");
+      } finally {
+        isSubmitting = false;
+        submitButton.disabled = false;
+        submitButton.textContent = defaultButtonText;
+      }
     });
   </script>
 </body>
