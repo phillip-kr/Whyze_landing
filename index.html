@@ -578,7 +578,7 @@
 
     .flow {
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 14px;
       margin-top: 34px;
     }
@@ -605,6 +605,10 @@
     }
 
     .flow-step:last-child::after {
+      display: none;
+    }
+
+    .flow-step:nth-child(3)::after {
       display: none;
     }
 
@@ -832,6 +836,10 @@
       .flow-step:nth-child(2)::after {
         display: none;
       }
+
+      .flow-step:nth-child(4)::after {
+        display: none;
+      }
     }
 
     @media (max-width: 680px) {
@@ -989,19 +997,19 @@
               <aside class="preview-sidebar">
                 <div class="preview-brand"><img src="whyze_icon_web_flat.png" alt="" /> Whyze</div>
                 <div class="preview-menu">
-                  <span class="active">대시보드</span>
-                  <span>가설 검증</span>
-                  <span>KPI 추적</span>
+                  <span class="active">가설 입력</span>
+                  <span>프록시 시그널</span>
+                  <span>검증 현황</span>
                   <span>거래 내역</span>
-                  <span>리포트</span>
-                  <span>피드백</span>
+                  <span>종합 리포트</span>
+                  <span>개선 미션</span>
                 </div>
               </aside>
               <section class="preview-main">
                 <div class="preview-heading">
                   <div>
-                    <h3>종합 평가 리포트</h3>
-                    <p>가설과 실행을 분리해 이번 거래의 원인을 분석합니다.</p>
+                    <h3>가설 검증 리포트</h3>
+                    <p>입력한 가설, 추적 신호, 실제 거래 실행을 한 흐름으로 분석합니다.</p>
                   </div>
                   <span class="pill">가설 성공 + 실행 미흡</span>
                 </div>
@@ -1014,7 +1022,7 @@
 
                 <div class="preview-report">
                   <div class="report-box">
-                    <h4>프록시 시그널 추적</h4>
+                    <h4>시그널 추적 흐름</h4>
                     <div class="mini-chart">
                       <svg viewBox="0 0 420 140" preserveAspectRatio="none">
                         <path d="M20 110 C65 102 82 82 120 88 S190 114 226 72 S292 44 338 64 S380 84 402 48" fill="none" stroke="#07834d" stroke-width="5" stroke-linecap="round" />
@@ -1024,11 +1032,11 @@
                     <span class="pill">현재 지지 수준 72/100</span>
                   </div>
                   <div class="report-box">
-                    <h4>다음 개선 미션</h4>
+                    <h4>다음 거래 미션</h4>
                     <div class="check-list">
-                      <div><b>1</b> 가격 방어 확인 이후 진입</div>
-                      <div><b>2</b> 손절폭을 변동성 기준으로 조정</div>
-                      <div><b>3</b> 포지션 비중 15% 이하 유지</div>
+                      <div><b>1</b> 신호 2개 이상 충족 후 진입</div>
+                      <div><b>2</b> 손절 기준을 ATR 기반으로 조정</div>
+                      <div><b>3</b> 청산 전 지지 점수 변화 확인</div>
                     </div>
                   </div>
                 </div>
@@ -1067,8 +1075,8 @@
     <section id="solution" class="section page">
       <div class="section-head">
         <div class="eyebrow">Solution</div>
-        <h2>Whyze는 투자 가설을 검증 가능한 신호 체계로 번역합니다.</h2>
-        <p>한 줄 가설을 입력하면 Whyze가 프록시 시그널을 만들고, 데이터로 추적하며, 실행 결과와 분리해 평가합니다.</p>
+        <h2>Whyze는 투자 가설을 입력부터 개선 미션까지 연결합니다.</h2>
+        <p>가설을 쓰면 관측 가능한 프록시 시그널을 만들고, 거래 기록과 실행 품질까지 함께 분석해 다음 행동으로 이어줍니다.</p>
       </div>
 
       <div class="feature-grid">
@@ -1089,16 +1097,18 @@
         </div>
         <div class="card">
           <div class="icon-box"><svg viewBox="0 0 24 24"><path d="M4 19h16"/><path d="M7 16V9"/><path d="M12 16V5"/><path d="M17 16v-4"/></svg></div>
-          <h3>원인 분해 리포트</h3>
-          <p>최종 수익과 손실을 가설 효과, 실행 효과, 시장 효과로 분해해 다음 행동을 제안합니다.</p>
+          <h3>개선 미션</h3>
+          <p>최종 리포트에서 끝나지 않고, 다음 거래에서 바꿔야 할 진입·손절·비중 체크리스트를 제안합니다.</p>
         </div>
       </div>
 
       <div class="flow">
-        <div class="flow-step"><small>STEP 1</small><h3>가설 입력</h3><p>투자 아이디어를 한 문장으로 입력합니다.</p></div>
-        <div class="flow-step"><small>STEP 2</small><h3>신호 생성</h3><p>AI가 검증 가능한 프록시 시그널을 제안합니다.</p></div>
-        <div class="flow-step"><small>STEP 3</small><h3>데이터 추적</h3><p>승인한 신호를 시장 데이터와 연결해 추적합니다.</p></div>
-        <div class="flow-step"><small>STEP 4</small><h3>리포트 제공</h3><p>시나리오 점수와 실행 점수를 분리해 보여줍니다.</p></div>
+        <div class="flow-step"><small>STEP 1</small><h3>가설 입력</h3><p>투자 아이디어, 검증 기간, 관심 종목을 입력합니다.</p></div>
+        <div class="flow-step"><small>STEP 2</small><h3>프록시 시그널 생성</h3><p>AI가 가설을 관측 가능한 신호 세트로 변환합니다.</p></div>
+        <div class="flow-step"><small>STEP 3</small><h3>검증 현황 추적</h3><p>각 신호가 현재 가설을 지지하는지 추적합니다.</p></div>
+        <div class="flow-step"><small>STEP 4</small><h3>거래 기록 연결</h3><p>실제 매매 내역을 연결해 실행 품질을 측정합니다.</p></div>
+        <div class="flow-step"><small>STEP 5</small><h3>종합 평가</h3><p>가설 적중과 실행 성과를 분리해 4가지 유형으로 분류합니다.</p></div>
+        <div class="flow-step"><small>STEP 6</small><h3>개선 미션</h3><p>다음 투자에서 바꿔야 할 행동 체크리스트를 제공합니다.</p></div>
       </div>
     </section>
 
@@ -1108,7 +1118,7 @@
           <div>
             <div class="eyebrow">Core Learning</div>
             <h2>수익률 하나로는 배울 수 없습니다.</h2>
-            <p class="hero-copy" style="margin-top:22px">Whyze는 가설의 성공 여부와 실제 수익 결과를 분리해, 사용자가 잘못된 성공과 잘못된 실패를 구분하도록 돕습니다.</p>
+            <p class="hero-copy" style="margin-top:22px">Whyze는 가설 입력, 프록시 시그널, 거래 기록, 종합 평가, 개선 미션을 하나의 학습 루프로 묶어 잘못된 성공과 잘못된 실패를 구분하도록 돕습니다.</p>
           </div>
           <div class="matrix">
             <div class="matrix-card"><h3>가설 성공 + 수익 성공</h3><p>좋은 판단과 좋은 실행. 반복 가능한 패턴으로 저장합니다.</p></div>
@@ -1126,8 +1136,8 @@
           <div class="eyebrow">Beta Access</div>
           <h2>Whyze를 먼저 써보고 싶다면 이메일을 남겨주세요.</h2>
           <p>
-            베타가 열리면 가장 먼저 안내드릴게요. 초기 사용자는 투자 가설 입력, 프록시 시그널 생성,
-            시나리오 점수와 실행 점수 리포트를 우선 체험할 수 있습니다.
+            베타가 열리면 가장 먼저 안내드릴게요. 초기 사용자는 가설 입력, 프록시 시그널 생성, 검증 현황 추적,
+            거래 기록 기반 실행 평가, 종합 리포트와 개선 미션을 우선 체험할 수 있습니다.
           </p>
         </div>
         <form class="form-card" id="waitlistForm">
