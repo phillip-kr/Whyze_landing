@@ -51,9 +51,13 @@
 
     /* ─── Scroll Animation ───────────────────────────── */
     .fade-up {
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .js-ready .fade-up {
       opacity: 0;
       transform: translateY(24px);
-      transition: opacity 0.5s ease, transform 0.5s ease;
     }
     .fade-up.visible {
       opacity: 1;
@@ -104,11 +108,8 @@
     }
     .brand-icon {
       width: 36px; height: 36px;
-      background: var(--green-soft);
-      border: 1.5px solid rgba(18,168,100,0.2);
-      border-radius: 10px;
-      display: grid; place-items: center;
-      font-size: 20px;
+      display: block;
+      object-fit: contain;
     }
 
     .nav-links {
@@ -226,9 +227,12 @@
     .mockup-wrap {
       animation: float 6s ease-in-out infinite;
       position: relative;
+      min-width: 0;
     }
 
     .mockup-shell {
+      width: 100%;
+      max-width: 100%;
       border-radius: 26px;
       background: var(--card);
       border: 1.5px solid rgba(18,168,100,0.22);
@@ -273,6 +277,7 @@
       display: grid;
       grid-template-columns: 140px 1fr;
       min-height: 440px;
+      min-width: 0;
     }
 
     /* Sidebar */
@@ -293,10 +298,8 @@
     }
     .app-sidebar-brand .sb-icon {
       width: 24px; height: 24px;
-      background: var(--green-soft);
-      border-radius: 6px;
-      display: grid; place-items: center;
-      font-size: 13px;
+      object-fit: contain;
+      display: block;
     }
     .app-nav-item {
       display: flex;
@@ -323,6 +326,194 @@
     .app-main {
       padding: 16px;
       background: #fafcfb;
+      min-width: 0;
+      overflow: hidden;
+    }
+
+    .mockup-slides {
+      position: relative;
+      min-height: 408px;
+      overflow: hidden;
+    }
+
+    .mockup-slide {
+      display: none;
+      animation: slideFade 0.24s ease;
+    }
+
+    .mockup-slide.active {
+      display: block;
+    }
+
+    @keyframes slideFade {
+      from { opacity: 0; transform: translateX(8px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    .mockup-controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 10px 14px;
+      border-top: 1px solid var(--line);
+      background: #fff;
+    }
+
+    .mockup-step-label {
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .mockup-dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .mockup-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #dbe3df;
+    }
+
+    .mockup-dot.active {
+      width: 22px;
+      background: var(--green);
+    }
+
+    .mockup-actions {
+      display: flex;
+      gap: 6px;
+    }
+
+    .mockup-action {
+      width: 30px;
+      height: 30px;
+      display: grid;
+      place-items: center;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--green-dark);
+      font-weight: 900;
+    }
+
+    .mockup-form-card,
+    .mockup-report-card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 14px;
+      min-width: 0;
+    }
+
+    .mockup-field-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .mockup-field {
+      min-height: 38px;
+      border-radius: 9px;
+      background: #f7faf9;
+      border: 1px solid var(--line);
+      padding: 8px 10px;
+      color: var(--text);
+      font-size: 10px;
+      font-weight: 700;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .mockup-signal-list,
+    .mockup-mission-list {
+      display: grid;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .mockup-signal,
+    .mockup-mission {
+      display: grid;
+      grid-template-columns: 20px 1fr auto;
+      align-items: center;
+      gap: 8px;
+      padding: 8px;
+      border-radius: 10px;
+      background: #f8fbfa;
+      border: 1px solid #edf3f0;
+      min-width: 0;
+    }
+
+    .mockup-signal b,
+    .mockup-mission b {
+      width: 20px;
+      height: 20px;
+      border-radius: 7px;
+      display: grid;
+      place-items: center;
+      background: var(--green-soft);
+      color: var(--green-dark);
+      font-size: 10px;
+    }
+
+    .mockup-signal span,
+    .mockup-mission span {
+      min-width: 0;
+      color: var(--text);
+      font-size: 10px;
+      font-weight: 700;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .mockup-signal em {
+      color: var(--green-dark);
+      font-size: 10px;
+      font-style: normal;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .mockup-report-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .mockup-quadrant {
+      min-height: 82px;
+      padding: 10px;
+      border-radius: 12px;
+      background: #f8fbfa;
+      border: 1px solid #edf3f0;
+    }
+
+    .mockup-quadrant.active {
+      background: var(--green-soft);
+      border-color: rgba(18,168,100,0.26);
+    }
+
+    .mockup-quadrant strong {
+      display: block;
+      margin-bottom: 5px;
+      color: var(--text);
+      font-size: 11px;
+      letter-spacing: -0.04em;
+    }
+
+    .mockup-quadrant span {
+      color: var(--muted);
+      font-size: 9px;
+      line-height: 1.45;
     }
 
     /* Metric cards row */
@@ -331,12 +522,14 @@
       grid-template-columns: repeat(4, 1fr);
       gap: 8px;
       margin-bottom: 10px;
+      min-width: 0;
     }
     .metric-card {
       background: #fff;
       border: 1px solid var(--line);
       border-radius: 10px;
       padding: 10px 12px;
+      min-width: 0;
     }
     .metric-label {
       font-size: 9px;
@@ -366,12 +559,14 @@
       display: grid;
       grid-template-columns: 1.1fr 0.9fr;
       gap: 10px;
+      min-width: 0;
     }
     .app-panel {
       background: #fff;
       border: 1px solid var(--line);
       border-radius: 10px;
       padding: 12px;
+      min-width: 0;
     }
     .panel-title {
       font-size: 11px;
@@ -417,7 +612,7 @@
     }
 
     /* Signal table */
-    .signal-table { width: 100%; border-collapse: collapse; }
+    .signal-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
     .signal-table th {
       font-size: 8px;
       font-weight: 700;
@@ -934,6 +1129,7 @@
       .app-body { grid-template-columns: 1fr; }
       .app-sidebar { display: none; }
       .metric-row { grid-template-columns: repeat(2,1fr); }
+      .mockup-slides { min-height: auto; }
     }
 
     @media (max-width: 768px) {
@@ -956,6 +1152,10 @@
       .axis-y-label { display: none; }
       .app-panels { grid-template-columns: 1fr; }
       .metric-row { grid-template-columns: repeat(2,1fr); }
+      .mockup-field-grid,
+      .mockup-report-grid { grid-template-columns: 1fr; }
+      .mockup-controls { padding: 9px 12px; }
+      .mockup-step-label { display: none; }
       .footer-inner { flex-direction: column; align-items: flex-start; gap: 14px; }
     }
 
@@ -972,7 +1172,7 @@
   <header class="nav" id="navbar">
     <div class="container nav-inner">
       <a href="#top" class="brand" aria-label="Whyze 홈">
-        <div class="brand-icon">🧠</div>
+        <img class="brand-icon" src="whyze_icon_web_flat.png" alt="Whyze 로고" />
         <span>Whyze</span>
       </a>
       <nav class="nav-links" aria-label="주요 섹션">
@@ -1015,7 +1215,7 @@
               <!-- Sidebar -->
               <aside class="app-sidebar">
                 <div class="app-sidebar-brand">
-                  <div class="sb-icon">🧠</div>
+                  <img class="sb-icon" src="whyze_icon_web_flat.png" alt="" />
                   <span>Whyze</span>
                 </div>
                 <div class="app-nav-item active">
@@ -1042,104 +1242,137 @@
 
               <!-- Main -->
               <div class="app-main">
-                <!-- Metric cards -->
-                <div class="metric-row">
-                  <div class="metric-card">
-                    <div class="metric-label">시나리오 점수</div>
-                    <div class="metric-value">78<span style="font-size:11px;font-weight:500;color:var(--muted)">/100</span></div>
-                    <div class="metric-sparkline">
-                      <svg viewBox="0 0 60 22" preserveAspectRatio="none">
-                        <polyline points="0,18 10,14 20,16 30,10 40,8 50,5 60,3" fill="none" stroke="#12A864" stroke-width="1.5"/>
-                      </svg>
+                <div class="mockup-slides" aria-live="polite">
+                  <section class="mockup-slide active" data-title="대시보드" data-step="1 / 3 · 대시보드">
+                    <div class="metric-row">
+                      <div class="metric-card">
+                        <div class="metric-label">시나리오 점수</div>
+                        <div class="metric-value">78<span style="font-size:11px;font-weight:500;color:var(--muted)">/100</span></div>
+                        <div class="metric-sparkline">
+                          <svg viewBox="0 0 60 22" preserveAspectRatio="none">
+                            <polyline points="0,18 10,14 20,16 30,10 40,8 50,5 60,3" fill="none" stroke="#12A864" stroke-width="1.5"/>
+                          </svg>
+                        </div>
+                      </div>
+                      <div class="metric-card">
+                        <div class="metric-label">실행 점수</div>
+                        <div class="metric-value orange">62<span style="font-size:11px;font-weight:500;color:var(--muted)">/100</span></div>
+                        <div class="metric-sparkline">
+                          <svg viewBox="0 0 60 22" preserveAspectRatio="none">
+                            <polyline points="0,8 10,12 20,10 30,14 40,12 50,16 60,14" fill="none" stroke="#F39B2F" stroke-width="1.5"/>
+                          </svg>
+                        </div>
+                      </div>
+                      <div class="metric-card">
+                        <div class="metric-label">이번달 성과</div>
+                        <div class="metric-value green">+4.81%</div>
+                        <div class="metric-sparkline">
+                          <svg viewBox="0 0 60 22" preserveAspectRatio="none">
+                            <polyline points="0,16 10,14 20,11 30,13 40,8 50,6 60,4" fill="none" stroke="#12A864" stroke-width="1.5"/>
+                          </svg>
+                        </div>
+                      </div>
+                      <div class="metric-card">
+                        <div class="metric-label">활성 시나리오</div>
+                        <div class="metric-value green">5<span style="font-size:11px;font-weight:500;color:var(--muted)">개</span></div>
+                        <div class="metric-sparkline">
+                          <svg viewBox="0 0 60 22" preserveAspectRatio="none">
+                            <polyline points="0,14 10,14 20,10 30,10 40,8 50,8 60,6" fill="none" stroke="#12A864" stroke-width="1.5"/>
+                          </svg>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                  <div class="metric-card">
-                    <div class="metric-label">실행 점수</div>
-                    <div class="metric-value orange">62<span style="font-size:11px;font-weight:500;color:var(--muted)">/100</span></div>
-                    <div class="metric-sparkline">
-                      <svg viewBox="0 0 60 22" preserveAspectRatio="none">
-                        <polyline points="0,8 10,12 20,10 30,14 40,12 50,16 60,14" fill="none" stroke="#F39B2F" stroke-width="1.5"/>
-                      </svg>
-                    </div>
-                  </div>
-                  <div class="metric-card">
-                    <div class="metric-label">이번달 성과</div>
-                    <div class="metric-value green">+4.81%</div>
-                    <div class="metric-sparkline">
-                      <svg viewBox="0 0 60 22" preserveAspectRatio="none">
-                        <polyline points="0,16 10,14 20,11 30,13 40,8 50,6 60,4" fill="none" stroke="#12A864" stroke-width="1.5"/>
-                      </svg>
-                    </div>
-                  </div>
-                  <div class="metric-card">
-                    <div class="metric-label">활성 시나리오</div>
-                    <div class="metric-value green">5<span style="font-size:11px;font-weight:500;color:var(--muted)">개</span></div>
-                    <div class="metric-sparkline">
-                      <svg viewBox="0 0 60 22" preserveAspectRatio="none">
-                        <polyline points="0,14 10,14 20,10 30,10 40,8 50,8 60,6" fill="none" stroke="#12A864" stroke-width="1.5"/>
-                      </svg>
-                    </div>
-                  </div>
-                </div>
 
-                <!-- Bottom panels -->
-                <div class="app-panels">
-                  <!-- Left: Scenario status -->
-                  <div class="app-panel">
-                    <div class="panel-title">핵심 시나리오 현황</div>
-                    <div class="scenario-name">AI 반도체 수요 사이클 상승 지속</div>
-                    <div class="progress-bar-wrap">
-                      <div class="progress-bar-fill" style="width:72%"></div>
-                    </div>
-                    <div style="font-size:9px;color:var(--muted);margin-bottom:8px;font-weight:500">지지 수준 72%</div>
-                    <div class="signal-dot-list">
-                      <div class="signal-dot-item">HBM 수출액 전월 대비 +18% 상승</div>
-                      <div class="signal-dot-item">글로벌 AI 서버 출하량 연속 증가</div>
-                      <div class="signal-dot-item">주요 팹리스 재고 정상화 확인</div>
-                    </div>
-                  </div>
+                    <div class="app-panels">
+                      <div class="app-panel">
+                        <div class="panel-title">핵심 시나리오 현황</div>
+                        <div class="scenario-name">AI 반도체 수요 사이클 상승 지속</div>
+                        <div class="progress-bar-wrap">
+                          <div class="progress-bar-fill" style="width:72%"></div>
+                        </div>
+                        <div style="font-size:9px;color:var(--muted);margin-bottom:8px;font-weight:500">지지 수준 72%</div>
+                        <div class="signal-dot-list">
+                          <div class="signal-dot-item">HBM 수출액 전월 대비 +18% 상승</div>
+                          <div class="signal-dot-item">글로벌 AI 서버 출하량 연속 증가</div>
+                          <div class="signal-dot-item">주요 팹리스 재고 정상화 확인</div>
+                        </div>
+                      </div>
 
-                  <!-- Right: Proxy signal table -->
-                  <div class="app-panel">
-                    <div class="panel-title">프록시 시그널 요약</div>
-                    <table class="signal-table">
-                      <thead>
-                        <tr>
-                          <th>신호</th>
-                          <th>상태</th>
-                          <th>변화</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>HBM 수출</td>
-                          <td><span class="signal-badge badge-bull">강세</span></td>
-                          <td style="color:var(--green)">+18%</td>
-                        </tr>
-                        <tr>
-                          <td>서버 출하</td>
-                          <td><span class="signal-badge badge-bull">강세</span></td>
-                          <td style="color:var(--green)">+12%</td>
-                        </tr>
-                        <tr>
-                          <td>재고 회전</td>
-                          <td><span class="signal-badge badge-mid">개선</span></td>
-                          <td style="color:var(--warning)">+6%</td>
-                        </tr>
-                        <tr>
-                          <td>CapEx 투자</td>
-                          <td><span class="signal-badge badge-mid">개선</span></td>
-                          <td style="color:var(--warning)">+4%</td>
-                        </tr>
-                        <tr>
-                          <td>전력 수요</td>
-                          <td><span class="signal-badge badge-hold">보합</span></td>
-                          <td style="color:var(--muted)">0%</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
+                      <div class="app-panel">
+                        <div class="panel-title">프록시 시그널 요약</div>
+                        <table class="signal-table">
+                          <thead>
+                            <tr>
+                              <th>신호</th>
+                              <th>상태</th>
+                              <th>변화</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr><td>HBM 수출</td><td><span class="signal-badge badge-bull">강세</span></td><td style="color:var(--green)">+18%</td></tr>
+                            <tr><td>서버 출하</td><td><span class="signal-badge badge-bull">강세</span></td><td style="color:var(--green)">+12%</td></tr>
+                            <tr><td>재고 회전</td><td><span class="signal-badge badge-mid">개선</span></td><td style="color:var(--warning)">+6%</td></tr>
+                            <tr><td>CapEx 투자</td><td><span class="signal-badge badge-mid">개선</span></td><td style="color:var(--warning)">+4%</td></tr>
+                            <tr><td>전력 수요</td><td><span class="signal-badge badge-hold">보합</span></td><td style="color:var(--muted)">0%</td></tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </section>
+
+                  <section class="mockup-slide" data-title="가설 검증" data-step="2 / 3 · 가설 입력과 시그널 생성">
+                    <div class="mockup-form-card">
+                      <div class="panel-title">가설 입력</div>
+                      <div class="scenario-name">특정 기관이 10만원대를 방어할 것이다</div>
+                      <div class="mockup-field-grid">
+                        <div class="mockup-field">가설 유형 · 행위자 기반</div>
+                        <div class="mockup-field">검증 기간 · 3개월</div>
+                        <div class="mockup-field">관심 종목 · KOSPI200</div>
+                        <div class="mockup-field">상태 · 시그널 생성 완료</div>
+                      </div>
+                    </div>
+                    <div class="mockup-form-card" style="margin-top:10px">
+                      <div class="panel-title">자동 생성된 프록시 시그널</div>
+                      <div class="mockup-signal-list">
+                        <div class="mockup-signal"><b>1</b><span>가격 방어 구간 거래량 증가</span><em>+24</em></div>
+                        <div class="mockup-signal"><b>2</b><span>기관 순매수 3거래일 지속</span><em>+28</em></div>
+                        <div class="mockup-signal"><b>3</b><span>이탈 후 회복 속도 확인</span><em>추적</em></div>
+                      </div>
+                    </div>
+                  </section>
+
+                  <section class="mockup-slide" data-title="종합 리포트" data-step="3 / 3 · 리포트와 개선 미션">
+                    <div class="mockup-report-card">
+                      <div class="panel-title">이번 거래의 위치</div>
+                      <div class="mockup-report-grid">
+                        <div class="mockup-quadrant"><strong>가설 성공 + 수익 성공</strong><span>반복 가능한 패턴으로 저장합니다.</span></div>
+                        <div class="mockup-quadrant active"><strong>가설 성공 + 수익 실패</strong><span>판단은 맞았지만 실행에서 손실이 발생했습니다.</span></div>
+                        <div class="mockup-quadrant"><strong>가설 실패 + 수익 실패</strong><span>판단과 실행을 함께 재정비합니다.</span></div>
+                        <div class="mockup-quadrant"><strong>가설 실패 + 수익 성공</strong><span>운 또는 변동성 수익 가능성을 경고합니다.</span></div>
+                      </div>
+                    </div>
+                    <div class="mockup-report-card" style="margin-top:10px">
+                      <div class="panel-title">다음 거래 미션</div>
+                      <div class="mockup-mission-list">
+                        <div class="mockup-mission"><b>1</b><span>신호 2개 이상 충족 후 진입</span><em></em></div>
+                        <div class="mockup-mission"><b>2</b><span>손절 기준을 변동성 기반으로 조정</span><em></em></div>
+                        <div class="mockup-mission"><b>3</b><span>청산 전 가설 지지 점수 확인</span><em></em></div>
+                      </div>
+                    </div>
+                  </section>
                 </div>
+              </div>
+            </div>
+            <div class="mockup-controls" aria-label="사용 시나리오 화면 넘기기">
+              <span class="mockup-step-label">1 / 3 · 대시보드</span>
+              <div class="mockup-dots" aria-hidden="true">
+                <span class="mockup-dot active"></span>
+                <span class="mockup-dot"></span>
+                <span class="mockup-dot"></span>
+              </div>
+              <div class="mockup-actions">
+                <button class="mockup-action" type="button" data-mockup-prev aria-label="이전 사용 시나리오">‹</button>
+                <button class="mockup-action" type="button" data-mockup-next aria-label="다음 사용 시나리오">›</button>
               </div>
             </div>
           </div>
@@ -1375,7 +1608,7 @@
     <div class="container footer-inner">
       <div class="footer-brand">
         <div class="brand">
-          <div class="brand-icon">🧠</div>
+          <img class="brand-icon" src="whyze_icon_web_flat.png" alt="Whyze 로고" />
           <span>Whyze</span>
         </div>
         <span class="footer-tagline" style="margin-left:12px">의사결정 검증 엔진</span>
@@ -1390,6 +1623,8 @@
 
   <script type="module">
     import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+
+    document.documentElement.classList.add('js-ready');
 
     const SUPABASE_URL = "https://rmikrylqgzejmgwuxvez.supabase.co";
     const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJtaWtyeWxxZ3plam1nd3V4dmV6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1NTU5MzksImV4cCI6MjA5NDEzMTkzOX0.5c5stpk68p5JK2Wi69V12o4LBkgqvO2qghIHf0jpZ5U";
@@ -1407,6 +1642,26 @@
       entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); fadeObserver.unobserve(e.target); } });
     }, { threshold: 0.12 });
     fadeEls.forEach(el => fadeObserver.observe(el));
+
+    // ── Hero mockup carousel ────────────────────────────
+    const mockupSlides = [...document.querySelectorAll('.mockup-slide')];
+    const mockupDots = [...document.querySelectorAll('.mockup-dot')];
+    const mockupStepLabel = document.querySelector('.mockup-step-label');
+    const mockupTitle = document.querySelector('.app-topbar-title');
+    let mockupIndex = 0;
+
+    function showMockupSlide(nextIndex) {
+      if (!mockupSlides.length) return;
+      mockupIndex = (nextIndex + mockupSlides.length) % mockupSlides.length;
+      mockupSlides.forEach((slide, index) => slide.classList.toggle('active', index === mockupIndex));
+      mockupDots.forEach((dot, index) => dot.classList.toggle('active', index === mockupIndex));
+      const current = mockupSlides[mockupIndex];
+      if (mockupStepLabel) mockupStepLabel.textContent = current.dataset.step || '';
+      if (mockupTitle) mockupTitle.textContent = current.dataset.title || 'Whyze';
+    }
+
+    document.querySelector('[data-mockup-prev]')?.addEventListener('click', () => showMockupSlide(mockupIndex - 1));
+    document.querySelector('[data-mockup-next]')?.addEventListener('click', () => showMockupSlide(mockupIndex + 1));
 
     // ── Timeline steps sequential fade ─────────────────
     const timelineSteps = document.querySelectorAll('.timeline-step');
