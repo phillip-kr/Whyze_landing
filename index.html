@@ -54,11 +54,15 @@
 
     /* ─── Fade-up animations ────────────────────────── */
     .fade-up {
-      opacity: 0;
-      transform: translateY(24px);
+      opacity: 1;
+      transform: translateY(0);
       transition: opacity 0.6s ease, transform 0.6s ease;
     }
-    .js-ready .fade-up.visible {
+    .js-ready .fade-up {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+    .fade-up.visible {
       opacity: 1;
       transform: translateY(0);
     }
@@ -560,6 +564,69 @@
     }
 
     /* ─── PROBLEM ────────────────────────────────────── */
+    .hero .os-shell {
+      background: #fff;
+      box-shadow: 0 32px 80px rgba(7,17,25,0.16);
+    }
+    .hero .os-chrome,
+    .hero .os-sidebar {
+      display: none;
+    }
+    .hero .os-body {
+      display: block;
+      height: auto;
+    }
+    .hero .os-content {
+      padding: 0;
+      background: #fff;
+      overflow: hidden;
+    }
+    .hero .os-slide {
+      height: auto;
+    }
+    .hero .os-slide.active {
+      display: block;
+    }
+    .hero .os-slide > :not(.scenario-shot) {
+      display: none !important;
+    }
+    .scenario-shot {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+    .scenario-controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 14px;
+      background: #fff;
+      border-top: 1px solid var(--line);
+    }
+    .scenario-count {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .scenario-actions {
+      display: flex;
+      gap: 8px;
+    }
+    .scenario-btn {
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      background: var(--green);
+      color: #fff;
+      font-size: 18px;
+      font-weight: 900;
+    }
+    .scenario-btn:disabled {
+      opacity: 0.35;
+      cursor: default;
+    }
+
     .problem {
       padding: 80px 0;
       background: var(--surface);
@@ -1281,6 +1348,31 @@
       .timeline::before { display: none; }
     }
     @media (max-width: 600px) {
+      .nav-cta { display: none; }
+      .hero-grid,
+      .hero-grid > .fade-up {
+        min-width: 0;
+      }
+      .hero .os-shell {
+        width: 100%;
+        max-width: 100%;
+        border-radius: 16px;
+      }
+      .scenario-shot {
+        max-width: 100%;
+      }
+      .scenario-controls {
+        justify-content: center;
+        padding: 10px;
+      }
+      .scenario-count {
+        min-width: 44px;
+        text-align: center;
+      }
+      .scenario-btn {
+        width: 30px;
+        height: 30px;
+      }
       .os-body { grid-template-columns: 100px 1fr; }
       .os-step-label { font-size: 9px; }
       .scenario-banner { flex-direction: column; align-items: flex-start; }
@@ -1384,6 +1476,7 @@
 
               <!-- Slide 1: 전략 설정 -->
               <div class="os-slide">
+                <img class="scenario-shot" src="assets/scenario/step-1.png" alt="Whyze 사용자 경험 시나리오 1단계 가설 입력" />
                 <div class="slide-title">전략 설정</div>
                 <div class="slide-form-row">
                   <div class="slide-input-mock active-input">AI 반도체 장비주 전략</div>
@@ -1407,6 +1500,7 @@
 
               <!-- Slide 2: 가정 설정 -->
               <div class="os-slide">
+                <img class="scenario-shot" src="assets/scenario/step-2.png" alt="Whyze 사용자 경험 시나리오 2단계 프록시 시그널 생성" />
                 <div class="slide-title">전략 가정</div>
                 <div>
                   <div class="hypo-row">
@@ -1433,6 +1527,7 @@
 
               <!-- Slide 3: 시그널 모니터링 -->
               <div class="os-slide">
+                <img class="scenario-shot" src="assets/scenario/step-3.png" alt="Whyze 사용자 경험 시나리오 3단계 KPI 추적" />
                 <div class="slide-title">시그널 모니터링</div>
                 <div>
                   <div class="sig-mini-row">
@@ -1464,6 +1559,7 @@
 
               <!-- Slide 4: 트레이드 기록 -->
               <div class="os-slide">
+                <img class="scenario-shot" src="assets/scenario/step-4.png" alt="Whyze 사용자 경험 시나리오 4단계 거래 내역 기록" />
                 <div class="slide-title">트레이드 기록</div>
                 <div>
                   <div class="trade-mini-row">
@@ -1511,6 +1607,7 @@
 
               <!-- Slide 5: 결과 귀인 (default active) -->
               <div class="os-slide active">
+                <img class="scenario-shot" src="assets/scenario/step-5.png" alt="Whyze 사용자 경험 시나리오 5단계 리포트 확인" />
                 <div class="attr-header-dark">
                   <div>
                     <div class="attr-title-dark">결과 기여도 분석</div>
@@ -1552,6 +1649,7 @@
 
               <!-- Slide 6: 전략 리포트 -->
               <div class="os-slide">
+                <img class="scenario-shot" src="assets/scenario/step-6.png" alt="Whyze 사용자 경험 시나리오 6단계 피드백과 개선 미션" />
                 <div class="slide-title">전략 리포트</div>
                 <div class="report-mini-section">
                   <div class="report-mini-label">핵심 인사이트</div>
@@ -1569,6 +1667,13 @@
 
             </div><!-- /os-content -->
           </div><!-- /os-body -->
+          <div class="scenario-controls" aria-label="사용자 경험 시나리오 단계 넘기기">
+            <span class="scenario-count" data-scenario-count>1 / 6</span>
+            <div class="scenario-actions">
+              <button class="scenario-btn" type="button" data-scenario-prev aria-label="이전 단계">‹</button>
+              <button class="scenario-btn" type="button" data-scenario-next aria-label="다음 단계">›</button>
+            </div>
+          </div>
         </div><!-- /os-shell -->
       </div>
     </div>
@@ -2048,6 +2153,40 @@
 </footer>
 
 <!-- ─── SCRIPTS ───────────────────────────────────────── -->
+<script>
+  document.documentElement.classList.add('js-ready');
+  const baseObserver = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); baseObserver.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.fade-up').forEach(el => baseObserver.observe(el));
+
+  const baseOsSteps = document.querySelectorAll('.os-step');
+  const baseOsSlides = document.querySelectorAll('.os-slide');
+  const baseScenarioPrev = document.querySelector('[data-scenario-prev]');
+  const baseScenarioNext = document.querySelector('[data-scenario-next]');
+  const baseScenarioCount = document.querySelector('[data-scenario-count]');
+  let baseCurrentOsStep = 0;
+
+  function baseGoToOsStep(n) {
+    const nextStep = Math.max(0, Math.min(n, baseOsSlides.length - 1));
+    baseOsSteps.forEach((s, i) => {
+      s.classList.remove('active', 'done');
+      if (i < nextStep) s.classList.add('done');
+    });
+    baseOsSteps[nextStep]?.classList.add('active');
+    baseOsSlides.forEach(s => s.classList.remove('active'));
+    baseOsSlides[nextStep]?.classList.add('active');
+    baseCurrentOsStep = nextStep;
+    if (baseScenarioPrev) baseScenarioPrev.disabled = baseCurrentOsStep === 0;
+    if (baseScenarioNext) baseScenarioNext.disabled = baseCurrentOsStep === baseOsSlides.length - 1;
+    if (baseScenarioCount) baseScenarioCount.textContent = `${baseCurrentOsStep + 1} / ${baseOsSlides.length}`;
+  }
+
+  baseOsSteps.forEach((btn, i) => btn.addEventListener('click', () => baseGoToOsStep(i)));
+  baseScenarioPrev?.addEventListener('click', () => baseGoToOsStep(baseCurrentOsStep - 1));
+  baseScenarioNext?.addEventListener('click', () => baseGoToOsStep(baseCurrentOsStep + 1));
+  baseGoToOsStep(0);
+</script>
 <script type="module">
   import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
@@ -2065,32 +2204,33 @@
   /* ── OS Mockup Carousel ── */
   const osSteps = document.querySelectorAll('.os-step');
   const osSlides = document.querySelectorAll('.os-slide');
-  let currentOsStep = 4; // default: Step 5 (attribution)
-  let osTimer = null;
+  const scenarioPrev = document.querySelector('[data-scenario-prev]');
+  const scenarioNext = document.querySelector('[data-scenario-next]');
+  const scenarioCount = document.querySelector('[data-scenario-count]');
+  let currentOsStep = 0;
 
   function goToOsStep(n) {
+    const nextStep = Math.max(0, Math.min(n, osSlides.length - 1));
     osSteps.forEach((s, i) => {
       s.classList.remove('active', 'done');
-      if (i < n) s.classList.add('done');
+      if (i < nextStep) s.classList.add('done');
     });
-    osSteps[n].classList.add('active');
+    osSteps[nextStep].classList.add('active');
     osSlides.forEach(s => s.classList.remove('active'));
-    osSlides[n].classList.add('active');
-    currentOsStep = n;
-  }
-
-  function startOsAuto() {
-    clearInterval(osTimer);
-    osTimer = setInterval(() => goToOsStep((currentOsStep + 1) % osSteps.length), 3000);
+    osSlides[nextStep].classList.add('active');
+    currentOsStep = nextStep;
+    if (scenarioPrev) scenarioPrev.disabled = currentOsStep === 0;
+    if (scenarioNext) scenarioNext.disabled = currentOsStep === osSlides.length - 1;
+    if (scenarioCount) scenarioCount.textContent = `${currentOsStep + 1} / ${osSlides.length}`;
   }
 
   osSteps.forEach((btn, i) => {
-    btn.addEventListener('click', () => { goToOsStep(i); startOsAuto(); });
+    btn.addEventListener('click', () => goToOsStep(i));
   });
+  scenarioPrev?.addEventListener('click', () => goToOsStep(currentOsStep - 1));
+  scenarioNext?.addEventListener('click', () => goToOsStep(currentOsStep + 1));
 
-  // Initialize to step 4 with done states
-  osSteps.forEach((s, i) => { if (i < 4) s.classList.add('done'); });
-  startOsAuto();
+  goToOsStep(0);
 
   /* ── Waitlist Form ── */
   const form = document.getElementById('waitlist-form');
