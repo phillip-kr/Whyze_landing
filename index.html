@@ -4,78 +4,89 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Whyze | 투자 판단을 검증하는 의사결정 엔진</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet" />
   <style>
+    /* ─── Design System ──────────────────────────────── */
     :root {
-      --green: #14b866;
-      --green-dark: #07834d;
-      --green-light: #eaf8f1;
-      --dark: #071119;
-      --dark-2: #0b161e;
-      --text: #11181f;
-      --muted: #66727c;
-      --line: #e7eeea;
-      --bg: #f7faf9;
-      --card: #ffffff;
-      --orange: #f26b18;
-      --shadow: 0 24px 70px rgba(7, 17, 25, 0.09);
-      --shadow-soft: 0 14px 38px rgba(7, 17, 25, 0.07);
-      --radius-xl: 32px;
-      --radius-lg: 24px;
-      --radius-md: 18px;
+      --green:      #12A864;
+      --green-dark: #07834D;
+      --green-soft: #EAF8F1;
+      --text:       #101418;
+      --muted:      #77818B;
+      --bg:         #F7FAF9;
+      --card:       #FFFFFF;
+      --line:       #E4EDE8;
+      --warning:    #F39B2F;
+      --danger:     #EF5A66;
+      --shadow:     0 24px 70px rgba(16,20,24,0.09);
+      --shadow-sm:  0 8px 24px rgba(16,20,24,0.06);
+      --r-xl: 32px;
+      --r-lg: 24px;
+      --r-md: 16px;
     }
 
-    * {
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
 
     body {
-      margin: 0;
       color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, "Pretendard", "Noto Sans KR", "Segoe UI", sans-serif;
-      background:
-        radial-gradient(circle at 92% 8%, rgba(20, 184, 102, 0.11), transparent 28%),
-        radial-gradient(circle at 8% 92%, rgba(20, 184, 102, 0.10), transparent 24%),
-        linear-gradient(180deg, #ffffff 0%, #f5faf7 100%);
+      font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg);
+      background-image:
+        radial-gradient(circle at 90% 5%, rgba(18,168,100,0.10) 0%, transparent 28%),
+        radial-gradient(circle at 8% 92%, rgba(18,168,100,0.08) 0%, transparent 24%);
       overflow-x: hidden;
     }
 
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
+    a { color: inherit; text-decoration: none; }
+    button, input, textarea, select { font: inherit; }
+    button { cursor: pointer; border: 0; background: none; }
 
-    button,
-    input,
-    textarea,
-    select {
-      font: inherit;
-    }
-
-    button {
-      cursor: pointer;
-      border: 0;
-    }
-
-    .page {
-      width: min(1180px, calc(100vw - 40px));
+    .container {
+      width: min(1180px, calc(100vw - 48px));
       margin: 0 auto;
     }
 
+    /* ─── Scroll Animation ───────────────────────────── */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ─── Floating animation ─────────────────────────── */
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50%       { transform: translateY(-6px); }
+    }
+
+    /* ─── Pulse animation ────────────────────────────── */
+    @keyframes pulse-ring {
+      0%   { transform: scale(1); opacity: 1; }
+      100% { transform: scale(2.2); opacity: 0; }
+    }
+
+    /* ─── Navbar ─────────────────────────────────────── */
     .nav {
       position: sticky;
       top: 0;
-      z-index: 20;
+      z-index: 100;
       backdrop-filter: blur(18px);
-      background: rgba(255, 255, 255, 0.76);
-      border-bottom: 1px solid rgba(231, 238, 234, 0.86);
+      -webkit-backdrop-filter: blur(18px);
+      background: rgba(247,250,249,0.85);
+      border-bottom: 1px solid rgba(228,237,232,0.9);
+      transition: box-shadow 0.2s;
     }
+    .nav.scrolled { box-shadow: 0 4px 20px rgba(16,20,24,0.07); }
 
     .nav-inner {
-      height: 74px;
+      height: 70px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -85,97 +96,75 @@
     .brand {
       display: flex;
       align-items: center;
-      gap: 11px;
+      gap: 10px;
       font-weight: 900;
+      font-size: 20px;
       color: var(--green-dark);
       letter-spacing: -0.04em;
-      font-size: 20px;
     }
-
-    .brand img {
-      width: 38px;
-      height: 38px;
-      object-fit: contain;
-      display: block;
+    .brand-icon {
+      width: 36px; height: 36px;
+      background: var(--green-soft);
+      border: 1.5px solid rgba(18,168,100,0.2);
+      border-radius: 10px;
+      display: grid; place-items: center;
+      font-size: 20px;
     }
 
     .nav-links {
       display: flex;
       align-items: center;
-      gap: 26px;
-      color: #48535c;
+      gap: 28px;
       font-size: 14px;
-      font-weight: 800;
-      letter-spacing: -0.035em;
+      font-weight: 700;
+      color: var(--muted);
+      letter-spacing: -0.02em;
     }
+    .nav-links a:hover { color: var(--green-dark); }
 
-    .nav-links a:hover {
-      color: var(--green-dark);
-    }
-
-    .nav-cta,
-    .primary-btn,
-    .secondary-btn {
+    .btn-primary {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
+      gap: 6px;
       border-radius: 999px;
-      font-weight: 900;
-      letter-spacing: -0.04em;
-      transition: 0.18s ease;
+      font-weight: 700;
+      letter-spacing: -0.02em;
       white-space: nowrap;
+      transition: background 0.18s, transform 0.18s, box-shadow 0.18s;
+      cursor: pointer;
     }
+    .btn-primary { background: var(--green); color: #fff; }
+    .btn-primary:hover { background: var(--green-dark); transform: translateY(-1px); box-shadow: 0 8px 20px rgba(18,168,100,0.28); }
+    .btn-primary:active { transform: translateY(0); }
 
-    .nav-cta {
-      min-height: 42px;
-      padding: 0 18px;
-      color: white;
-      background: linear-gradient(135deg, #17c977, #079451);
-      box-shadow: 0 12px 28px rgba(20, 184, 102, 0.24);
-      font-size: 14px;
+    .nav-cta { min-height: 40px; padding: 0 18px; font-size: 13px; }
+    .nav-cta.btn-primary { background: var(--green); }
+
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      border-radius: 999px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      border: 1.5px solid var(--line);
+      background: var(--card);
+      color: var(--text);
+      transition: border-color 0.18s, transform 0.18s;
     }
+    .btn-ghost:hover { border-color: var(--green); color: var(--green-dark); transform: translateY(-1px); }
 
-    .primary-btn {
-      min-height: 58px;
-      padding: 0 26px;
-      color: white;
-      background: linear-gradient(135deg, #17c977, #079451);
-      box-shadow: 0 16px 34px rgba(20, 184, 102, 0.26);
-      font-size: 16px;
-    }
-
-    .secondary-btn {
-      min-height: 58px;
-      padding: 0 24px;
-      color: #263039;
-      background: white;
-      border: 1px solid var(--line);
-      box-shadow: 0 10px 24px rgba(7, 17, 25, 0.05);
-      font-size: 16px;
-    }
-
-    .nav-cta:hover,
-    .primary-btn:hover,
-    .secondary-btn:hover {
-      transform: translateY(-1px);
-    }
-
-    .primary-btn:disabled {
-      cursor: not-allowed;
-      opacity: 0.72;
-      transform: none;
-    }
-
+    /* ─── Hero ───────────────────────────────────────── */
     .hero {
-      padding: 86px 0 54px;
+      padding: 80px 0 56px;
       position: relative;
     }
-
     .hero-grid {
       display: grid;
-      grid-template-columns: minmax(0, 0.92fr) minmax(420px, 1.08fr);
-      gap: 46px;
+      grid-template-columns: minmax(0, 0.9fr) minmax(460px, 1.1fr);
+      gap: 48px;
       align-items: center;
     }
 
@@ -183,375 +172,342 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      min-height: 34px;
+      min-height: 32px;
       padding: 0 12px;
       border-radius: 999px;
-      background: var(--green-light);
+      background: var(--green-soft);
       color: var(--green-dark);
-      border: 1px solid rgba(20, 184, 102, 0.16);
-      font-size: 13px;
-      font-weight: 900;
-      letter-spacing: -0.035em;
+      border: 1px solid rgba(18,168,100,0.18);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
       margin-bottom: 22px;
     }
 
     h1 {
-      margin: 0;
-      font-size: clamp(44px, 5.5vw, 76px);
-      line-height: 1.04;
-      letter-spacing: -0.085em;
-      font-weight: 950;
+      font-size: clamp(40px, 5vw, 68px);
+      line-height: 1.07;
+      letter-spacing: -0.07em;
+      font-weight: 900;
       word-break: keep-all;
+      color: var(--text);
     }
+    h1 .accent { color: var(--green); }
 
-    .hero-copy {
-      margin: 26px 0 0;
-      max-width: 600px;
-      color: #5c6872;
-      font-size: 19px;
+    .hero-sub {
+      margin-top: 22px;
+      color: var(--muted);
+      font-size: 17px;
       line-height: 1.75;
-      letter-spacing: -0.045em;
+      letter-spacing: -0.03em;
+      font-weight: 500;
       word-break: keep-all;
-      font-weight: 650;
+      max-width: 500px;
     }
 
     .hero-actions {
       display: flex;
       flex-wrap: wrap;
       gap: 12px;
-      margin-top: 34px;
+      margin-top: 32px;
     }
+    .hero-actions .btn-primary { min-height: 52px; padding: 0 26px; font-size: 15px; }
+    .hero-actions .btn-ghost   { min-height: 52px; padding: 0 22px; font-size: 15px; }
 
     .hero-note {
       margin-top: 18px;
-      color: #88939b;
-      font-size: 13px;
-      letter-spacing: -0.035em;
-      font-weight: 700;
+      color: #9AA3AB;
+      font-size: 12px;
+      letter-spacing: -0.02em;
+      font-weight: 500;
+    }
+
+    /* ─── App Mockup Shell ───────────────────────────── */
+    .mockup-wrap {
+      animation: float 6s ease-in-out infinite;
+      position: relative;
     }
 
     .mockup-shell {
-      position: relative;
-      padding: 16px;
-      border-radius: 34px;
-      background:
-        linear-gradient(180deg, rgba(255,255,255,0.92), rgba(255,255,255,0.64)),
-        radial-gradient(circle at 80% 0%, rgba(20, 184, 102, 0.18), transparent 36%);
-      border: 1px solid rgba(231, 238, 234, 0.96);
-      box-shadow: var(--shadow);
-      overflow: hidden;
-    }
-
-    .mockup-shell::before {
-      content: "";
-      position: absolute;
-      inset: auto -10% 0 -10%;
-      height: 160px;
-      background: repeating-radial-gradient(ellipse at center, rgba(20, 184, 102, 0.16) 0 1px, transparent 2px 16px);
-      opacity: 0.45;
-      pointer-events: none;
-    }
-
-    .app-preview {
-      position: relative;
-      z-index: 1;
       border-radius: 26px;
+      background: var(--card);
+      border: 1.5px solid rgba(18,168,100,0.22);
+      box-shadow: 0 32px 80px rgba(18,168,100,0.12), 0 8px 24px rgba(16,20,24,0.08);
       overflow: hidden;
-      background: white;
-      border: 1px solid #e7eeea;
-      box-shadow: 0 18px 52px rgba(7, 17, 25, 0.11);
     }
 
-    .preview-topbar {
-      height: 54px;
+    /* App topbar */
+    .app-topbar {
+      height: 48px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 18px;
-      background: #ffffff;
+      padding: 0 20px;
+      background: #fff;
       border-bottom: 1px solid var(--line);
     }
-
-    .dots {
-      display: flex;
-      gap: 7px;
-    }
-
-    .dots i {
-      width: 10px;
-      height: 10px;
-      border-radius: 999px;
-      background: #d7dedb;
-      display: block;
-    }
-
-    .preview-title {
-      color: #6c7680;
+    .app-topbar-title {
       font-size: 13px;
-      font-weight: 850;
-      letter-spacing: -0.035em;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.03em;
     }
+    .app-topbar-date {
+      font-size: 11px;
+      color: var(--muted);
+      font-weight: 500;
+    }
+    .app-topbar-dots {
+      display: flex; gap: 6px;
+    }
+    .app-topbar-dots i {
+      width: 10px; height: 10px; border-radius: 50%;
+      display: block; background: #d5dcd8;
+    }
+    .app-topbar-dots i:nth-child(1) { background: #FFB347; }
+    .app-topbar-dots i:nth-child(2) { background: #90D97F; }
+    .app-topbar-dots i:nth-child(3) { background: #8AAEF7; }
 
-    .preview-body {
+    /* App body */
+    .app-body {
       display: grid;
-      grid-template-columns: 162px 1fr;
-      min-height: 520px;
+      grid-template-columns: 140px 1fr;
+      min-height: 440px;
     }
 
-    .preview-sidebar {
-      padding: 18px 14px;
-      color: white;
-      background: linear-gradient(180deg, #071119, #050b10);
+    /* Sidebar */
+    .app-sidebar {
+      padding: 16px 10px;
+      background: #f9fcfb;
+      border-right: 1px solid var(--line);
     }
-
-    .preview-brand {
+    .app-sidebar-brand {
       display: flex;
       align-items: center;
-      gap: 8px;
-      margin-bottom: 20px;
+      gap: 7px;
+      font-size: 13px;
       font-weight: 900;
-      color: #ffffff;
-      font-size: 14px;
-    }
-
-    .preview-brand img {
-      width: 26px;
-      height: 26px;
-    }
-
-    .preview-menu {
-      display: grid;
-      gap: 8px;
-    }
-
-    .preview-menu span {
-      display: block;
-      padding: 10px 12px;
-      border-radius: 10px;
-      color: rgba(255,255,255,0.62);
-      font-size: 12px;
-      font-weight: 850;
-      letter-spacing: -0.035em;
-    }
-
-    .preview-menu span.active {
-      color: white;
-      background: linear-gradient(135deg, #0ab45b, #078e49);
-    }
-
-    .preview-main {
-      padding: 22px;
-      background: #fbfdfc;
-      min-width: 0;
-    }
-
-    .preview-heading {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 16px;
-      margin-bottom: 18px;
-    }
-
-    .preview-heading h3 {
-      margin: 0;
-      font-size: 24px;
-      letter-spacing: -0.07em;
-    }
-
-    .preview-heading p {
-      margin: 5px 0 0;
-      color: #7b858c;
-      font-size: 12px;
-      font-weight: 750;
-    }
-
-    .pill {
-      display: inline-flex;
-      align-items: center;
-      min-height: 28px;
-      padding: 0 10px;
-      border-radius: 999px;
       color: var(--green-dark);
-      background: var(--green-light);
+      margin-bottom: 18px;
+      padding: 0 4px;
+    }
+    .app-sidebar-brand .sb-icon {
+      width: 24px; height: 24px;
+      background: var(--green-soft);
+      border-radius: 6px;
+      display: grid; place-items: center;
+      font-size: 13px;
+    }
+    .app-nav-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 10px;
+      border-radius: 8px;
       font-size: 11px;
-      font-weight: 900;
-      white-space: nowrap;
+      font-weight: 700;
+      color: var(--muted);
+      margin-bottom: 2px;
+      letter-spacing: -0.02em;
+    }
+    .app-nav-item.active {
+      background: var(--green-soft);
+      color: var(--green-dark);
+    }
+    .app-nav-icon {
+      width: 16px; height: 16px;
+      flex-shrink: 0;
     }
 
-    .preview-cards {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 12px;
-      margin-bottom: 14px;
-    }
-
-    .preview-card {
+    /* Main content */
+    .app-main {
       padding: 16px;
-      border-radius: 18px;
-      background: white;
-      border: 1px solid var(--line);
-      box-shadow: 0 10px 25px rgba(7, 17, 25, 0.04);
-      min-width: 0;
+      background: #fafcfb;
     }
 
-    .preview-card span {
-      display: block;
-      color: #7a858c;
-      font-size: 11px;
-      font-weight: 900;
+    /* Metric cards row */
+    .metric-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
       margin-bottom: 10px;
     }
-
-    .preview-card strong {
-      display: block;
+    .metric-card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 10px 12px;
+    }
+    .metric-label {
+      font-size: 9px;
+      font-weight: 700;
+      color: var(--muted);
+      margin-bottom: 4px;
+      letter-spacing: 0;
+    }
+    .metric-value {
+      font-size: 20px;
+      font-weight: 900;
+      letter-spacing: -0.06em;
       color: var(--green-dark);
-      font-size: 29px;
       line-height: 1;
-      letter-spacing: -0.065em;
+    }
+    .metric-value.orange { color: var(--warning); }
+    .metric-value.green  { color: var(--green); }
+    .metric-sparkline {
+      margin-top: 6px;
+    }
+    .metric-sparkline svg {
+      width: 100%; height: 22px; display: block;
     }
 
-    .preview-card.orange strong {
-      color: var(--orange);
-    }
-
-    .preview-report {
+    /* Bottom panels */
+    .app-panels {
       display: grid;
       grid-template-columns: 1.1fr 0.9fr;
-      gap: 12px;
+      gap: 10px;
     }
-
-    .report-box {
-      min-height: 210px;
-      padding: 18px;
-      border-radius: 20px;
-      background: white;
+    .app-panel {
+      background: #fff;
       border: 1px solid var(--line);
-      box-shadow: 0 10px 25px rgba(7, 17, 25, 0.04);
+      border-radius: 10px;
+      padding: 12px;
+    }
+    .panel-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 10px;
+      letter-spacing: -0.03em;
     }
 
-    .report-box h4 {
-      margin: 0 0 12px;
-      font-size: 16px;
-      letter-spacing: -0.06em;
+    /* Scenario card */
+    .scenario-name {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 6px;
     }
-
-    .mini-chart {
-      width: 100%;
-      height: 116px;
-      border-radius: 16px;
-      background: linear-gradient(180deg, #f2fbf6, #ffffff);
-      border: 1px solid #dfeee7;
-      margin-bottom: 12px;
-      overflow: hidden;
+    .progress-bar-wrap {
+      background: #EEF2F0;
+      border-radius: 999px;
+      height: 5px;
+      margin-bottom: 8px;
     }
-
-    .mini-chart svg {
-      width: 100%;
+    .progress-bar-fill {
       height: 100%;
+      border-radius: 999px;
+      background: var(--green);
     }
-
-    .check-list {
-      display: grid;
-      gap: 9px;
-    }
-
-    .check-list div {
+    .signal-dot-list { display: grid; gap: 4px; }
+    .signal-dot-item {
       display: flex;
       align-items: center;
-      gap: 8px;
-      color: #5e6972;
-      font-size: 12px;
-      font-weight: 800;
+      gap: 5px;
+      font-size: 9px;
+      color: var(--muted);
+      font-weight: 500;
     }
-
-    .check-list b {
-      width: 20px;
-      height: 20px;
-      display: grid;
-      place-items: center;
-      border-radius: 7px;
-      color: white;
+    .signal-dot-item::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
       background: var(--green);
-      font-size: 11px;
-      flex: 0 0 auto;
+      flex-shrink: 0;
     }
 
-    .section {
-      padding: 84px 0;
+    /* Signal table */
+    .signal-table { width: 100%; border-collapse: collapse; }
+    .signal-table th {
+      font-size: 8px;
+      font-weight: 700;
+      color: var(--muted);
+      text-align: left;
+      padding: 0 0 5px;
+      border-bottom: 1px solid var(--line);
+    }
+    .signal-table td {
+      font-size: 9px;
+      font-weight: 500;
+      color: var(--text);
+      padding: 4px 0;
+      border-bottom: 1px solid #F0F4F2;
+    }
+    .signal-badge {
+      display: inline-block;
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-size: 8px;
+      font-weight: 700;
+    }
+    .badge-bull  { background: #EAF8F1; color: var(--green-dark); }
+    .badge-mid   { background: #FFF5E6; color: #B36B00; }
+    .badge-hold  { background: #F2F4F3; color: var(--muted); }
+
+    /* ─── Section base ───────────────────────────────── */
+    .section { padding: 88px 0; }
+
+    h2 {
+      font-size: clamp(30px, 3.8vw, 50px);
+      line-height: 1.12;
+      letter-spacing: -0.07em;
+      font-weight: 900;
+      word-break: keep-all;
+      color: var(--text);
     }
 
     .section-head {
-      width: min(760px, 100%);
-      margin: 0 auto 42px;
       text-align: center;
+      max-width: 720px;
+      margin: 0 auto 52px;
     }
-
-    .section-head .eyebrow {
-      margin-bottom: 16px;
-    }
-
-    h2 {
-      margin: 0;
-      font-size: clamp(32px, 4vw, 54px);
-      line-height: 1.12;
-      letter-spacing: -0.08em;
-      font-weight: 950;
-      word-break: keep-all;
-    }
-
     .section-head p {
-      margin: 18px 0 0;
+      margin-top: 16px;
       color: var(--muted);
-      font-size: 17px;
-      line-height: 1.7;
-      letter-spacing: -0.045em;
-      font-weight: 650;
+      font-size: 16px;
+      line-height: 1.75;
+      font-weight: 500;
       word-break: keep-all;
     }
+    .section-head .eyebrow { margin-bottom: 16px; }
 
-    .problem-grid,
-    .feature-grid,
-    .score-grid {
-      display: grid;
-      gap: 18px;
+    /* ─── Problem (glass-morphism) ───────────────────── */
+    .problem-bg {
+      background: linear-gradient(170deg, #F0FAF5 0%, var(--bg) 100%);
+      position: relative;
     }
 
     .problem-grid {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-
-    .feature-grid {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-    }
-
-    .score-grid {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
-
-    .card {
-      padding: 26px;
-      border-radius: var(--radius-lg);
-      background: white;
-      border: 1px solid var(--line);
-      box-shadow: var(--shadow-soft);
-      min-width: 0;
-    }
-
-    .icon-box {
-      width: 46px;
-      height: 46px;
       display: grid;
-      place-items: center;
-      border-radius: 15px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .glass-card {
+      padding: 28px;
+      border-radius: var(--r-lg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      background: rgba(255,255,255,0.72);
+      border: 1px solid rgba(18,168,100,0.15);
+      box-shadow: 0 4px 24px rgba(16,20,24,0.05);
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .glass-card:hover {
+      border-color: rgba(18,168,100,0.4);
+      box-shadow: 0 8px 32px rgba(18,168,100,0.10);
+    }
+
+    .icon-circle {
+      width: 48px; height: 48px;
+      border-radius: 14px;
+      background: var(--green-soft);
       color: var(--green-dark);
-      background: var(--green-light);
+      display: grid; place-items: center;
       margin-bottom: 18px;
     }
-
-    .icon-box svg {
-      width: 25px;
-      height: 25px;
+    .icon-circle svg {
+      width: 24px; height: 24px;
       stroke: currentColor;
       stroke-width: 2;
       stroke-linecap: round;
@@ -559,404 +515,464 @@
       fill: none;
     }
 
-    .card h3 {
-      margin: 0 0 12px;
-      font-size: 20px;
-      letter-spacing: -0.065em;
+    .glass-card h3 {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.05em;
+      margin-bottom: 10px;
       word-break: keep-all;
     }
-
-    .card p {
-      margin: 0;
-      color: var(--muted);
+    .glass-card p {
       font-size: 14px;
-      line-height: 1.7;
-      letter-spacing: -0.04em;
-      font-weight: 650;
+      color: var(--muted);
+      line-height: 1.72;
+      letter-spacing: -0.02em;
+      font-weight: 500;
       word-break: keep-all;
     }
 
-    .flow {
+    /* ─── Solution ───────────────────────────────────── */
+    .feature-grid {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 14px;
-      margin-top: 34px;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      margin-bottom: 56px;
     }
 
-    .flow-step {
-      position: relative;
-      padding: 22px;
-      min-height: 170px;
-      border-radius: 22px;
-      background: #fff;
+    .feature-card {
+      background: var(--card);
       border: 1px solid var(--line);
-      box-shadow: var(--shadow-soft);
+      border-radius: var(--r-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .feature-card:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+
+    .feature-accent { height: 3px; background: var(--green); }
+
+    .feature-body { padding: 24px; }
+
+    .feature-icon {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: var(--green-soft);
+      color: var(--green-dark);
+      display: grid; place-items: center;
+      margin-bottom: 14px;
+    }
+    .feature-icon svg {
+      width: 20px; height: 20px;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+    }
+    .feature-card h3 {
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: -0.05em;
+      margin-bottom: 8px;
+    }
+    .feature-card p {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.7;
+      font-weight: 500;
+      word-break: keep-all;
     }
 
-    .flow-step::after {
-      content: "→";
+    /* Timeline */
+    .timeline-wrap { position: relative; }
+
+    .timeline {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 0;
+      position: relative;
+    }
+
+    /* Connecting line */
+    .timeline::before {
+      content: '';
       position: absolute;
-      right: -13px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--green);
+      top: 22px;
+      left: calc(100% / 12);
+      right: calc(100% / 12);
+      height: 2px;
+      border-top: 2px dashed rgba(18,168,100,0.3);
+      z-index: 0;
+    }
+
+    .timeline-step {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 0 8px;
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+    .timeline-step.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .step-num {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      background: var(--green);
+      color: #fff;
+      font-size: 14px;
       font-weight: 900;
+      display: grid; place-items: center;
+      margin-bottom: 14px;
+      box-shadow: 0 4px 12px rgba(18,168,100,0.28);
+      position: relative;
       z-index: 1;
     }
 
-    .flow-step:last-child::after {
-      display: none;
+    .step-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 6px;
+      letter-spacing: -0.03em;
+    }
+    .step-desc {
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.6;
+      font-weight: 500;
     }
 
-    .flow-step:nth-child(3)::after {
-      display: none;
+    /* ─── Core Learning 2x2 Matrix ───────────────────── */
+    .matrix-section { background: #F2FAF6; }
+
+    .matrix-container {
+      position: relative;
+      max-width: 720px;
+      margin: 0 auto;
     }
 
-    .flow-step small {
-      color: var(--green-dark);
+    .axis-y-label {
+      position: absolute;
+      left: -32px;
+      top: 50%;
+      transform: translateY(-50%) rotate(-90deg);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--muted);
+      white-space: nowrap;
+      letter-spacing: -0.01em;
+    }
+    .axis-x-wrap {
+      display: flex;
+      justify-content: space-between;
+      padding: 0 4px;
+      margin-top: 10px;
+    }
+    .axis-x-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--muted);
+      letter-spacing: -0.01em;
+    }
+
+    .matrix-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      border-radius: var(--r-lg);
+      overflow: hidden;
+      border: 1px solid var(--line);
+      position: relative;
+    }
+
+    /* Cross lines */
+    .matrix-grid::before {
+      content: '';
+      position: absolute;
+      left: 50%; top: 0; bottom: 0;
+      width: 1px;
+      background: repeating-linear-gradient(to bottom, rgba(0,0,0,0.12) 0 4px, transparent 4px 8px);
+      z-index: 1;
+    }
+    .matrix-grid::after {
+      content: '';
+      position: absolute;
+      top: 50%; left: 0; right: 0;
+      height: 1px;
+      background: repeating-linear-gradient(to right, rgba(0,0,0,0.12) 0 4px, transparent 4px 8px);
+      z-index: 1;
+    }
+
+    .matrix-cell {
+      padding: 24px;
+      position: relative;
+      min-height: 160px;
+    }
+    .matrix-cell.q1 { background: rgba(18,168,100,0.10); }
+    .matrix-cell.q2 { background: rgba(243,155,47,0.10); }
+    .matrix-cell.q3 { background: rgba(243,155,47,0.10); }
+    .matrix-cell.q4 { background: rgba(239,90,102,0.10); }
+
+    .matrix-cell h4 {
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      margin-bottom: 8px;
+      word-break: keep-all;
+    }
+    .matrix-cell.q1 h4 { color: var(--green-dark); }
+    .matrix-cell.q2 h4 { color: #A06C00; }
+    .matrix-cell.q3 h4 { color: #A06C00; }
+    .matrix-cell.q4 h4 { color: #C0323D; }
+
+    .matrix-cell p {
       font-size: 12px;
-      font-weight: 950;
+      color: var(--muted);
+      line-height: 1.65;
+      font-weight: 500;
+      word-break: keep-all;
     }
 
-    .flow-step h3 {
-      margin: 10px 0 8px;
+    /* Pulse dot */
+    .pulse-dot {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      width: 10px; height: 10px;
+    }
+    .pulse-dot::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: var(--green);
+    }
+    .pulse-dot::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: var(--green);
+      animation: pulse-ring 1.8s ease-out infinite;
     }
 
-    .dark-section {
-      color: white;
-      background:
-        radial-gradient(circle at 85% 20%, rgba(20, 184, 102, 0.22), transparent 30%),
-        linear-gradient(180deg, #071119, #050b10);
-      border-radius: 44px;
-      padding: 74px 54px;
+    /* ─── Beta Signup ────────────────────────────────── */
+    .signup-box {
+      display: grid;
+      grid-template-columns: 1fr minmax(340px, 0.7fr);
+      gap: 40px;
+      align-items: start;
+      background: var(--card);
+      border-radius: 38px;
+      border: 4px solid var(--green);
+      border-top: 4px solid var(--green);
+      box-shadow: var(--shadow);
+      padding: 52px;
       position: relative;
       overflow: hidden;
     }
-
-    .dark-section::after {
-      content: "";
+    .signup-box::before {
+      content: '';
       position: absolute;
-      right: -8%;
-      bottom: -16%;
-      width: 620px;
-      height: 300px;
-      background: repeating-radial-gradient(ellipse at center, rgba(20, 184, 102, 0.24) 0 1px, transparent 2px 18px);
-      opacity: 0.38;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+      background: var(--green);
+    }
+    .signup-box { border: 1px solid var(--line); }
+    .signup-top-bar {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+      background: var(--green);
+      border-radius: 38px 38px 0 0;
     }
 
-    .dark-content {
-      position: relative;
-      z-index: 1;
-      display: grid;
-      grid-template-columns: 0.9fr 1.1fr;
-      gap: 42px;
-      align-items: center;
-    }
-
-    .dark-content h2 {
-      color: white;
-    }
-
-    .dark-content p {
-      color: rgba(255,255,255,0.72);
-    }
-
-    .matrix {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 12px;
-    }
-
-    .matrix-card {
-      padding: 22px;
-      border-radius: 20px;
-      background: rgba(255,255,255,0.07);
-      border: 1px solid rgba(255,255,255,0.1);
-    }
-
-    .matrix-card.active {
-      background: rgba(20, 184, 102, 0.18);
-      border-color: rgba(20, 184, 102, 0.34);
-    }
-
-    .matrix-card h3 {
-      color: white;
-      margin: 0 0 8px;
-      font-size: 18px;
-    }
-
-    .matrix-card p {
-      margin: 0;
-      font-size: 13px;
-    }
-
-    .signup-section {
-      padding: 92px 0;
-    }
-
-    .signup-box {
-      display: grid;
-      grid-template-columns: minmax(0, 0.95fr) minmax(360px, 0.72fr);
-      gap: 34px;
-      align-items: center;
-      padding: 54px;
-      border-radius: 38px;
-      background: white;
-      border: 1px solid var(--line);
-      box-shadow: var(--shadow);
-    }
-
-    .signup-box h2 {
-      font-size: clamp(34px, 4vw, 58px);
-    }
-
-    .signup-box p {
-      margin: 18px 0 0;
+    .signup-box h2 { font-size: clamp(28px, 3.2vw, 46px); margin-bottom: 16px; }
+    .signup-box > div:first-child p {
       color: var(--muted);
-      font-size: 17px;
-      line-height: 1.7;
-      font-weight: 650;
-      letter-spacing: -0.04em;
+      font-size: 15px;
+      line-height: 1.75;
+      font-weight: 500;
       word-break: keep-all;
     }
 
     .form-card {
-      padding: 24px;
-      border-radius: 26px;
-      background: #fbfdfc;
+      background: var(--bg);
+      border-radius: var(--r-lg);
       border: 1px solid var(--line);
+      padding: 24px;
     }
 
     .field {
       display: grid;
-      gap: 8px;
+      gap: 6px;
       margin-bottom: 14px;
     }
-
     .field label {
-      color: #3e4a53;
-      font-size: 13px;
-      font-weight: 900;
-      letter-spacing: -0.035em;
+      font-size: 12px;
+      font-weight: 700;
+      color: #3D4A54;
+      letter-spacing: -0.02em;
     }
-
-    .field input,
-    .field select,
-    .field textarea {
+    .field input, .field textarea {
       width: 100%;
-      min-height: 50px;
-      border-radius: 14px;
-      border: 1px solid #dce6e1;
-      background: white;
+      min-height: 46px;
+      border-radius: 12px;
+      border: 1px solid #D5DDD9;
+      background: #fff;
       color: var(--text);
       padding: 0 14px;
       outline: none;
-      font-weight: 700;
-      letter-spacing: -0.035em;
-      transition: 0.16s ease;
+      font-weight: 500;
+      transition: border-color 0.15s, box-shadow 0.15s;
     }
-
     .field textarea {
-      min-height: 92px;
-      padding: 14px;
+      min-height: 80px;
+      padding: 12px 14px;
       resize: vertical;
     }
-
-    .field input:focus,
-    .field select:focus,
-    .field textarea:focus {
-      border-color: rgba(20, 184, 102, 0.7);
-      box-shadow: 0 0 0 4px rgba(20, 184, 102, 0.1);
+    .field input:focus, .field textarea:focus {
+      border-color: var(--green);
+      box-shadow: 0 0 0 3px rgba(18,168,100,0.12);
     }
 
-    .form-card .primary-btn {
+    /* Toggle chips */
+    .chips-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: #3D4A54;
+      margin-bottom: 8px;
+      display: block;
+    }
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+    .chip {
+      padding: 6px 14px;
+      border-radius: 999px;
+      border: 1.5px solid var(--line);
+      background: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--muted);
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
+      user-select: none;
+    }
+    .chip.selected {
+      background: var(--green);
+      border-color: var(--green);
+      color: #fff;
+    }
+
+    .form-submit-btn {
       width: 100%;
+      min-height: 48px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 700;
+      background: var(--green);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      transition: background 0.18s;
       margin-top: 4px;
     }
+    .form-submit-btn:hover { background: var(--green-dark); }
+    .form-submit-btn:disabled { opacity: 0.65; cursor: not-allowed; }
 
     .form-message {
       display: none;
       margin-top: 12px;
       padding: 12px 14px;
-      border-radius: 14px;
+      border-radius: 12px;
+      background: var(--green-soft);
       color: var(--green-dark);
-      background: var(--green-light);
-      font-size: 13px;
-      font-weight: 850;
-      letter-spacing: -0.035em;
-    }
-
-    .form-message.error {
-      color: #a33a11;
-      background: #fff3eb;
-    }
-
-    .footer {
-      padding: 34px 0 52px;
-      color: #7b858c;
       font-size: 13px;
       font-weight: 700;
     }
+    .form-message.error { background: #FFF0F1; color: #C0323D; }
 
+    /* ─── Footer ─────────────────────────────────────── */
+    .footer {
+      padding: 32px 0 48px;
+      border-top: 1px solid rgba(18,168,100,0.15);
+    }
     .footer-inner {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 20px;
-      border-top: 1px solid var(--line);
-      padding-top: 26px;
+    }
+    .footer-brand { display: flex; align-items: center; gap: 10px; }
+    .footer-tagline { font-size: 12px; color: var(--muted); font-weight: 500; }
+    .footer-links {
+      display: flex;
+      gap: 20px;
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 500;
+    }
+    .footer-links a:hover { color: var(--green-dark); }
+    .footer-copy { font-size: 12px; color: var(--muted); font-weight: 500; }
+
+    /* ─── Responsive ─────────────────────────────────── */
+    @media (max-width: 1024px) {
+      .hero-grid { grid-template-columns: 1fr; }
+      .mockup-wrap { max-width: 600px; margin: 0 auto; }
+      .app-body { grid-template-columns: 1fr; }
+      .app-sidebar { display: none; }
+      .metric-row { grid-template-columns: repeat(2,1fr); }
     }
 
-    @media (max-width: 980px) {
-      .hero-grid,
-      .dark-content,
-      .signup-box {
-        grid-template-columns: 1fr;
-      }
-
-      .hero {
-        padding-top: 58px;
-      }
-
-      .preview-body {
-        grid-template-columns: 1fr;
-      }
-
-      .preview-sidebar {
-        display: none;
-      }
-
-      .problem-grid,
-      .feature-grid,
-      .score-grid,
-      .flow {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-
-      .flow-step:nth-child(2)::after {
-        display: none;
-      }
-
-      .flow-step:nth-child(4)::after {
-        display: none;
-      }
+    @media (max-width: 768px) {
+      .container { width: calc(100vw - 32px); }
+      .nav-links, .nav-cta { display: none; }
+      .nav-inner { height: 60px; }
+      h1 { font-size: 34px; letter-spacing: -0.06em; }
+      .hero { padding: 48px 0 40px; }
+      .hero-actions { flex-direction: column; }
+      .hero-actions .btn-primary, .hero-actions .btn-ghost { width: 100%; justify-content: center; }
+      .problem-grid { grid-template-columns: 1fr; }
+      .feature-grid { grid-template-columns: 1fr; }
+      .timeline { grid-template-columns: 1fr; gap: 24px; }
+      .timeline::before { display: none; }
+      .timeline-step { flex-direction: row; text-align: left; gap: 16px; }
+      .step-num { flex-shrink: 0; margin-bottom: 0; }
+      .matrix-cell { min-height: 120px; padding: 16px; }
+      .matrix-cell h4 { font-size: 12px; }
+      .signup-box { grid-template-columns: 1fr; padding: 28px 20px; border-radius: 24px; gap: 28px; }
+      .axis-y-label { display: none; }
+      .app-panels { grid-template-columns: 1fr; }
+      .metric-row { grid-template-columns: repeat(2,1fr); }
+      .footer-inner { flex-direction: column; align-items: flex-start; gap: 14px; }
     }
 
-    @media (max-width: 680px) {
-      .page {
-        width: min(100vw - 24px, 1180px);
-      }
-
-      .nav-links {
-        display: none;
-      }
-
-      .nav-cta {
-        display: none;
-      }
-
-      .nav-inner {
-        height: 68px;
-      }
-
-      .hero {
-        padding: 44px 0 40px;
-      }
-
-      h1 {
-        font-size: 36px;
-        letter-spacing: -0.065em;
-      }
-
-      .hero-copy {
-        font-size: 16px;
-      }
-
-      h1,
-      h2,
-      .hero-copy,
-      .section-head p,
-      .card h3,
-      .card p,
-      .signup-box p {
-        word-break: normal;
-        overflow-wrap: break-word;
-      }
-
-      .hero-actions {
-        flex-direction: column;
-      }
-
-      .primary-btn,
-      .secondary-btn {
-        width: 100%;
-      }
-
-      .preview-main {
-        padding: 16px;
-      }
-
-      .mockup-shell {
-        padding: 10px;
-        border-radius: 26px;
-      }
-
-      .preview-topbar {
-        padding: 0 14px;
-      }
-
-      .preview-title {
-        font-size: 12px;
-      }
-
-      .preview-topbar .pill {
-        display: none;
-      }
-
-      .preview-heading {
-        flex-direction: column;
-      }
-
-      .pill {
-        white-space: normal;
-      }
-
-      .preview-cards,
-      .preview-report,
-      .problem-grid,
-      .feature-grid,
-      .score-grid,
-      .flow,
-      .matrix {
-        grid-template-columns: 1fr;
-      }
-
-      .flow-step::after {
-        display: none;
-      }
-
-      .dark-section {
-        border-radius: 28px;
-        padding: 44px 22px;
-      }
-
-      .signup-box {
-        padding: 30px 20px;
-        border-radius: 28px;
-      }
-
-      .footer-inner {
-        flex-direction: column;
-        align-items: flex-start;
-      }
+    @media (max-width: 375px) {
+      h1 { font-size: 28px; }
+      .section { padding: 60px 0; }
+      .matrix-cell { padding: 12px; }
     }
   </style>
 </head>
 <body>
-  <header class="nav">
-    <div class="page nav-inner">
+
+  <!-- ─── Navbar ─────────────────────────────────────── -->
+  <header class="nav" id="navbar">
+    <div class="container nav-inner">
       <a href="#top" class="brand" aria-label="Whyze 홈">
-        <img src="whyze_icon_web_flat.png" alt="Whyze 로고" />
+        <div class="brand-icon">🧠</div>
         <span>Whyze</span>
       </a>
       <nav class="nav-links" aria-label="주요 섹션">
@@ -965,288 +981,502 @@
         <a href="#product">제품</a>
         <a href="#signup">베타 신청</a>
       </nav>
-      <a class="nav-cta" href="#signup">베타 신청하기</a>
+      <a class="nav-cta btn-primary" href="#signup">베타 신청하기</a>
     </div>
   </header>
 
   <main id="top">
-    <section class="hero page">
+
+    <!-- ─── Hero ─────────────────────────────────────── -->
+    <section class="hero container">
       <div class="hero-grid">
-        <div>
-          <div class="eyebrow">투자 가설 검증 엔진</div>
-          <h1>당신의 투자 판단,<br />검증되고 있습니까?</h1>
-          <p class="hero-copy">
-            Whyze는 개인투자자의 투자 가설을 검증 가능한 신호 체계로 번역하고,
-            시나리오 점수와 실행 점수를 분리해 잘못된 투자 학습을 방지하는 의사결정 엔진입니다.
-          </p>
+        <div class="fade-up">
+          <div class="eyebrow">✦ 투자 가설 검증 엔진</div>
+          <h1>당신의 투자 판단,<br /><span class="accent">검증</span>되고 있습니까?</h1>
+          <p class="hero-sub">Whyze는 투자 가설을 입력부터 개선 미션까지 연결합니다.</p>
           <div class="hero-actions">
-            <a class="primary-btn" href="#signup">써보고 싶어요</a>
-            <a class="secondary-btn" href="#product">제품 흐름 보기</a>
+            <a class="btn-primary" href="#signup">베타 신청하기</a>
+            <a class="btn-ghost" href="#product">제품 흐름 보기</a>
           </div>
           <p class="hero-note">종목 추천이 아니라, 투자 판단의 질을 검증하는 도구입니다.</p>
         </div>
 
-        <div class="mockup-shell" aria-label="Whyze 제품 미리보기">
-          <div class="app-preview">
-            <div class="preview-topbar">
-              <div class="dots"><i></i><i></i><i></i></div>
-              <div class="preview-title">Whyze Dashboard</div>
-              <span class="pill">검증 진행 중</span>
+        <!-- App Mockup -->
+        <div class="mockup-wrap fade-up" style="transition-delay:0.15s" aria-label="Whyze 대시보드 미리보기">
+          <div class="mockup-shell">
+            <!-- Topbar -->
+            <div class="app-topbar">
+              <div class="app-topbar-dots"><i></i><i></i><i></i></div>
+              <div class="app-topbar-title">대시보드</div>
+              <div class="app-topbar-date">2026년 5월 12일</div>
             </div>
-            <div class="preview-body">
-              <aside class="preview-sidebar">
-                <div class="preview-brand"><img src="whyze_icon_web_flat.png" alt="" /> Whyze</div>
-                <div class="preview-menu">
-                  <span class="active">가설 입력</span>
-                  <span>프록시 시그널</span>
-                  <span>검증 현황</span>
-                  <span>거래 내역</span>
-                  <span>종합 리포트</span>
-                  <span>개선 미션</span>
+            <!-- Body -->
+            <div class="app-body">
+              <!-- Sidebar -->
+              <aside class="app-sidebar">
+                <div class="app-sidebar-brand">
+                  <div class="sb-icon">🧠</div>
+                  <span>Whyze</span>
+                </div>
+                <div class="app-nav-item active">
+                  <svg class="app-nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="2" width="5" height="5" rx="1"/><rect x="9" y="2" width="5" height="5" rx="1"/><rect x="2" y="9" width="5" height="5" rx="1"/><rect x="9" y="9" width="5" height="5" rx="1"/></svg>
+                  대시보드
+                </div>
+                <div class="app-nav-item">
+                  <svg class="app-nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 2L3 5v4c0 3 2 4.5 5 5.5 3-1 5-2.5 5-5.5V5L8 2z"/></svg>
+                  시나리오
+                </div>
+                <div class="app-nav-item">
+                  <svg class="app-nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 12V4"/><path d="M2 12h12"/><path d="m5 9 2-3 2 2 3-4"/></svg>
+                  시그널
+                </div>
+                <div class="app-nav-item">
+                  <svg class="app-nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="4" width="12" height="9" rx="1"/><path d="M5 4V3"/><path d="M11 4V3"/><path d="M2 7h12"/></svg>
+                  거래 내역
+                </div>
+                <div class="app-nav-item">
+                  <svg class="app-nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M13 2H3a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1z"/><path d="M5 6h6M5 9h4"/></svg>
+                  리포트
                 </div>
               </aside>
-              <section class="preview-main">
-                <div class="preview-heading">
-                  <div>
-                    <h3>가설 검증 리포트</h3>
-                    <p>입력한 가설, 추적 신호, 실제 거래 실행을 한 흐름으로 분석합니다.</p>
-                  </div>
-                  <span class="pill">가설 성공 + 실행 미흡</span>
-                </div>
 
-                <div class="preview-cards">
-                  <div class="preview-card"><span>시나리오 점수</span><strong>72</strong></div>
-                  <div class="preview-card orange"><span>실행 점수</span><strong>48</strong></div>
-                  <div class="preview-card"><span>결과 수익률</span><strong>-1.6%</strong></div>
-                </div>
-
-                <div class="preview-report">
-                  <div class="report-box">
-                    <h4>시그널 추적 흐름</h4>
-                    <div class="mini-chart">
-                      <svg viewBox="0 0 420 140" preserveAspectRatio="none">
-                        <path d="M20 110 C65 102 82 82 120 88 S190 114 226 72 S292 44 338 64 S380 84 402 48" fill="none" stroke="#07834d" stroke-width="5" stroke-linecap="round" />
-                        <path d="M20 110 C65 102 82 82 120 88 S190 114 226 72 S292 44 338 64 S380 84 402 48 L402 140 L20 140 Z" fill="rgba(20,184,102,0.13)" />
+              <!-- Main -->
+              <div class="app-main">
+                <!-- Metric cards -->
+                <div class="metric-row">
+                  <div class="metric-card">
+                    <div class="metric-label">시나리오 점수</div>
+                    <div class="metric-value">78<span style="font-size:11px;font-weight:500;color:var(--muted)">/100</span></div>
+                    <div class="metric-sparkline">
+                      <svg viewBox="0 0 60 22" preserveAspectRatio="none">
+                        <polyline points="0,18 10,14 20,16 30,10 40,8 50,5 60,3" fill="none" stroke="#12A864" stroke-width="1.5"/>
                       </svg>
                     </div>
-                    <span class="pill">현재 지지 수준 72/100</span>
                   </div>
-                  <div class="report-box">
-                    <h4>다음 거래 미션</h4>
-                    <div class="check-list">
-                      <div><b>1</b> 신호 2개 이상 충족 후 진입</div>
-                      <div><b>2</b> 손절 기준을 ATR 기반으로 조정</div>
-                      <div><b>3</b> 청산 전 지지 점수 변화 확인</div>
+                  <div class="metric-card">
+                    <div class="metric-label">실행 점수</div>
+                    <div class="metric-value orange">62<span style="font-size:11px;font-weight:500;color:var(--muted)">/100</span></div>
+                    <div class="metric-sparkline">
+                      <svg viewBox="0 0 60 22" preserveAspectRatio="none">
+                        <polyline points="0,8 10,12 20,10 30,14 40,12 50,16 60,14" fill="none" stroke="#F39B2F" stroke-width="1.5"/>
+                      </svg>
+                    </div>
+                  </div>
+                  <div class="metric-card">
+                    <div class="metric-label">이번달 성과</div>
+                    <div class="metric-value green">+4.81%</div>
+                    <div class="metric-sparkline">
+                      <svg viewBox="0 0 60 22" preserveAspectRatio="none">
+                        <polyline points="0,16 10,14 20,11 30,13 40,8 50,6 60,4" fill="none" stroke="#12A864" stroke-width="1.5"/>
+                      </svg>
+                    </div>
+                  </div>
+                  <div class="metric-card">
+                    <div class="metric-label">활성 시나리오</div>
+                    <div class="metric-value green">5<span style="font-size:11px;font-weight:500;color:var(--muted)">개</span></div>
+                    <div class="metric-sparkline">
+                      <svg viewBox="0 0 60 22" preserveAspectRatio="none">
+                        <polyline points="0,14 10,14 20,10 30,10 40,8 50,8 60,6" fill="none" stroke="#12A864" stroke-width="1.5"/>
+                      </svg>
                     </div>
                   </div>
                 </div>
-              </section>
+
+                <!-- Bottom panels -->
+                <div class="app-panels">
+                  <!-- Left: Scenario status -->
+                  <div class="app-panel">
+                    <div class="panel-title">핵심 시나리오 현황</div>
+                    <div class="scenario-name">AI 반도체 수요 사이클 상승 지속</div>
+                    <div class="progress-bar-wrap">
+                      <div class="progress-bar-fill" style="width:72%"></div>
+                    </div>
+                    <div style="font-size:9px;color:var(--muted);margin-bottom:8px;font-weight:500">지지 수준 72%</div>
+                    <div class="signal-dot-list">
+                      <div class="signal-dot-item">HBM 수출액 전월 대비 +18% 상승</div>
+                      <div class="signal-dot-item">글로벌 AI 서버 출하량 연속 증가</div>
+                      <div class="signal-dot-item">주요 팹리스 재고 정상화 확인</div>
+                    </div>
+                  </div>
+
+                  <!-- Right: Proxy signal table -->
+                  <div class="app-panel">
+                    <div class="panel-title">프록시 시그널 요약</div>
+                    <table class="signal-table">
+                      <thead>
+                        <tr>
+                          <th>신호</th>
+                          <th>상태</th>
+                          <th>변화</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>HBM 수출</td>
+                          <td><span class="signal-badge badge-bull">강세</span></td>
+                          <td style="color:var(--green)">+18%</td>
+                        </tr>
+                        <tr>
+                          <td>서버 출하</td>
+                          <td><span class="signal-badge badge-bull">강세</span></td>
+                          <td style="color:var(--green)">+12%</td>
+                        </tr>
+                        <tr>
+                          <td>재고 회전</td>
+                          <td><span class="signal-badge badge-mid">개선</span></td>
+                          <td style="color:var(--warning)">+6%</td>
+                        </tr>
+                        <tr>
+                          <td>CapEx 투자</td>
+                          <td><span class="signal-badge badge-mid">개선</span></td>
+                          <td style="color:var(--warning)">+4%</td>
+                        </tr>
+                        <tr>
+                          <td>전력 수요</td>
+                          <td><span class="signal-badge badge-hold">보합</span></td>
+                          <td style="color:var(--muted)">0%</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <section id="problem" class="section page">
-      <div class="section-head">
-        <div class="eyebrow">Problem</div>
-        <h2>개인투자자의 문제는 아이디어 부족이 아니라 검증 구조의 부재입니다.</h2>
-        <p>수익률만 보면 가설이 맞았는지, 실행이 문제였는지, 시장 영향이었는지 구분할 수 없습니다.</p>
-      </div>
-      <div class="problem-grid">
-        <div class="card">
-          <div class="icon-box"><svg viewBox="0 0 24 24"><path d="M12 3v18"/><path d="M5 8h14"/><path d="M7 16h10"/></svg></div>
-          <h3>가설과 데이터가 분리됨</h3>
-          <p>투자 아이디어는 있지만, 그 아이디어가 어떤 데이터 신호로 검증되어야 하는지 알기 어렵습니다.</p>
+    <!-- ─── Problem ───────────────────────────────────── -->
+    <section id="problem" class="section problem-bg">
+      <div class="container">
+        <div class="section-head fade-up">
+          <div class="eyebrow">Problem</div>
+          <h2>개인투자자의 문제는 아이디어 부족이 아니라 검증 구조의 부재입니다.</h2>
+          <p>수익률만 보면 가설이 맞았는지, 실행이 문제였는지, 시장 영향이었는지 구분할 수 없습니다.</p>
         </div>
-        <div class="card">
-          <div class="icon-box"><svg viewBox="0 0 24 24"><path d="M5 19V5"/><path d="M5 19h14"/><path d="m8 15 3-4 3 2 4-6"/></svg></div>
-          <h3>수익률 중심 복기의 한계</h3>
-          <p>가설은 맞았는데 실행이 나빠 손실이 날 수 있고, 가설은 틀렸는데도 우연히 수익이 날 수 있습니다.</p>
-        </div>
-        <div class="card">
-          <div class="icon-box"><svg viewBox="0 0 24 24"><path d="M12 3 5 6v6c0 4.5 2.8 7.4 7 9 4.2-1.6 7-4.5 7-9V6l-7-3Z"/><path d="M9 12h6"/></svg></div>
-          <h3>잘못된 투자 학습</h3>
-          <p>성공과 실패의 원인을 잘못 귀인하면, 틀린 판단을 반복하거나 좋은 가설을 버리게 됩니다.</p>
+        <div class="problem-grid">
+          <div class="glass-card fade-up">
+            <div class="icon-circle">
+              <!-- Broken link icon -->
+              <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/><line x1="8" y1="8" x2="16" y2="16"/></svg>
+            </div>
+            <h3>가설과 데이터가 분리됨</h3>
+            <p>투자 아이디어는 있지만, 그 아이디어가 어떤 데이터 신호로 검증되어야 하는지 알기 어렵습니다.</p>
+          </div>
+          <div class="glass-card fade-up" style="transition-delay:0.1s">
+            <div class="icon-circle">
+              <!-- Chart icon -->
+              <svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="m7 16 4-5 3 3 4-7"/></svg>
+            </div>
+            <h3>수익률 중심 복기의 한계</h3>
+            <p>가설은 맞았는데 실행이 나빠 손실이 날 수 있고, 가설은 틀렸는데도 우연히 수익이 날 수 있습니다.</p>
+          </div>
+          <div class="glass-card fade-up" style="transition-delay:0.2s">
+            <div class="icon-circle">
+              <!-- Cycle arrow icon -->
+              <svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+            </div>
+            <h3>잘못된 투자 학습</h3>
+            <p>성공과 실패의 원인을 잘못 귀인하면, 틀린 판단을 반복하거나 좋은 가설을 버리게 됩니다.</p>
+          </div>
         </div>
       </div>
     </section>
 
-    <section id="solution" class="section page">
-      <div class="section-head">
-        <div class="eyebrow">Solution</div>
-        <h2>Whyze는 투자 가설을 입력부터 개선 미션까지 연결합니다.</h2>
-        <p>가설을 쓰면 관측 가능한 프록시 시그널을 만들고, 거래 기록과 실행 품질까지 함께 분석해 다음 행동으로 이어줍니다.</p>
-      </div>
+    <!-- ─── Solution ──────────────────────────────────── -->
+    <section id="solution" class="section">
+      <div class="container">
+        <div class="section-head fade-up">
+          <div class="eyebrow">Solution</div>
+          <h2>Whyze는 투자 가설을 입력부터 개선 미션까지 연결합니다.</h2>
+          <p>가설을 쓰면 관측 가능한 프록시 시그널을 만들고, 거래 기록과 실행 품질까지 함께 분석해 다음 행동으로 이어줍니다.</p>
+        </div>
 
-      <div class="feature-grid">
-        <div class="card">
-          <div class="icon-box"><svg viewBox="0 0 24 24"><path d="M4 18V6"/><path d="M9 18V4"/><path d="M14 18v-8"/><path d="M19 18V7"/><path d="M3 18h18"/></svg></div>
-          <h3>Proxy Signal Engine</h3>
-          <p>정형 KPI가 없는 가설도 가격대 거래량, 기관 수급, 회복 속도 같은 관측 가능한 신호로 바꿉니다.</p>
+        <div class="feature-grid">
+          <div class="feature-card fade-up">
+            <div class="feature-accent"></div>
+            <div class="feature-body">
+              <div class="feature-icon">
+                <svg viewBox="0 0 24 24"><path d="M4 18V6"/><path d="M9 18V4"/><path d="M14 18v-8"/><path d="M19 18V7"/><path d="M3 18h18"/></svg>
+              </div>
+              <h3>Proxy Signal Engine</h3>
+              <p>정형 KPI가 없는 가설도 가격대 거래량, 기관 수급, 회복 속도 같은 관측 가능한 신호로 바꿉니다.</p>
+            </div>
+          </div>
+          <div class="feature-card fade-up" style="transition-delay:0.1s">
+            <div class="feature-accent"></div>
+            <div class="feature-body">
+              <div class="feature-icon">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 7v5l3 2"/></svg>
+              </div>
+              <h3>시나리오 점수</h3>
+              <p>사용자의 가설이 실제 시장 데이터와 얼마나 일치했는지 수익률과 독립적으로 평가합니다.</p>
+            </div>
+          </div>
+          <div class="feature-card fade-up" style="transition-delay:0.15s">
+            <div class="feature-accent"></div>
+            <div class="feature-body">
+              <div class="feature-icon">
+                <svg viewBox="0 0 24 24"><path d="M12 3 5 6v6c0 4.5 2.8 7.4 7 9 4.2-1.6 7-4.5 7-9V6l-7-3Z"/><path d="m9 12 2 2 4-5"/></svg>
+              </div>
+              <h3>실행 점수</h3>
+              <p>진입 타이밍, 손절 준수, 포지션 비중, 청산 품질을 따로 평가해 실행 문제를 찾습니다.</p>
+            </div>
+          </div>
+          <div class="feature-card fade-up" style="transition-delay:0.2s">
+            <div class="feature-accent"></div>
+            <div class="feature-body">
+              <div class="feature-icon">
+                <svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+              </div>
+              <h3>개선 미션</h3>
+              <p>최종 리포트에서 끝나지 않고, 다음 거래에서 바꿔야 할 진입·손절·비중 체크리스트를 제안합니다.</p>
+            </div>
+          </div>
         </div>
-        <div class="card">
-          <div class="icon-box"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 7v5l3 2"/></svg></div>
-          <h3>시나리오 점수</h3>
-          <p>사용자의 가설이 실제 시장 데이터와 얼마나 일치했는지 수익률과 독립적으로 평가합니다.</p>
-        </div>
-        <div class="card">
-          <div class="icon-box"><svg viewBox="0 0 24 24"><path d="M12 3 5 6v6c0 4.5 2.8 7.4 7 9 4.2-1.6 7-4.5 7-9V6l-7-3Z"/><path d="m9 12 2 2 4-5"/></svg></div>
-          <h3>실행 점수</h3>
-          <p>진입 타이밍, 손절 준수, 포지션 비중, 청산 품질을 따로 평가해 실행 문제를 찾습니다.</p>
-        </div>
-        <div class="card">
-          <div class="icon-box"><svg viewBox="0 0 24 24"><path d="M4 19h16"/><path d="M7 16V9"/><path d="M12 16V5"/><path d="M17 16v-4"/></svg></div>
-          <h3>개선 미션</h3>
-          <p>최종 리포트에서 끝나지 않고, 다음 거래에서 바꿔야 할 진입·손절·비중 체크리스트를 제안합니다.</p>
-        </div>
-      </div>
 
-      <div class="flow">
-        <div class="flow-step"><small>STEP 1</small><h3>가설 입력</h3><p>투자 아이디어, 검증 기간, 관심 종목을 입력합니다.</p></div>
-        <div class="flow-step"><small>STEP 2</small><h3>프록시 시그널 생성</h3><p>AI가 가설을 관측 가능한 신호 세트로 변환합니다.</p></div>
-        <div class="flow-step"><small>STEP 3</small><h3>검증 현황 추적</h3><p>각 신호가 현재 가설을 지지하는지 추적합니다.</p></div>
-        <div class="flow-step"><small>STEP 4</small><h3>거래 기록 연결</h3><p>실제 매매 내역을 연결해 실행 품질을 측정합니다.</p></div>
-        <div class="flow-step"><small>STEP 5</small><h3>종합 평가</h3><p>가설 적중과 실행 성과를 분리해 4가지 유형으로 분류합니다.</p></div>
-        <div class="flow-step"><small>STEP 6</small><h3>개선 미션</h3><p>다음 투자에서 바꿔야 할 행동 체크리스트를 제공합니다.</p></div>
+        <!-- Step Flow Timeline -->
+        <div class="timeline-wrap fade-up" style="transition-delay:0.1s">
+          <div class="timeline" id="timeline">
+            <div class="timeline-step">
+              <div class="step-num">1</div>
+              <div>
+                <div class="step-title">가설 입력</div>
+                <div class="step-desc">투자 아이디어를 한 문장으로 구조화</div>
+              </div>
+            </div>
+            <div class="timeline-step">
+              <div class="step-num">2</div>
+              <div>
+                <div class="step-title">프록시 시그널 생성</div>
+                <div class="step-desc">AI가 관측 가능한 신호로 변환</div>
+              </div>
+            </div>
+            <div class="timeline-step">
+              <div class="step-num">3</div>
+              <div>
+                <div class="step-title">KPI 추적</div>
+                <div class="step-desc">신호 변화를 실시간으로 관찰</div>
+              </div>
+            </div>
+            <div class="timeline-step">
+              <div class="step-num">4</div>
+              <div>
+                <div class="step-title">거래 내역 기록</div>
+                <div class="step-desc">실제 매매와 실행 품질 측정</div>
+              </div>
+            </div>
+            <div class="timeline-step">
+              <div class="step-num">5</div>
+              <div>
+                <div class="step-title">리포트 확인</div>
+                <div class="step-desc">가설·실행 점수를 분리 평가</div>
+              </div>
+            </div>
+            <div class="timeline-step">
+              <div class="step-num">6</div>
+              <div>
+                <div class="step-title">피드백과 개선 미션</div>
+                <div class="step-desc">다음 투자를 위한 행동 체크리스트</div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
-    <section class="section page" id="product">
-      <div class="dark-section">
-        <div class="dark-content">
+    <!-- ─── Core Learning (2x2 Matrix) ───────────────── -->
+    <section class="section matrix-section" id="product">
+      <div class="container">
+        <div class="section-head fade-up">
+          <div class="eyebrow">Core Learning</div>
+          <h2>수익률 하나로는 배울 수 없습니다.</h2>
+          <p>Whyze는 가설 적중도와 실행 품질을 두 축으로 분리해, 잘못된 성공과 잘못된 실패를 구분합니다.</p>
+        </div>
+
+        <div class="matrix-container fade-up">
+          <div class="axis-y-label">가설 적중도 낮음 ←→ 높음</div>
+
+          <div class="matrix-grid">
+            <!-- Q1: 가설O + 실행O (top-left = 가설높음+실행낮음 → actually layout: top-left is high hypothesis, low execution) -->
+            <!-- Grid: top-left=Q2(가설O+실행X), top-right=Q1(가설O+실행O), bottom-left=Q4(가설X+실행X), bottom-right=Q3(가설X+실행O) -->
+            <div class="matrix-cell q2">
+              <h4>가설 성공 + 실행 미흡</h4>
+              <p>판단은 맞았지만 실행이 나빴습니다. 진입·손절·비중을 교정하세요.</p>
+            </div>
+            <div class="matrix-cell q1">
+              <h4>가설 성공 + 실행 성공</h4>
+              <p>좋은 판단과 좋은 실행. 반복 가능한 패턴으로 저장합니다.</p>
+              <div class="pulse-dot"></div>
+            </div>
+            <div class="matrix-cell q4">
+              <h4>가설 실패 + 실행 미흡</h4>
+              <p>판단과 실행 모두 개선이 필요합니다. 가설 재설계부터 시작하세요.</p>
+            </div>
+            <div class="matrix-cell q3">
+              <h4>가설 실패 + 실행 성공</h4>
+              <p>운 또는 변동성 수익. 가짜 학습을 경고하고 원인을 분리합니다.</p>
+            </div>
+          </div>
+
+          <div class="axis-x-wrap">
+            <span class="axis-x-label">← 실행 품질 낮음</span>
+            <span class="axis-x-label">실행 품질 높음 →</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─── Beta Signup ───────────────────────────────── -->
+    <section id="signup" class="section">
+      <div class="container">
+        <div class="signup-box fade-up">
+          <div class="signup-top-bar"></div>
           <div>
-            <div class="eyebrow">Core Learning</div>
-            <h2>수익률 하나로는 배울 수 없습니다.</h2>
-            <p class="hero-copy" style="margin-top:22px">Whyze는 가설 입력, 프록시 시그널, 거래 기록, 종합 평가, 개선 미션을 하나의 학습 루프로 묶어 잘못된 성공과 잘못된 실패를 구분하도록 돕습니다.</p>
+            <div class="eyebrow">Beta Access</div>
+            <h2>Whyze를 먼저 써보고 싶다면 이메일을 남겨주세요.</h2>
+            <p>베타가 열리면 가장 먼저 안내드릴게요. 초기 사용자는 가설 입력, 프록시 시그널 생성, 검증 현황 추적, 거래 기록 기반 실행 평가, 종합 리포트와 개선 미션을 우선 체험할 수 있습니다.</p>
           </div>
-          <div class="matrix">
-            <div class="matrix-card"><h3>가설 성공 + 수익 성공</h3><p>좋은 판단과 좋은 실행. 반복 가능한 패턴으로 저장합니다.</p></div>
-            <div class="matrix-card active"><h3>가설 성공 + 수익 실패</h3><p>판단은 맞았지만 실행 실패. 진입·손절·비중을 교정합니다.</p></div>
-            <div class="matrix-card"><h3>가설 실패 + 수익 성공</h3><p>운 또는 변동성 수익. 가짜 학습을 경고합니다.</p></div>
-            <div class="matrix-card"><h3>가설 실패 + 수익 실패</h3><p>판단과 실행 모두 개선이 필요한 케이스입니다.</p></div>
-          </div>
+          <form class="form-card" id="waitlistForm" novalidate>
+            <div class="field">
+              <label for="name">이름</label>
+              <input id="name" name="name" type="text" placeholder="홍길동" required />
+            </div>
+            <div class="field">
+              <label for="email">이메일</label>
+              <input id="email" name="email" type="email" placeholder="you@example.com" required />
+            </div>
+
+            <span class="chips-label">관심 있는 기능</span>
+            <div class="chips" id="chipsGroup">
+              <button type="button" class="chip" data-value="투자 가설 검증">투자 가설 검증</button>
+              <button type="button" class="chip" data-value="프록시 시그널 생성">프록시 시그널 생성</button>
+              <button type="button" class="chip" data-value="시나리오/실행 점수 리포트">점수 리포트</button>
+              <button type="button" class="chip" data-value="매매 복기와 개선 미션">개선 미션</button>
+            </div>
+            <input type="hidden" id="interestHidden" name="interest" value="" />
+
+            <div class="field">
+              <label for="message">남기고 싶은 말</label>
+              <textarea id="message" name="message" placeholder="어떤 투자 판단을 검증해보고 싶은지 적어주세요."></textarea>
+            </div>
+            <button class="form-submit-btn" id="submitBtn" type="submit">베타 신청하기</button>
+            <div class="form-message" id="formMsg" aria-live="polite"></div>
+          </form>
         </div>
       </div>
     </section>
 
-    <section id="signup" class="signup-section page">
-      <div class="signup-box">
-        <div>
-          <div class="eyebrow">Beta Access</div>
-          <h2>Whyze를 먼저 써보고 싶다면 이메일을 남겨주세요.</h2>
-          <p>
-            베타가 열리면 가장 먼저 안내드릴게요. 초기 사용자는 가설 입력, 프록시 시그널 생성, 검증 현황 추적,
-            거래 기록 기반 실행 평가, 종합 리포트와 개선 미션을 우선 체험할 수 있습니다.
-          </p>
-        </div>
-        <form class="form-card" id="waitlistForm">
-          <div class="field">
-            <label for="name">이름</label>
-            <input id="name" name="name" type="text" placeholder="홍길동" required />
-          </div>
-          <div class="field">
-            <label for="email">이메일</label>
-            <input id="email" name="email" type="email" placeholder="you@example.com" required />
-          </div>
-          <div class="field">
-            <label for="type">관심 있는 기능</label>
-            <select id="type" name="type">
-              <option>투자 가설 검증</option>
-              <option>프록시 시그널 생성</option>
-              <option>시나리오 점수 / 실행 점수 리포트</option>
-              <option>매매 복기와 개선 미션</option>
-            </select>
-          </div>
-          <div class="field">
-            <label for="message">남기고 싶은 말</label>
-            <textarea id="message" name="message" placeholder="어떤 투자 판단을 검증해보고 싶은지 적어주세요."></textarea>
-          </div>
-          <button class="primary-btn" id="submitButton" type="submit">베타 신청하기</button>
-          <div class="form-message" id="formMessage" aria-live="polite"></div>
-        </form>
-      </div>
-    </section>
   </main>
 
-  <footer class="footer page">
-    <div class="footer-inner">
-      <div class="brand"><img src="whyze_icon_web_flat.png" alt="" /><span>Whyze</span></div>
-      <div>© 2026 Whyze. 의사결정 검증 엔진.</div>
+  <!-- ─── Footer ────────────────────────────────────── -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <div class="brand">
+          <div class="brand-icon">🧠</div>
+          <span>Whyze</span>
+        </div>
+        <span class="footer-tagline" style="margin-left:12px">의사결정 검증 엔진</span>
+      </div>
+      <div class="footer-links">
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+      </div>
+      <div class="footer-copy">© 2026 Whyze. All rights reserved.</div>
     </div>
   </footer>
 
   <script type="module">
     import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 
-    // Supabase public config. Use only the anon key in browser code.
     const SUPABASE_URL = "https://rmikrylqgzejmgwuxvez.supabase.co";
     const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJtaWtyeWxxZ3plam1nd3V4dmV6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1NTU5MzksImV4cCI6MjA5NDEzMTkzOX0.5c5stpk68p5JK2Wi69V12o4LBkgqvO2qghIHf0jpZ5U";
-    const WAITLIST_TABLE = "waitlist";
+    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    const isSupabaseConfigured =
-      SUPABASE_URL.startsWith("https://") &&
-      !SUPABASE_URL.includes("여기에_") &&
-      !SUPABASE_ANON_KEY.includes("여기에_");
-    const supabase = isSupabaseConfigured
-      ? createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
-      : null;
-    const form = document.getElementById("waitlistForm");
-    const message = document.getElementById("formMessage");
-    const submitButton = document.getElementById("submitButton");
-    const defaultButtonText = submitButton.textContent;
-    let isSubmitting = false;
+    // ── Navbar scroll ───────────────────────────────────
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 10);
+    }, { passive: true });
 
-    function setFormMessage(text, type = "success") {
-      message.textContent = text;
-      message.classList.toggle("error", type === "error");
-      message.style.display = "block";
+    // ── Intersection Observer: fade-up ──────────────────
+    const fadeEls = document.querySelectorAll('.fade-up');
+    const fadeObserver = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); fadeObserver.unobserve(e.target); } });
+    }, { threshold: 0.12 });
+    fadeEls.forEach(el => fadeObserver.observe(el));
+
+    // ── Timeline steps sequential fade ─────────────────
+    const timelineSteps = document.querySelectorAll('.timeline-step');
+    const tlObserver = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          timelineSteps.forEach((step, i) => {
+            setTimeout(() => step.classList.add('visible'), i * 150);
+          });
+          tlObserver.disconnect();
+        }
+      });
+    }, { threshold: 0.2 });
+    const tl = document.getElementById('timeline');
+    if (tl) tlObserver.observe(tl);
+
+    // ── Toggle chips ────────────────────────────────────
+    const chips = document.querySelectorAll('.chip');
+    const interestHidden = document.getElementById('interestHidden');
+    const selected = new Set();
+
+    chips.forEach(chip => {
+      chip.addEventListener('click', () => {
+        const val = chip.dataset.value;
+        if (selected.has(val)) { selected.delete(val); chip.classList.remove('selected'); }
+        else { selected.add(val); chip.classList.add('selected'); }
+        interestHidden.value = [...selected].join(', ');
+      });
+    });
+
+    // ── Form submit ─────────────────────────────────────
+    const form = document.getElementById('waitlistForm');
+    const formMsg = document.getElementById('formMsg');
+    const submitBtn = document.getElementById('submitBtn');
+    let submitting = false;
+
+    function showMsg(text, type = 'success') {
+      formMsg.textContent = text;
+      formMsg.className = 'form-message' + (type === 'error' ? ' error' : '');
+      formMsg.style.display = 'block';
     }
 
-    form.addEventListener("submit", async function (event) {
-      event.preventDefault();
-      if (isSubmitting) return;
-
-      const data = new FormData(form);
-      const name = data.get("name")?.trim();
-      const email = data.get("email")?.trim();
-      const interest = data.get("type") || "";
-      const userMessage = data.get("message")?.trim() || "";
-      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-      if (!name || !emailPattern.test(email)) {
-        setFormMessage("이름과 올바른 이메일을 입력해주세요.", "error");
-        return;
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (submitting) return;
+      const name = form.name.value.trim();
+      const email = form.email.value.trim();
+      const interest = interestHidden.value;
+      const message = form.message.value.trim();
+      if (!name || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        showMsg('이름과 올바른 이메일을 입력해주세요.', 'error'); return;
       }
-
-      isSubmitting = true;
-      submitButton.disabled = true;
-      submitButton.textContent = "신청 중...";
-
+      submitting = true;
+      submitBtn.disabled = true;
+      submitBtn.textContent = '신청 중...';
       try {
-        if (!supabase) throw new Error("Supabase is not configured.");
-
-        const { error } = await supabase
-          .from(WAITLIST_TABLE)
-          .insert({
-            name,
-            email,
-            interest,
-            message: userMessage,
-            source: "whyze_landing",
-          });
-
+        const { error } = await supabase.from('waitlist').insert({ name, email, interest, message, source: 'whyze_landing' });
         if (error) throw error;
-
         form.reset();
-        setFormMessage("신청이 완료되었습니다. 베타 오픈 시 가장 먼저 안내드릴게요.");
-      } catch (error) {
-        console.error("Waitlist submit failed:", error);
-        setFormMessage("신청 중 문제가 발생했습니다. 잠시 후 다시 시도해주세요.", "error");
+        chips.forEach(c => c.classList.remove('selected'));
+        selected.clear();
+        interestHidden.value = '';
+        showMsg('베타 신청이 완료되었습니다 ✓');
+      } catch (err) {
+        console.error(err);
+        showMsg('신청 중 문제가 발생했습니다. 잠시 후 다시 시도해주세요.', 'error');
       } finally {
-        isSubmitting = false;
-        submitButton.disabled = false;
-        submitButton.textContent = defaultButtonText;
+        submitting = false;
+        submitBtn.disabled = false;
+        submitBtn.textContent = '베타 신청하기';
       }
     });
   </script>
