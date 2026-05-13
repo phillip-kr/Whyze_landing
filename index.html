@@ -299,7 +299,7 @@
     .preview-body {
       display: grid;
       grid-template-columns: 162px 1fr;
-      height: 520px;
+      height: 560px;
       overflow: hidden;
     }
 
@@ -345,11 +345,11 @@
     }
 
     .preview-main {
-      padding: 22px;
+      padding: 20px;
       background: #fbfdfc;
       min-width: 0;
-      display: flex;
-      flex-direction: column;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
       overflow: hidden;
     }
 
@@ -358,8 +358,7 @@
       align-items: flex-start;
       justify-content: space-between;
       gap: 16px;
-      margin-bottom: 18px;
-      flex: 0 0 auto;
+      margin-bottom: 14px;
     }
 
     .preview-heading h3 {
@@ -489,8 +488,8 @@
     .flow-panel {
       display: none;
       animation: flowPanelIn 0.26s ease both;
-      height: 318px;
-      overflow: hidden;
+      min-height: 0;
+      overflow: visible;
     }
 
     .flow-panel.active {
@@ -509,16 +508,16 @@
     }
 
     .flow-scenario {
-      padding: 14px 16px;
-      border-radius: 16px;
+      padding: 10px 12px;
+      border-radius: 14px;
       color: #06311f;
       background: #effaf4;
       border: 1px solid rgba(20, 184, 102, 0.22);
-      font-size: 13px;
-      line-height: 1.55;
+      font-size: 11.5px;
+      line-height: 1.4;
       font-weight: 900;
       letter-spacing: -0.04em;
-      margin-bottom: 12px;
+      margin-bottom: 8px;
       word-break: keep-all;
       overflow-wrap: anywhere;
     }
@@ -528,16 +527,16 @@
     .flow-score-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 10px;
-      margin-bottom: 12px;
+      gap: 7px;
+      margin-bottom: 8px;
     }
 
     .flow-field,
     .flow-signal,
     .flow-mini-card {
       min-width: 0;
-      padding: 13px;
-      border-radius: 16px;
+      padding: 9px;
+      border-radius: 13px;
       background: #ffffff;
       border: 1px solid var(--line);
       box-shadow: 0 8px 20px rgba(7, 17, 25, 0.04);
@@ -548,9 +547,9 @@
     .flow-mini-card span {
       display: block;
       color: #74808a;
-      font-size: 10px;
+      font-size: 9.5px;
       font-weight: 900;
-      margin-bottom: 7px;
+      margin-bottom: 5px;
       letter-spacing: -0.035em;
     }
 
@@ -559,20 +558,11 @@
     .flow-mini-card strong {
       display: block;
       color: #101920;
-      font-size: 13px;
-      line-height: 1.35;
+      font-size: 11.2px;
+      line-height: 1.28;
       letter-spacing: -0.045em;
       word-break: keep-all;
       overflow-wrap: anywhere;
-    }
-
-    .flow-signal strong,
-    .flow-table strong,
-    .flow-table b {
-      display: -webkit-box;
-      overflow: hidden;
-      -webkit-box-orient: vertical;
-      -webkit-line-clamp: 2;
     }
 
     .flow-signal-grid {
@@ -581,12 +571,12 @@
 
     .flow-signal em {
       display: inline-flex;
-      margin-top: 9px;
-      padding: 5px 8px;
+      margin-top: 6px;
+      padding: 4px 6px;
       border-radius: 999px;
       color: var(--green-dark);
       background: var(--green-light);
-      font-size: 10px;
+      font-size: 9px;
       font-style: normal;
       font-weight: 900;
     }
@@ -599,42 +589,42 @@
     .flow-tag-row {
       display: flex;
       flex-wrap: wrap;
-      gap: 7px;
-      margin-bottom: 12px;
+      gap: 6px;
+      margin-bottom: 8px;
     }
 
     .flow-tag-row span {
       display: inline-flex;
-      padding: 7px 10px;
+      padding: 5px 8px;
       border-radius: 999px;
       color: var(--green-dark);
       background: var(--green-light);
-      font-size: 11px;
+      font-size: 9.5px;
       font-weight: 900;
       letter-spacing: -0.04em;
     }
 
     .flow-table {
       display: grid;
-      gap: 7px;
-      margin-bottom: 12px;
+      gap: 5px;
+      margin-bottom: 8px;
     }
 
     .flow-table div {
       display: grid;
       grid-template-columns: 0.9fr 0.8fr 1.35fr 0.9fr;
-      gap: 8px;
+      gap: 6px;
       align-items: center;
       min-width: 0;
-      padding: 9px 11px;
-      border-radius: 14px;
+      padding: 6px 8px;
+      border-radius: 11px;
       background: #ffffff;
       border: 1px solid var(--line);
       color: #39444d;
-      font-size: 11px;
+      font-size: 9.7px;
+      line-height: 1.25;
       font-weight: 850;
       letter-spacing: -0.035em;
-      overflow: hidden;
     }
 
     .flow-table div > * {
@@ -648,7 +638,7 @@
 
     .flow-score-grid strong {
       color: var(--green-dark);
-      font-size: 34px;
+      font-size: 29px;
       line-height: 1;
     }
 
@@ -657,16 +647,17 @@
     }
 
     .flow-summary {
-      padding: 12px 14px;
-      border-radius: 16px;
+      padding: 8px 10px;
+      border-radius: 13px;
       color: var(--green-dark);
       background: var(--green-light);
       border: 1px solid rgba(20, 184, 102, 0.18);
-      font-size: 12px;
-      line-height: 1.55;
+      font-size: 10.5px;
+      line-height: 1.38;
       font-weight: 900;
       letter-spacing: -0.04em;
       word-break: keep-all;
+      overflow-wrap: anywhere;
     }
 
     .flow-summary.warn {
@@ -680,9 +671,8 @@
       align-items: center;
       justify-content: space-between;
       gap: 12px;
-      flex: 0 0 auto;
-      margin-top: 14px;
-      padding-top: 14px;
+      margin-top: 10px;
+      padding-top: 10px;
       border-top: 1px solid var(--line);
     }
 
@@ -1161,7 +1151,7 @@
 
       .preview-body {
         min-width: 0;
-        height: 650px;
+        height: 720px;
       }
 
       .preview-topbar {
@@ -1209,7 +1199,7 @@
       }
 
       .flow-panel {
-        height: 448px;
+        min-height: 0;
       }
 
       .flow-scenario,
@@ -1218,6 +1208,12 @@
       .flow-table div {
         word-break: normal;
         overflow-wrap: anywhere;
+      }
+
+      .flow-table div {
+        gap: 4px;
+        padding: 7px 9px;
+        font-size: 9.5px;
       }
 
       .flow-step::after {
