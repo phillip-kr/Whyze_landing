@@ -299,7 +299,8 @@
     .preview-body {
       display: grid;
       grid-template-columns: 162px 1fr;
-      min-height: 520px;
+      height: 520px;
+      overflow: hidden;
     }
 
     .preview-sidebar {
@@ -347,6 +348,9 @@
       padding: 22px;
       background: #fbfdfc;
       min-width: 0;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
     }
 
     .preview-heading {
@@ -355,6 +359,7 @@
       justify-content: space-between;
       gap: 16px;
       margin-bottom: 18px;
+      flex: 0 0 auto;
     }
 
     .preview-heading h3 {
@@ -484,6 +489,8 @@
     .flow-panel {
       display: none;
       animation: flowPanelIn 0.26s ease both;
+      height: 318px;
+      overflow: hidden;
     }
 
     .flow-panel.active {
@@ -513,6 +520,7 @@
       letter-spacing: -0.04em;
       margin-bottom: 12px;
       word-break: keep-all;
+      overflow-wrap: anywhere;
     }
 
     .flow-field-grid,
@@ -555,6 +563,16 @@
       line-height: 1.35;
       letter-spacing: -0.045em;
       word-break: keep-all;
+      overflow-wrap: anywhere;
+    }
+
+    .flow-signal strong,
+    .flow-table strong,
+    .flow-table b {
+      display: -webkit-box;
+      overflow: hidden;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
     }
 
     .flow-signal-grid {
@@ -598,7 +616,7 @@
 
     .flow-table {
       display: grid;
-      gap: 8px;
+      gap: 7px;
       margin-bottom: 12px;
     }
 
@@ -607,7 +625,8 @@
       grid-template-columns: 0.9fr 0.8fr 1.35fr 0.9fr;
       gap: 8px;
       align-items: center;
-      padding: 10px 12px;
+      min-width: 0;
+      padding: 9px 11px;
       border-radius: 14px;
       background: #ffffff;
       border: 1px solid var(--line);
@@ -615,6 +634,12 @@
       font-size: 11px;
       font-weight: 850;
       letter-spacing: -0.035em;
+      overflow: hidden;
+    }
+
+    .flow-table div > * {
+      min-width: 0;
+      overflow-wrap: anywhere;
     }
 
     .flow-score-grid {
@@ -655,6 +680,7 @@
       align-items: center;
       justify-content: space-between;
       gap: 12px;
+      flex: 0 0 auto;
       margin-top: 14px;
       padding-top: 14px;
       border-top: 1px solid var(--line);
@@ -1135,6 +1161,7 @@
 
       .preview-body {
         min-width: 0;
+        height: 650px;
       }
 
       .preview-topbar {
@@ -1179,6 +1206,10 @@
       .flow-controls {
         align-items: flex-start;
         flex-direction: column;
+      }
+
+      .flow-panel {
+        height: 448px;
       }
 
       .flow-scenario,
@@ -1418,15 +1449,6 @@
           <h3>개선 미션</h3>
           <p>최종 리포트에서 끝나지 않고, 다음 거래에서 바꿔야 할 진입·손절·비중 체크리스트를 제안합니다.</p>
         </div>
-      </div>
-
-      <div class="flow">
-        <div class="flow-step"><small>STEP 1</small><h3>가설 입력</h3><p>투자 아이디어, 검증 기간, 관심 종목을 입력합니다.</p></div>
-        <div class="flow-step"><small>STEP 2</small><h3>프록시 시그널 생성</h3><p>AI가 가설을 관측 가능한 신호 세트로 변환합니다.</p></div>
-        <div class="flow-step"><small>STEP 3</small><h3>검증 현황 추적</h3><p>각 신호가 현재 가설을 지지하는지 추적합니다.</p></div>
-        <div class="flow-step"><small>STEP 4</small><h3>거래 기록 연결</h3><p>실제 매매 내역을 연결해 실행 품질을 측정합니다.</p></div>
-        <div class="flow-step"><small>STEP 5</small><h3>종합 평가</h3><p>가설 적중과 실행 성과를 분리해 4가지 유형으로 분류합니다.</p></div>
-        <div class="flow-step"><small>STEP 6</small><h3>개선 미션</h3><p>다음 투자에서 바꿔야 할 행동 체크리스트를 제공합니다.</p></div>
       </div>
     </section>
 
