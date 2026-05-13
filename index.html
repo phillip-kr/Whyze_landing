@@ -51,11 +51,18 @@
 
     /* ─── Scroll Animation ───────────────────────────── */
     .fade-up {
-      opacity: 0;
-      transform: translateY(24px);
+      opacity: 1;
+      transform: translateY(0);
       transition: opacity 0.5s ease, transform 0.5s ease;
     }
-    .fade-up.visible { opacity: 1; transform: translateY(0); }
+    .js-ready .fade-up {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
 
     /* ─── Floating animation ─────────────────────────── */
     @keyframes float {
@@ -67,12 +74,6 @@
     @keyframes pulse-ring {
       0%   { transform: scale(1); opacity: 1; }
       100% { transform: scale(2.2); opacity: 0; }
-    }
-
-    /* ─── Fade slide ─────────────────────────────────── */
-    @keyframes fadeSlide {
-      from { opacity: 0; transform: translateY(6px); }
-      to   { opacity: 1; transform: translateY(0); }
     }
 
     /* ─── Navbar ─────────────────────────────────────── */
@@ -107,11 +108,8 @@
     }
     .brand-icon {
       width: 36px; height: 36px;
-      background: var(--green-soft);
-      border: 1.5px solid rgba(18,168,100,0.2);
-      border-radius: 10px;
-      display: grid; place-items: center;
-      font-size: 20px;
+      display: block;
+      object-fit: contain;
     }
 
     .nav-links {
@@ -134,15 +132,15 @@
       font-weight: 700;
       letter-spacing: -0.02em;
       white-space: nowrap;
-      background: var(--green);
-      color: #fff;
       transition: background 0.18s, transform 0.18s, box-shadow 0.18s;
       cursor: pointer;
     }
+    .btn-primary { background: var(--green); color: #fff; }
     .btn-primary:hover { background: var(--green-dark); transform: translateY(-1px); box-shadow: 0 8px 20px rgba(18,168,100,0.28); }
     .btn-primary:active { transform: translateY(0); }
 
     .nav-cta { min-height: 40px; padding: 0 18px; font-size: 13px; }
+    .nav-cta.btn-primary { background: var(--green); }
 
     .btn-ghost {
       display: inline-flex;
@@ -160,10 +158,13 @@
     .btn-ghost:hover { border-color: var(--green); color: var(--green-dark); transform: translateY(-1px); }
 
     /* ─── Hero ───────────────────────────────────────── */
-    .hero { padding: 80px 0 56px; }
+    .hero {
+      padding: 80px 0 56px;
+      position: relative;
+    }
     .hero-grid {
       display: grid;
-      grid-template-columns: minmax(0, 0.88fr) minmax(0, 1.12fr);
+      grid-template-columns: minmax(0, 0.9fr) minmax(460px, 1.1fr);
       gap: 48px;
       align-items: center;
     }
@@ -185,7 +186,7 @@
     }
 
     h1 {
-      font-size: clamp(38px, 4.8vw, 66px);
+      font-size: clamp(40px, 5vw, 68px);
       line-height: 1.07;
       letter-spacing: -0.07em;
       font-weight: 900;
@@ -197,12 +198,12 @@
     .hero-sub {
       margin-top: 22px;
       color: var(--muted);
-      font-size: 16px;
-      line-height: 1.78;
-      letter-spacing: -0.02em;
+      font-size: 17px;
+      line-height: 1.75;
+      letter-spacing: -0.03em;
       font-weight: 500;
       word-break: keep-all;
-      max-width: 480px;
+      max-width: 500px;
     }
 
     .hero-actions {
@@ -222,7 +223,7 @@
       font-weight: 500;
     }
 
-    /* ─── Mockup Shell ───────────────────────────────── */
+    /* ─── App Mockup Shell ───────────────────────────── */
     .mockup-wrap {
       animation: float 6s ease-in-out infinite;
       position: relative;
@@ -230,247 +231,413 @@
     }
 
     .mockup-shell {
-      border-radius: 20px;
+      width: 100%;
+      max-width: 100%;
+      border-radius: 26px;
       background: var(--card);
       border: 1.5px solid rgba(18,168,100,0.22);
       box-shadow: 0 32px 80px rgba(18,168,100,0.12), 0 8px 24px rgba(16,20,24,0.08);
       overflow: hidden;
     }
 
-    /* Topbar */
+    /* App topbar */
     .app-topbar {
-      height: 44px;
+      height: 48px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 16px;
-      background: #0B1A13;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
+      padding: 0 20px;
+      background: #fff;
+      border-bottom: 1px solid var(--line);
     }
-    .app-topbar-dots { display: flex; gap: 6px; }
-    .app-topbar-dots i {
-      width: 9px; height: 9px; border-radius: 50%; display: block;
-    }
-    .app-topbar-dots i:nth-child(1) { background: #FF6058; }
-    .app-topbar-dots i:nth-child(2) { background: #FFBD2E; }
-    .app-topbar-dots i:nth-child(3) { background: #28C840; }
     .app-topbar-title {
-      font-size: 12px; font-weight: 700; color: rgba(255,255,255,0.7); letter-spacing: -0.02em;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.03em;
     }
-    .app-topbar-date { font-size: 10px; color: rgba(255,255,255,0.4); font-weight: 500; }
+    .app-topbar-date {
+      font-size: 11px;
+      color: var(--muted);
+      font-weight: 500;
+    }
+    .app-topbar-dots {
+      display: flex; gap: 6px;
+    }
+    .app-topbar-dots i {
+      width: 10px; height: 10px; border-radius: 50%;
+      display: block; background: #d5dcd8;
+    }
+    .app-topbar-dots i:nth-child(1) { background: #FFB347; }
+    .app-topbar-dots i:nth-child(2) { background: #90D97F; }
+    .app-topbar-dots i:nth-child(3) { background: #8AAEF7; }
 
-    /* Flow Step Indicator */
-    .flow-indicator {
+    /* App body */
+    .app-body {
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      min-height: 440px;
+      min-width: 0;
+    }
+
+    /* Sidebar */
+    .app-sidebar {
+      padding: 16px 10px;
+      background: #f9fcfb;
+      border-right: 1px solid var(--line);
+    }
+    .app-sidebar-brand {
       display: flex;
       align-items: center;
-      gap: 2px;
-      padding: 10px 14px;
-      background: #0F2218;
-      border-bottom: 1px solid rgba(255,255,255,0.07);
-      overflow-x: auto;
-      scrollbar-width: none;
+      gap: 7px;
+      font-size: 13px;
+      font-weight: 900;
+      color: var(--green-dark);
+      margin-bottom: 18px;
+      padding: 0 4px;
     }
-    .flow-indicator::-webkit-scrollbar { display: none; }
+    .app-sidebar-brand .sb-icon {
+      width: 24px; height: 24px;
+      object-fit: contain;
+      display: block;
+    }
+    .app-nav-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 10px;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--muted);
+      margin-bottom: 2px;
+      letter-spacing: -0.02em;
+    }
+    .app-nav-item.active {
+      background: var(--green-soft);
+      color: var(--green-dark);
+    }
+    .app-nav-icon {
+      width: 16px; height: 16px;
+      flex-shrink: 0;
+    }
 
-    .flow-tab {
+    /* Main content */
+    .app-main {
+      padding: 16px;
+      background: #fafcfb;
+      min-width: 0;
+      overflow: hidden;
+    }
+
+    .mockup-slides {
+      position: relative;
+      min-height: 408px;
+      overflow: hidden;
+    }
+
+    .mockup-slide {
+      display: none;
+      animation: slideFade 0.24s ease;
+    }
+
+    .mockup-slide.active {
+      display: block;
+    }
+
+    @keyframes slideFade {
+      from { opacity: 0; transform: translateX(8px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    .mockup-controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 10px 14px;
+      border-top: 1px solid var(--line);
+      background: #fff;
+    }
+
+    .mockup-step-label {
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .mockup-dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .mockup-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #dbe3df;
+    }
+
+    .mockup-dot.active {
+      width: 22px;
+      background: var(--green);
+    }
+
+    .mockup-actions {
+      display: flex;
+      gap: 6px;
+    }
+
+    .mockup-action {
+      width: 30px;
+      height: 30px;
+      display: grid;
+      place-items: center;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--green-dark);
+      font-weight: 900;
+    }
+
+    .mockup-form-card,
+    .mockup-report-card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 14px;
+      min-width: 0;
+    }
+
+    .mockup-field-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .mockup-field {
+      min-height: 38px;
+      border-radius: 9px;
+      background: #f7faf9;
+      border: 1px solid var(--line);
+      padding: 8px 10px;
+      color: var(--text);
+      font-size: 10px;
+      font-weight: 700;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .mockup-signal-list,
+    .mockup-mission-list {
+      display: grid;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .mockup-signal,
+    .mockup-mission {
+      display: grid;
+      grid-template-columns: 20px 1fr auto;
+      align-items: center;
+      gap: 8px;
+      padding: 8px;
+      border-radius: 10px;
+      background: #f8fbfa;
+      border: 1px solid #edf3f0;
+      min-width: 0;
+    }
+
+    .mockup-signal b,
+    .mockup-mission b {
+      width: 20px;
+      height: 20px;
+      border-radius: 7px;
+      display: grid;
+      place-items: center;
+      background: var(--green-soft);
+      color: var(--green-dark);
+      font-size: 10px;
+    }
+
+    .mockup-signal span,
+    .mockup-mission span {
+      min-width: 0;
+      color: var(--text);
+      font-size: 10px;
+      font-weight: 700;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .mockup-signal em {
+      color: var(--green-dark);
+      font-size: 10px;
+      font-style: normal;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .mockup-report-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .mockup-quadrant {
+      min-height: 82px;
+      padding: 10px;
+      border-radius: 12px;
+      background: #f8fbfa;
+      border: 1px solid #edf3f0;
+    }
+
+    .mockup-quadrant.active {
+      background: var(--green-soft);
+      border-color: rgba(18,168,100,0.26);
+    }
+
+    .mockup-quadrant strong {
+      display: block;
+      margin-bottom: 5px;
+      color: var(--text);
+      font-size: 11px;
+      letter-spacing: -0.04em;
+    }
+
+    .mockup-quadrant span {
+      color: var(--muted);
+      font-size: 9px;
+      line-height: 1.45;
+    }
+
+    /* Metric cards row */
+    .metric-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-bottom: 10px;
+      min-width: 0;
+    }
+    .metric-card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 10px 12px;
+      min-width: 0;
+    }
+    .metric-label {
+      font-size: 9px;
+      font-weight: 700;
+      color: var(--muted);
+      margin-bottom: 4px;
+      letter-spacing: 0;
+    }
+    .metric-value {
+      font-size: 20px;
+      font-weight: 900;
+      letter-spacing: -0.06em;
+      color: var(--green-dark);
+      line-height: 1;
+    }
+    .metric-value.orange { color: var(--warning); }
+    .metric-value.green  { color: var(--green); }
+    .metric-sparkline {
+      margin-top: 6px;
+    }
+    .metric-sparkline svg {
+      width: 100%; height: 22px; display: block;
+    }
+
+    /* Bottom panels */
+    .app-panels {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 10px;
+      min-width: 0;
+    }
+    .app-panel {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 12px;
+      min-width: 0;
+    }
+    .panel-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 10px;
+      letter-spacing: -0.03em;
+    }
+
+    /* Scenario card */
+    .scenario-name {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+    .progress-bar-wrap {
+      background: #EEF2F0;
+      border-radius: 999px;
+      height: 5px;
+      margin-bottom: 8px;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      border-radius: 999px;
+      background: var(--green);
+    }
+    .signal-dot-list { display: grid; gap: 4px; }
+    .signal-dot-item {
       display: flex;
       align-items: center;
       gap: 5px;
-      padding: 5px 9px;
-      border-radius: 6px;
-      font-size: 10px;
-      font-weight: 700;
-      color: rgba(255,255,255,0.38);
-      white-space: nowrap;
-      cursor: pointer;
-      transition: background 0.2s, color 0.2s;
-      flex-shrink: 0;
-      border: none;
-      background: none;
-    }
-    .flow-tab:hover { color: rgba(255,255,255,0.65); }
-    .flow-tab.active {
-      background: rgba(18,168,100,0.18);
-      color: #4FD9A0;
-    }
-    .flow-tab-num {
-      width: 17px; height: 17px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.10);
-      color: rgba(255,255,255,0.5);
       font-size: 9px;
-      font-weight: 900;
-      display: grid; place-items: center;
-      flex-shrink: 0;
-      transition: background 0.2s, color 0.2s;
+      color: var(--muted);
+      font-weight: 500;
     }
-    .flow-tab.active .flow-tab-num {
+    .signal-dot-item::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
       background: var(--green);
-      color: #fff;
-    }
-    .flow-tab-label { /* hide on narrow */ }
-    .flow-arrow {
-      color: rgba(255,255,255,0.18);
-      font-size: 11px;
       flex-shrink: 0;
-      user-select: none;
     }
 
-    /* Step content */
-    .step-content {
-      min-height: 310px;
-      background: #111F18;
-      position: relative;
-      overflow: hidden;
+    /* Signal table */
+    .signal-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+    .signal-table th {
+      font-size: 8px;
+      font-weight: 700;
+      color: var(--muted);
+      text-align: left;
+      padding: 0 0 5px;
+      border-bottom: 1px solid var(--line);
     }
-    .step-slide {
-      display: none;
-      padding: 16px;
-      animation: fadeSlide 0.28s ease;
+    .signal-table td {
+      font-size: 9px;
+      font-weight: 500;
+      color: var(--text);
+      padding: 4px 0;
+      border-bottom: 1px solid #F0F4F2;
     }
-    .step-slide.active { display: block; }
-
-    /* ── STEP 1: 가설 입력 ──────────────────────────── */
-    .hypothesis-box {
-      background: rgba(18,168,100,0.10);
-      border: 1.5px solid rgba(18,168,100,0.28);
-      border-radius: 10px;
-      padding: 14px;
-      margin-bottom: 10px;
+    .signal-badge {
+      display: inline-block;
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-size: 8px;
+      font-weight: 700;
     }
-    .hypothesis-label {
-      font-size: 9px; font-weight: 700;
-      color: #4FD9A0; text-transform: uppercase; letter-spacing: 0.04em;
-      margin-bottom: 7px;
-    }
-    .hypothesis-text {
-      font-size: 12px; font-weight: 700; color: #E8F5EE; line-height: 1.55;
-    }
-    .step-meta-row {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;
-    }
-    .step-meta-row.full { grid-template-columns: 1fr; }
-    .step-meta-item {
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 8px; padding: 9px 11px;
-    }
-    .step-meta-label {
-      font-size: 8px; font-weight: 700; color: rgba(255,255,255,0.38); margin-bottom: 3px; letter-spacing: 0.03em;
-    }
-    .step-meta-value {
-      font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.82); line-height: 1.4;
-    }
-
-    /* ── STEP 2: 시그널 생성 ─────────────────────────── */
-    .ai-badge {
-      display: inline-flex; align-items: center; gap: 4px;
-      padding: 3px 8px; border-radius: 999px;
-      background: rgba(18,168,100,0.18); color: #4FD9A0;
-      font-size: 9px; font-weight: 700;
-    }
-    .signal-gen-header {
-      display: flex; align-items: center; gap: 8px; margin-bottom: 11px;
-    }
-    .signal-gen-subtitle { font-size: 10px; color: rgba(255,255,255,0.38); font-weight: 500; }
-    .signal-list-item {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 8px 11px;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.07);
-      border-radius: 8px; margin-bottom: 5px;
-    }
-    .signal-list-name { font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.82); }
-    .signal-list-tag {
-      font-size: 8px; font-weight: 700; padding: 2px 7px; border-radius: 4px;
-      background: rgba(18,168,100,0.18); color: #4FD9A0;
-    }
-
-    /* ── STEP 3: KPI 추적 ───────────────────────────── */
-    .kpi-section-title { font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.6); margin-bottom: 9px; }
-    .kpi-row {
-      display: flex; align-items: center; gap: 8px;
-      padding: 7px 10px; border-radius: 8px; margin-bottom: 5px;
-      background: rgba(255,255,255,0.04);
-    }
-    .kpi-name { font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.72); flex: 1; }
-    .kpi-bar {
-      width: 56px; height: 4px;
-      background: rgba(255,255,255,0.10); border-radius: 2px; flex-shrink: 0;
-    }
-    .kpi-bar-fill { height: 100%; border-radius: 2px; background: var(--green); }
-    .kpi-bar-fill.mid { background: var(--warning); }
-    .kpi-value { font-size: 11px; font-weight: 900; width: 36px; text-align: right; flex-shrink: 0; }
-    .kpi-value.up { color: #4FD9A0; }
-    .kpi-value.mid { color: var(--warning); }
-
-    /* ── STEP 4: 거래 내역 ──────────────────────────── */
-    .trade-section-title { font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.6); margin-bottom: 9px; }
-    .trade-table {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.07);
-      border-radius: 10px; overflow: hidden;
-      width: 100%;
-    }
-    .trade-row {
-      display: grid; grid-template-columns: 1fr auto auto;
-      align-items: center; gap: 8px;
-      padding: 8px 12px;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
-    }
-    .trade-row:last-child { border-bottom: none; }
-    .trade-row.header { background: rgba(255,255,255,0.06); }
-    .trade-row.header span { font-size: 8px; font-weight: 700; color: rgba(255,255,255,0.35); }
-    .trade-name { font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.82); }
-    .trade-type {
-      font-size: 9px; font-weight: 700; padding: 2px 7px; border-radius: 4px;
-      background: rgba(18,168,100,0.2); color: #4FD9A0;
-    }
-    .trade-price { font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.5); text-align: right; }
-
-    /* ── STEP 5: 리포트 확인 ─────────────────────────── */
-    .report-score-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 11px; }
-    .report-score-card {
-      padding: 12px; border-radius: 10px;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.08);
-      text-align: center;
-    }
-    .report-score-label { font-size: 9px; font-weight: 700; color: rgba(255,255,255,0.4); margin-bottom: 4px; }
-    .report-score-val { font-size: 30px; font-weight: 900; letter-spacing: -0.07em; line-height: 1; }
-    .report-score-val.green { color: #4FD9A0; }
-    .report-score-val.orange { color: var(--warning); }
-    .report-score-sub { font-size: 8px; color: rgba(255,255,255,0.3); margin-top: 2px; }
-    .report-verdict {
-      padding: 10px 13px;
-      background: rgba(243,155,47,0.10);
-      border: 1px solid rgba(243,155,47,0.22);
-      border-radius: 8px;
-      font-size: 11px; font-weight: 700; color: #F5C47A; line-height: 1.5;
-      margin-bottom: 10px;
-    }
-    .report-stat-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-    .report-stat {
-      padding: 8px 10px; border-radius: 8px;
-      background: rgba(255,255,255,0.04); text-align: center;
-    }
-    .report-stat-label { font-size: 8px; color: rgba(255,255,255,0.35); font-weight: 700; margin-bottom: 3px; }
-    .report-stat-val { font-size: 14px; font-weight: 900; }
-
-    /* ── STEP 6: 개선 미션 ──────────────────────────── */
-    .mission-title { font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.6); margin-bottom: 10px; }
-    .mission-item {
-      display: flex; align-items: flex-start; gap: 9px;
-      padding: 9px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.07);
-    }
-    .mission-item:last-child { border-bottom: none; }
-    .mission-check {
-      width: 16px; height: 16px; border-radius: 4px;
-      border: 1.5px solid rgba(18,168,100,0.5);
-      flex-shrink: 0; margin-top: 1px;
-    }
-    .mission-text { font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.78); line-height: 1.45; }
+    .badge-bull  { background: #EAF8F1; color: var(--green-dark); }
+    .badge-mid   { background: #FFF5E6; color: #B36B00; }
+    .badge-hold  { background: #F2F4F3; color: var(--muted); }
 
     /* ─── Section base ───────────────────────────────── */
     .section { padding: 88px 0; }
@@ -499,9 +666,10 @@
     }
     .section-head .eyebrow { margin-bottom: 16px; }
 
-    /* ─── Problem ────────────────────────────────────── */
+    /* ─── Problem (glass-morphism) ───────────────────── */
     .problem-bg {
       background: linear-gradient(170deg, #F0FAF5 0%, var(--bg) 100%);
+      position: relative;
     }
 
     .problem-grid {
@@ -535,17 +703,27 @@
     }
     .icon-circle svg {
       width: 24px; height: 24px;
-      stroke: currentColor; stroke-width: 2;
-      stroke-linecap: round; stroke-linejoin: round; fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
     }
 
     .glass-card h3 {
-      font-size: 18px; font-weight: 700; letter-spacing: -0.05em;
-      margin-bottom: 10px; word-break: keep-all;
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.05em;
+      margin-bottom: 10px;
+      word-break: keep-all;
     }
     .glass-card p {
-      font-size: 14px; color: var(--muted); line-height: 1.72;
-      letter-spacing: -0.02em; font-weight: 500; word-break: keep-all;
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.72;
+      letter-spacing: -0.02em;
+      font-weight: 500;
+      word-break: keep-all;
     }
 
     /* ─── Solution ───────────────────────────────────── */
@@ -567,6 +745,7 @@
     .feature-card:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
 
     .feature-accent { height: 3px; background: var(--green); }
+
     .feature-body { padding: 24px; }
 
     .feature-icon {
@@ -579,11 +758,25 @@
     }
     .feature-icon svg {
       width: 20px; height: 20px;
-      stroke: currentColor; stroke-width: 2;
-      stroke-linecap: round; stroke-linejoin: round; fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
     }
-    .feature-card h3 { font-size: 17px; font-weight: 700; letter-spacing: -0.05em; margin-bottom: 8px; }
-    .feature-card p { font-size: 14px; color: var(--muted); line-height: 1.7; font-weight: 500; word-break: keep-all; }
+    .feature-card h3 {
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: -0.05em;
+      margin-bottom: 8px;
+    }
+    .feature-card p {
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.7;
+      font-weight: 500;
+      word-break: keep-all;
+    }
 
     /* Timeline */
     .timeline-wrap { position: relative; }
@@ -594,6 +787,8 @@
       gap: 0;
       position: relative;
     }
+
+    /* Connecting line */
     .timeline::before {
       content: '';
       position: absolute;
@@ -617,22 +812,38 @@
       transform: translateY(16px);
       transition: opacity 0.4s ease, transform 0.4s ease;
     }
-    .timeline-step.visible { opacity: 1; transform: translateY(0); }
+    .timeline-step.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
 
     .step-num {
       width: 44px; height: 44px;
       border-radius: 50%;
       background: var(--green);
       color: #fff;
-      font-size: 14px; font-weight: 900;
+      font-size: 14px;
+      font-weight: 900;
       display: grid; place-items: center;
       margin-bottom: 14px;
       box-shadow: 0 4px 12px rgba(18,168,100,0.28);
-      position: relative; z-index: 1;
+      position: relative;
+      z-index: 1;
     }
 
-    .step-title { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 6px; letter-spacing: -0.03em; }
-    .step-desc { font-size: 11px; color: var(--muted); line-height: 1.6; font-weight: 500; }
+    .step-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 6px;
+      letter-spacing: -0.03em;
+    }
+    .step-desc {
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.6;
+      font-weight: 500;
+    }
 
     /* ─── Core Learning 2x2 Matrix ───────────────────── */
     .matrix-section { background: #F2FAF6; }
@@ -648,15 +859,24 @@
       left: -32px;
       top: 50%;
       transform: translateY(-50%) rotate(-90deg);
-      font-size: 11px; font-weight: 700;
+      font-size: 11px;
+      font-weight: 700;
       color: var(--muted);
-      white-space: nowrap; letter-spacing: -0.01em;
+      white-space: nowrap;
+      letter-spacing: -0.01em;
     }
     .axis-x-wrap {
-      display: flex; justify-content: space-between;
-      padding: 0 4px; margin-top: 10px;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 4px;
+      margin-top: 10px;
     }
-    .axis-x-label { font-size: 11px; font-weight: 700; color: var(--muted); letter-spacing: -0.01em; }
+    .axis-x-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--muted);
+      letter-spacing: -0.01em;
+    }
 
     .matrix-grid {
       display: grid;
@@ -667,47 +887,75 @@
       border: 1px solid var(--line);
       position: relative;
     }
+
+    /* Cross lines */
     .matrix-grid::before {
       content: '';
       position: absolute;
-      left: 50%; top: 0; bottom: 0; width: 1px;
+      left: 50%; top: 0; bottom: 0;
+      width: 1px;
       background: repeating-linear-gradient(to bottom, rgba(0,0,0,0.12) 0 4px, transparent 4px 8px);
       z-index: 1;
     }
     .matrix-grid::after {
       content: '';
       position: absolute;
-      top: 50%; left: 0; right: 0; height: 1px;
+      top: 50%; left: 0; right: 0;
+      height: 1px;
       background: repeating-linear-gradient(to right, rgba(0,0,0,0.12) 0 4px, transparent 4px 8px);
       z-index: 1;
     }
 
-    .matrix-cell { padding: 24px; position: relative; min-height: 160px; }
+    .matrix-cell {
+      padding: 24px;
+      position: relative;
+      min-height: 160px;
+    }
     .matrix-cell.q1 { background: rgba(18,168,100,0.10); }
-    .matrix-cell.q2 { background: rgba(243,155,47,0.14); }
+    .matrix-cell.q2 { background: rgba(243,155,47,0.10); }
     .matrix-cell.q3 { background: rgba(243,155,47,0.10); }
     .matrix-cell.q4 { background: rgba(239,90,102,0.10); }
 
-    .matrix-cell h4 { font-size: 14px; font-weight: 700; letter-spacing: -0.04em; margin-bottom: 8px; word-break: keep-all; }
+    .matrix-cell h4 {
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      margin-bottom: 8px;
+      word-break: keep-all;
+    }
     .matrix-cell.q1 h4 { color: var(--green-dark); }
-    .matrix-cell.q2 h4 { color: #8B5200; }
+    .matrix-cell.q2 h4 { color: #A06C00; }
     .matrix-cell.q3 h4 { color: #A06C00; }
     .matrix-cell.q4 h4 { color: #C0323D; }
 
-    .matrix-cell p { font-size: 12px; color: var(--muted); line-height: 1.65; font-weight: 500; word-break: keep-all; }
+    .matrix-cell p {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.65;
+      font-weight: 500;
+      word-break: keep-all;
+    }
 
     /* Pulse dot */
     .pulse-dot {
-      position: absolute; bottom: 20px; right: 20px;
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
       width: 10px; height: 10px;
     }
     .pulse-dot::before {
-      content: ''; position: absolute; inset: 0;
-      border-radius: 50%; background: var(--warning);
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: var(--green);
     }
     .pulse-dot::after {
-      content: ''; position: absolute; inset: 0;
-      border-radius: 50%; background: var(--warning);
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: var(--green);
       animation: pulse-ring 1.8s ease-out infinite;
     }
 
@@ -719,12 +967,21 @@
       align-items: start;
       background: var(--card);
       border-radius: 38px;
-      border: 1px solid var(--line);
+      border: 4px solid var(--green);
+      border-top: 4px solid var(--green);
       box-shadow: var(--shadow);
       padding: 52px;
       position: relative;
       overflow: hidden;
     }
+    .signup-box::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+      background: var(--green);
+    }
+    .signup-box { border: 1px solid var(--line); }
     .signup-top-bar {
       position: absolute;
       top: 0; left: 0; right: 0;
@@ -735,7 +992,11 @@
 
     .signup-box h2 { font-size: clamp(28px, 3.2vw, 46px); margin-bottom: 16px; }
     .signup-box > div:first-child p {
-      color: var(--muted); font-size: 15px; line-height: 1.75; font-weight: 500; word-break: keep-all;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.75;
+      font-weight: 500;
+      word-break: keep-all;
     }
 
     .form-card {
@@ -745,72 +1006,137 @@
       padding: 24px;
     }
 
-    .field { display: grid; gap: 6px; margin-bottom: 14px; }
-    .field label { font-size: 12px; font-weight: 700; color: #3D4A54; letter-spacing: -0.02em; }
+    .field {
+      display: grid;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+    .field label {
+      font-size: 12px;
+      font-weight: 700;
+      color: #3D4A54;
+      letter-spacing: -0.02em;
+    }
     .field input, .field textarea {
-      width: 100%; min-height: 46px;
-      border-radius: 12px; border: 1px solid #D5DDD9;
-      background: #fff; color: var(--text); padding: 0 14px;
-      outline: none; font-weight: 500;
+      width: 100%;
+      min-height: 46px;
+      border-radius: 12px;
+      border: 1px solid #D5DDD9;
+      background: #fff;
+      color: var(--text);
+      padding: 0 14px;
+      outline: none;
+      font-weight: 500;
       transition: border-color 0.15s, box-shadow 0.15s;
     }
-    .field textarea { min-height: 80px; padding: 12px 14px; resize: vertical; }
+    .field textarea {
+      min-height: 80px;
+      padding: 12px 14px;
+      resize: vertical;
+    }
     .field input:focus, .field textarea:focus {
       border-color: var(--green);
       box-shadow: 0 0 0 3px rgba(18,168,100,0.12);
     }
 
-    .chips-label { font-size: 12px; font-weight: 700; color: #3D4A54; margin-bottom: 8px; display: block; }
-    .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+    /* Toggle chips */
+    .chips-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: #3D4A54;
+      margin-bottom: 8px;
+      display: block;
+    }
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
     .chip {
-      padding: 6px 14px; border-radius: 999px;
-      border: 1.5px solid var(--line); background: #fff;
-      font-size: 12px; font-weight: 700; color: var(--muted);
-      cursor: pointer; transition: background 0.15s, border-color 0.15s, color 0.15s;
+      padding: 6px 14px;
+      border-radius: 999px;
+      border: 1.5px solid var(--line);
+      background: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--muted);
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
       user-select: none;
     }
-    .chip.selected { background: var(--green); border-color: var(--green); color: #fff; }
+    .chip.selected {
+      background: var(--green);
+      border-color: var(--green);
+      color: #fff;
+    }
 
     .form-submit-btn {
-      width: 100%; min-height: 48px; border-radius: 12px;
-      font-size: 14px; font-weight: 700;
-      background: var(--green); color: #fff; border: none;
-      cursor: pointer; transition: background 0.18s; margin-top: 4px;
+      width: 100%;
+      min-height: 48px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 700;
+      background: var(--green);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      transition: background 0.18s;
+      margin-top: 4px;
     }
     .form-submit-btn:hover { background: var(--green-dark); }
     .form-submit-btn:disabled { opacity: 0.65; cursor: not-allowed; }
 
     .form-message {
-      display: none; margin-top: 12px; padding: 12px 14px;
-      border-radius: 12px; background: var(--green-soft);
-      color: var(--green-dark); font-size: 13px; font-weight: 700;
+      display: none;
+      margin-top: 12px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      background: var(--green-soft);
+      color: var(--green-dark);
+      font-size: 13px;
+      font-weight: 700;
     }
     .form-message.error { background: #FFF0F1; color: #C0323D; }
 
     /* ─── Footer ─────────────────────────────────────── */
-    .footer { padding: 32px 0 48px; border-top: 1px solid rgba(18,168,100,0.15); }
-    .footer-inner { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+    .footer {
+      padding: 32px 0 48px;
+      border-top: 1px solid rgba(18,168,100,0.15);
+    }
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
     .footer-brand { display: flex; align-items: center; gap: 10px; }
     .footer-tagline { font-size: 12px; color: var(--muted); font-weight: 500; }
-    .footer-links { display: flex; gap: 20px; font-size: 12px; color: var(--muted); font-weight: 500; }
+    .footer-links {
+      display: flex;
+      gap: 20px;
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 500;
+    }
     .footer-links a:hover { color: var(--green-dark); }
     .footer-copy { font-size: 12px; color: var(--muted); font-weight: 500; }
 
     /* ─── Responsive ─────────────────────────────────── */
-    @media (max-width: 1280px) {
-      .hero-grid { gap: 36px; }
-    }
-
     @media (max-width: 1024px) {
       .hero-grid { grid-template-columns: 1fr; }
-      .mockup-wrap { max-width: 580px; margin: 0 auto; animation: none; }
+      .mockup-wrap { max-width: 600px; margin: 0 auto; }
+      .app-body { grid-template-columns: 1fr; }
+      .app-sidebar { display: none; }
+      .metric-row { grid-template-columns: repeat(2,1fr); }
+      .mockup-slides { min-height: auto; }
     }
 
     @media (max-width: 768px) {
       .container { width: calc(100vw - 32px); }
       .nav-links, .nav-cta { display: none; }
       .nav-inner { height: 60px; }
-      h1 { font-size: 32px; letter-spacing: -0.06em; }
+      h1 { font-size: 34px; letter-spacing: -0.06em; }
       .hero { padding: 48px 0 40px; }
       .hero-actions { flex-direction: column; }
       .hero-actions .btn-primary, .hero-actions .btn-ghost { width: 100%; justify-content: center; }
@@ -824,18 +1150,16 @@
       .matrix-cell h4 { font-size: 12px; }
       .signup-box { grid-template-columns: 1fr; padding: 28px 20px; border-radius: 24px; gap: 28px; }
       .axis-y-label { display: none; }
+      .app-panels { grid-template-columns: 1fr; }
+      .metric-row { grid-template-columns: repeat(2,1fr); }
+      .mockup-field-grid,
+      .mockup-report-grid { grid-template-columns: 1fr; }
+      .mockup-controls { padding: 9px 12px; }
+      .mockup-step-label { display: none; }
       .footer-inner { flex-direction: column; align-items: flex-start; gap: 14px; }
-      .flow-tab-label { display: none; }
-      .flow-tab { padding: 5px 7px; }
-      .step-meta-row { grid-template-columns: 1fr; }
     }
 
-    @media (max-width: 480px) {
-      .flow-arrow { display: none; }
-      .flow-indicator { gap: 4px; }
-    }
-
-    @media (max-width: 390px) {
+    @media (max-width: 375px) {
       h1 { font-size: 28px; }
       .section { padding: 60px 0; }
       .matrix-cell { padding: 12px; }
@@ -848,7 +1172,7 @@
   <header class="nav" id="navbar">
     <div class="container nav-inner">
       <a href="#top" class="brand" aria-label="Whyze 홈">
-        <div class="brand-icon">🧠</div>
+        <img class="brand-icon" src="whyze_icon_web_flat.png" alt="Whyze 로고" />
         <span>Whyze</span>
       </a>
       <nav class="nav-links" aria-label="주요 섹션">
@@ -866,11 +1190,10 @@
     <!-- ─── Hero ─────────────────────────────────────── -->
     <section class="hero container">
       <div class="hero-grid">
-        <!-- Left copy -->
         <div class="fade-up">
           <div class="eyebrow">✦ 투자 가설 검증 엔진</div>
           <h1>당신의 투자 판단,<br /><span class="accent">검증</span>되고 있습니까?</h1>
-          <p class="hero-sub">Whyze는 투자 가설을 입력하고, 검증 신호를 추적하며, 실행 결과를 분리 평가해 다음 투자 행동까지 연결합니다.</p>
+          <p class="hero-sub">Whyze는 투자 가설을 입력부터 개선 미션까지 연결합니다.</p>
           <div class="hero-actions">
             <a class="btn-primary" href="#signup">베타 신청하기</a>
             <a class="btn-ghost" href="#product">제품 흐름 보기</a>
@@ -878,217 +1201,183 @@
           <p class="hero-note">종목 추천이 아니라, 투자 판단의 질을 검증하는 도구입니다.</p>
         </div>
 
-        <!-- Right: 6-step flow mockup -->
-        <div class="mockup-wrap fade-up" style="transition-delay:0.15s" aria-label="Whyze 사용 흐름 미리보기">
+        <!-- App Mockup -->
+        <div class="mockup-wrap fade-up" style="transition-delay:0.15s" aria-label="Whyze 대시보드 미리보기">
           <div class="mockup-shell">
-
-            <!-- Window chrome -->
+            <!-- Topbar -->
             <div class="app-topbar">
               <div class="app-topbar-dots"><i></i><i></i><i></i></div>
-              <div class="app-topbar-title">Whyze · 사용 흐름</div>
-              <div class="app-topbar-date">2026.05.12</div>
+              <div class="app-topbar-title">대시보드</div>
+              <div class="app-topbar-date">2026년 5월 12일</div>
             </div>
+            <!-- Body -->
+            <div class="app-body">
+              <!-- Sidebar -->
+              <aside class="app-sidebar">
+                <div class="app-sidebar-brand">
+                  <img class="sb-icon" src="whyze_icon_web_flat.png" alt="" />
+                  <span>Whyze</span>
+                </div>
+                <div class="app-nav-item active">
+                  <svg class="app-nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="2" width="5" height="5" rx="1"/><rect x="9" y="2" width="5" height="5" rx="1"/><rect x="2" y="9" width="5" height="5" rx="1"/><rect x="9" y="9" width="5" height="5" rx="1"/></svg>
+                  대시보드
+                </div>
+                <div class="app-nav-item">
+                  <svg class="app-nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 2L3 5v4c0 3 2 4.5 5 5.5 3-1 5-2.5 5-5.5V5L8 2z"/></svg>
+                  시나리오
+                </div>
+                <div class="app-nav-item">
+                  <svg class="app-nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 12V4"/><path d="M2 12h12"/><path d="m5 9 2-3 2 2 3-4"/></svg>
+                  시그널
+                </div>
+                <div class="app-nav-item">
+                  <svg class="app-nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="4" width="12" height="9" rx="1"/><path d="M5 4V3"/><path d="M11 4V3"/><path d="M2 7h12"/></svg>
+                  거래 내역
+                </div>
+                <div class="app-nav-item">
+                  <svg class="app-nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M13 2H3a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1z"/><path d="M5 6h6M5 9h4"/></svg>
+                  리포트
+                </div>
+              </aside>
 
-            <!-- Step indicator -->
-            <div class="flow-indicator" id="flowIndicator">
-              <button class="flow-tab active" data-step="0" type="button">
-                <div class="flow-tab-num">1</div>
-                <span class="flow-tab-label">가설 입력</span>
-              </button>
-              <span class="flow-arrow">›</span>
-              <button class="flow-tab" data-step="1" type="button">
-                <div class="flow-tab-num">2</div>
-                <span class="flow-tab-label">시그널 생성</span>
-              </button>
-              <span class="flow-arrow">›</span>
-              <button class="flow-tab" data-step="2" type="button">
-                <div class="flow-tab-num">3</div>
-                <span class="flow-tab-label">KPI 추적</span>
-              </button>
-              <span class="flow-arrow">›</span>
-              <button class="flow-tab" data-step="3" type="button">
-                <div class="flow-tab-num">4</div>
-                <span class="flow-tab-label">거래 기록</span>
-              </button>
-              <span class="flow-arrow">›</span>
-              <button class="flow-tab" data-step="4" type="button">
-                <div class="flow-tab-num">5</div>
-                <span class="flow-tab-label">리포트</span>
-              </button>
-              <span class="flow-arrow">›</span>
-              <button class="flow-tab" data-step="5" type="button">
-                <div class="flow-tab-num">6</div>
-                <span class="flow-tab-label">개선 미션</span>
-              </button>
+              <!-- Main -->
+              <div class="app-main">
+                <div class="mockup-slides" aria-live="polite">
+                  <section class="mockup-slide active" data-title="대시보드" data-step="1 / 3 · 대시보드">
+                    <div class="metric-row">
+                      <div class="metric-card">
+                        <div class="metric-label">시나리오 점수</div>
+                        <div class="metric-value">78<span style="font-size:11px;font-weight:500;color:var(--muted)">/100</span></div>
+                        <div class="metric-sparkline">
+                          <svg viewBox="0 0 60 22" preserveAspectRatio="none">
+                            <polyline points="0,18 10,14 20,16 30,10 40,8 50,5 60,3" fill="none" stroke="#12A864" stroke-width="1.5"/>
+                          </svg>
+                        </div>
+                      </div>
+                      <div class="metric-card">
+                        <div class="metric-label">실행 점수</div>
+                        <div class="metric-value orange">62<span style="font-size:11px;font-weight:500;color:var(--muted)">/100</span></div>
+                        <div class="metric-sparkline">
+                          <svg viewBox="0 0 60 22" preserveAspectRatio="none">
+                            <polyline points="0,8 10,12 20,10 30,14 40,12 50,16 60,14" fill="none" stroke="#F39B2F" stroke-width="1.5"/>
+                          </svg>
+                        </div>
+                      </div>
+                      <div class="metric-card">
+                        <div class="metric-label">이번달 성과</div>
+                        <div class="metric-value green">+4.81%</div>
+                        <div class="metric-sparkline">
+                          <svg viewBox="0 0 60 22" preserveAspectRatio="none">
+                            <polyline points="0,16 10,14 20,11 30,13 40,8 50,6 60,4" fill="none" stroke="#12A864" stroke-width="1.5"/>
+                          </svg>
+                        </div>
+                      </div>
+                      <div class="metric-card">
+                        <div class="metric-label">활성 시나리오</div>
+                        <div class="metric-value green">5<span style="font-size:11px;font-weight:500;color:var(--muted)">개</span></div>
+                        <div class="metric-sparkline">
+                          <svg viewBox="0 0 60 22" preserveAspectRatio="none">
+                            <polyline points="0,14 10,14 20,10 30,10 40,8 50,8 60,6" fill="none" stroke="#12A864" stroke-width="1.5"/>
+                          </svg>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="app-panels">
+                      <div class="app-panel">
+                        <div class="panel-title">핵심 시나리오 현황</div>
+                        <div class="scenario-name">AI 반도체 수요 사이클 상승 지속</div>
+                        <div class="progress-bar-wrap">
+                          <div class="progress-bar-fill" style="width:72%"></div>
+                        </div>
+                        <div style="font-size:9px;color:var(--muted);margin-bottom:8px;font-weight:500">지지 수준 72%</div>
+                        <div class="signal-dot-list">
+                          <div class="signal-dot-item">HBM 수출액 전월 대비 +18% 상승</div>
+                          <div class="signal-dot-item">글로벌 AI 서버 출하량 연속 증가</div>
+                          <div class="signal-dot-item">주요 팹리스 재고 정상화 확인</div>
+                        </div>
+                      </div>
+
+                      <div class="app-panel">
+                        <div class="panel-title">프록시 시그널 요약</div>
+                        <table class="signal-table">
+                          <thead>
+                            <tr>
+                              <th>신호</th>
+                              <th>상태</th>
+                              <th>변화</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr><td>HBM 수출</td><td><span class="signal-badge badge-bull">강세</span></td><td style="color:var(--green)">+18%</td></tr>
+                            <tr><td>서버 출하</td><td><span class="signal-badge badge-bull">강세</span></td><td style="color:var(--green)">+12%</td></tr>
+                            <tr><td>재고 회전</td><td><span class="signal-badge badge-mid">개선</span></td><td style="color:var(--warning)">+6%</td></tr>
+                            <tr><td>CapEx 투자</td><td><span class="signal-badge badge-mid">개선</span></td><td style="color:var(--warning)">+4%</td></tr>
+                            <tr><td>전력 수요</td><td><span class="signal-badge badge-hold">보합</span></td><td style="color:var(--muted)">0%</td></tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </section>
+
+                  <section class="mockup-slide" data-title="가설 검증" data-step="2 / 3 · 가설 입력과 시그널 생성">
+                    <div class="mockup-form-card">
+                      <div class="panel-title">가설 입력</div>
+                      <div class="scenario-name">특정 기관이 10만원대를 방어할 것이다</div>
+                      <div class="mockup-field-grid">
+                        <div class="mockup-field">가설 유형 · 행위자 기반</div>
+                        <div class="mockup-field">검증 기간 · 3개월</div>
+                        <div class="mockup-field">관심 종목 · KOSPI200</div>
+                        <div class="mockup-field">상태 · 시그널 생성 완료</div>
+                      </div>
+                    </div>
+                    <div class="mockup-form-card" style="margin-top:10px">
+                      <div class="panel-title">자동 생성된 프록시 시그널</div>
+                      <div class="mockup-signal-list">
+                        <div class="mockup-signal"><b>1</b><span>가격 방어 구간 거래량 증가</span><em>+24</em></div>
+                        <div class="mockup-signal"><b>2</b><span>기관 순매수 3거래일 지속</span><em>+28</em></div>
+                        <div class="mockup-signal"><b>3</b><span>이탈 후 회복 속도 확인</span><em>추적</em></div>
+                      </div>
+                    </div>
+                  </section>
+
+                  <section class="mockup-slide" data-title="종합 리포트" data-step="3 / 3 · 리포트와 개선 미션">
+                    <div class="mockup-report-card">
+                      <div class="panel-title">이번 거래의 위치</div>
+                      <div class="mockup-report-grid">
+                        <div class="mockup-quadrant"><strong>가설 성공 + 수익 성공</strong><span>반복 가능한 패턴으로 저장합니다.</span></div>
+                        <div class="mockup-quadrant active"><strong>가설 성공 + 수익 실패</strong><span>판단은 맞았지만 실행에서 손실이 발생했습니다.</span></div>
+                        <div class="mockup-quadrant"><strong>가설 실패 + 수익 실패</strong><span>판단과 실행을 함께 재정비합니다.</span></div>
+                        <div class="mockup-quadrant"><strong>가설 실패 + 수익 성공</strong><span>운 또는 변동성 수익 가능성을 경고합니다.</span></div>
+                      </div>
+                    </div>
+                    <div class="mockup-report-card" style="margin-top:10px">
+                      <div class="panel-title">다음 거래 미션</div>
+                      <div class="mockup-mission-list">
+                        <div class="mockup-mission"><b>1</b><span>신호 2개 이상 충족 후 진입</span><em></em></div>
+                        <div class="mockup-mission"><b>2</b><span>손절 기준을 변동성 기반으로 조정</span><em></em></div>
+                        <div class="mockup-mission"><b>3</b><span>청산 전 가설 지지 점수 확인</span><em></em></div>
+                      </div>
+                    </div>
+                  </section>
+                </div>
+              </div>
             </div>
-
-            <!-- Step content slides -->
-            <div class="step-content">
-
-              <!-- STEP 1: 가설 입력 -->
-              <div class="step-slide active">
-                <div class="hypothesis-box">
-                  <div class="hypothesis-label">📝 투자 시나리오 입력</div>
-                  <div class="hypothesis-text">"AI 반도체 수요 확대로 관련 장비주가 재평가될 것이다"</div>
-                </div>
-                <div class="step-meta-row">
-                  <div class="step-meta-item">
-                    <div class="step-meta-label">검증 기간</div>
-                    <div class="step-meta-value">2026.05 ~ 2026.11</div>
-                  </div>
-                  <div class="step-meta-item">
-                    <div class="step-meta-label">관심 자산</div>
-                    <div class="step-meta-value">SOXX · NVDA · 장비주</div>
-                  </div>
-                </div>
-                <div class="step-meta-row full">
-                  <div class="step-meta-item">
-                    <div class="step-meta-label">시나리오 근거</div>
-                    <div class="step-meta-value">데이터센터 투자 확대 + HBM 수요 급증으로 장비주 밸류에이션 재평가 예상</div>
-                  </div>
-                </div>
+            <div class="mockup-controls" aria-label="사용 시나리오 화면 넘기기">
+              <span class="mockup-step-label">1 / 3 · 대시보드</span>
+              <div class="mockup-dots" aria-hidden="true">
+                <span class="mockup-dot active"></span>
+                <span class="mockup-dot"></span>
+                <span class="mockup-dot"></span>
               </div>
-
-              <!-- STEP 2: 프록시 시그널 생성 -->
-              <div class="step-slide">
-                <div class="signal-gen-header">
-                  <div class="ai-badge">✦ AI 자동 생성</div>
-                  <span class="signal-gen-subtitle">5개 프록시 시그널 생성 완료</span>
-                </div>
-                <div class="signal-list-item">
-                  <div class="signal-list-name">HBM 재고/판매 비율</div>
-                  <div class="signal-list-tag">선행 지표</div>
-                </div>
-                <div class="signal-list-item">
-                  <div class="signal-list-name">데이터센터 Capex 증가율</div>
-                  <div class="signal-list-tag">수요 지표</div>
-                </div>
-                <div class="signal-list-item">
-                  <div class="signal-list-name">AI GPU 출하량 추정</div>
-                  <div class="signal-list-tag">수요 지표</div>
-                </div>
-                <div class="signal-list-item">
-                  <div class="signal-list-name">DRAM 계약 가격 추이</div>
-                  <div class="signal-list-tag">가격 지표</div>
-                </div>
-                <div class="signal-list-item">
-                  <div class="signal-list-name">전력 사용량 증가율</div>
-                  <div class="signal-list-tag">인프라 지표</div>
-                </div>
+              <div class="mockup-actions">
+                <button class="mockup-action" type="button" data-mockup-prev aria-label="이전 사용 시나리오">‹</button>
+                <button class="mockup-action" type="button" data-mockup-next aria-label="다음 사용 시나리오">›</button>
               </div>
-
-              <!-- STEP 3: KPI 추적 -->
-              <div class="step-slide">
-                <div class="kpi-section-title">📊 시그널 현황 추적</div>
-                <div class="kpi-row">
-                  <div class="kpi-name">HBM 재고/판매 비율</div>
-                  <div class="kpi-bar"><div class="kpi-bar-fill" style="width:90%"></div></div>
-                  <div class="kpi-value up">+18%</div>
-                </div>
-                <div class="kpi-row">
-                  <div class="kpi-name">데이터센터 Capex</div>
-                  <div class="kpi-bar"><div class="kpi-bar-fill" style="width:72%"></div></div>
-                  <div class="kpi-value up">+12%</div>
-                </div>
-                <div class="kpi-row">
-                  <div class="kpi-name">AI GPU 출하량</div>
-                  <div class="kpi-bar"><div class="kpi-bar-fill" style="width:80%"></div></div>
-                  <div class="kpi-value up">+15%</div>
-                </div>
-                <div class="kpi-row">
-                  <div class="kpi-name">DRAM 계약 가격</div>
-                  <div class="kpi-bar"><div class="kpi-bar-fill mid" style="width:40%"></div></div>
-                  <div class="kpi-value mid">+6%</div>
-                </div>
-                <div class="kpi-row">
-                  <div class="kpi-name">전력 사용량</div>
-                  <div class="kpi-bar"><div class="kpi-bar-fill mid" style="width:28%"></div></div>
-                  <div class="kpi-value mid">+4%</div>
-                </div>
-              </div>
-
-              <!-- STEP 4: 거래 내역 기록 -->
-              <div class="step-slide">
-                <div class="trade-section-title">📋 거래 내역 기록</div>
-                <div class="trade-table">
-                  <div class="trade-row header">
-                    <span>종목</span><span>유형</span><span>가격</span>
-                  </div>
-                  <div class="trade-row">
-                    <div class="trade-name">SOXX</div>
-                    <div class="trade-type">매수</div>
-                    <div class="trade-price">$220.50</div>
-                  </div>
-                  <div class="trade-row">
-                    <div class="trade-name">NVDA</div>
-                    <div class="trade-type">매수</div>
-                    <div class="trade-price">$890.30</div>
-                  </div>
-                  <div class="trade-row">
-                    <div class="trade-name">반도체 장비주</div>
-                    <div class="trade-type">매수</div>
-                    <div class="trade-price">₩45,200</div>
-                  </div>
-                  <div class="trade-row">
-                    <div class="trade-name">HBM 관련 ETF</div>
-                    <div class="trade-type">매수</div>
-                    <div class="trade-price">₩12,300</div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- STEP 5: 리포트 확인 -->
-              <div class="step-slide">
-                <div class="report-score-row">
-                  <div class="report-score-card">
-                    <div class="report-score-label">시나리오 점수</div>
-                    <div class="report-score-val green">72</div>
-                    <div class="report-score-sub">/100</div>
-                  </div>
-                  <div class="report-score-card">
-                    <div class="report-score-label">실행 점수</div>
-                    <div class="report-score-val orange">48</div>
-                    <div class="report-score-sub">/100</div>
-                  </div>
-                </div>
-                <div class="report-verdict">⚠️ 시나리오는 유효했지만, 실행 품질이 낮았습니다.</div>
-                <div class="report-stat-row">
-                  <div class="report-stat">
-                    <div class="report-stat-label">결과 수익률</div>
-                    <div class="report-stat-val" style="color:#EF5A66">-1.2%</div>
-                  </div>
-                  <div class="report-stat">
-                    <div class="report-stat-label">유형 판정</div>
-                    <div class="report-stat-val" style="font-size:10px;color:#F5C47A">실행 개선 필요</div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- STEP 6: 피드백과 개선 미션 -->
-              <div class="step-slide">
-                <div class="mission-title">🎯 다음 투자 개선 미션</div>
-                <div class="mission-item">
-                  <div class="mission-check"></div>
-                  <div class="mission-text">신호 2개 이상 강화된 뒤 진입</div>
-                </div>
-                <div class="mission-item">
-                  <div class="mission-check"></div>
-                  <div class="mission-text">손절 기준을 변동성 기반으로 설정</div>
-                </div>
-                <div class="mission-item">
-                  <div class="mission-check"></div>
-                  <div class="mission-text">포지션 비중을 15% 이하로 제한</div>
-                </div>
-                <div class="mission-item">
-                  <div class="mission-check"></div>
-                  <div class="mission-text">청산 전 시나리오 점수 재확인</div>
-                </div>
-              </div>
-
-            </div><!-- /step-content -->
-          </div><!-- /mockup-shell -->
-        </div><!-- /mockup-wrap -->
-      </div><!-- /hero-grid -->
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- ─── Problem ───────────────────────────────────── -->
@@ -1097,11 +1386,12 @@
         <div class="section-head fade-up">
           <div class="eyebrow">Problem</div>
           <h2>개인투자자의 문제는 아이디어 부족이 아니라 검증 구조의 부재입니다.</h2>
-          <p>수익률만 보면 시나리오가 맞았는지, 실행이 문제였는지, 시장 영향이었는지 구분할 수 없습니다.</p>
+          <p>수익률만 보면 가설이 맞았는지, 실행이 문제였는지, 시장 영향이었는지 구분할 수 없습니다.</p>
         </div>
         <div class="problem-grid">
           <div class="glass-card fade-up">
             <div class="icon-circle">
+              <!-- Broken link icon -->
               <svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/><line x1="8" y1="8" x2="16" y2="16"/></svg>
             </div>
             <h3>가설과 데이터가 분리됨</h3>
@@ -1109,17 +1399,19 @@
           </div>
           <div class="glass-card fade-up" style="transition-delay:0.1s">
             <div class="icon-circle">
+              <!-- Chart icon -->
               <svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="m7 16 4-5 3 3 4-7"/></svg>
             </div>
             <h3>수익률 중심 복기의 한계</h3>
-            <p>시나리오는 맞았는데 실행이 나빠 손실이 날 수 있고, 시나리오는 틀렸는데도 우연히 수익이 날 수 있습니다.</p>
+            <p>가설은 맞았는데 실행이 나빠 손실이 날 수 있고, 가설은 틀렸는데도 우연히 수익이 날 수 있습니다.</p>
           </div>
           <div class="glass-card fade-up" style="transition-delay:0.2s">
             <div class="icon-circle">
+              <!-- Cycle arrow icon -->
               <svg viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
             </div>
             <h3>잘못된 투자 학습</h3>
-            <p>성공과 실패의 원인을 잘못 귀인하면, 틀린 판단을 반복하거나 좋은 시나리오를 버리게 됩니다.</p>
+            <p>성공과 실패의 원인을 잘못 귀인하면, 틀린 판단을 반복하거나 좋은 가설을 버리게 됩니다.</p>
           </div>
         </div>
       </div>
@@ -1142,7 +1434,7 @@
                 <svg viewBox="0 0 24 24"><path d="M4 18V6"/><path d="M9 18V4"/><path d="M14 18v-8"/><path d="M19 18V7"/><path d="M3 18h18"/></svg>
               </div>
               <h3>Proxy Signal Engine</h3>
-              <p>정형 KPI가 없는 시나리오도 HBM 재고 비율, Capex 증가율, GPU 출하량 같은 관측 가능한 신호로 바꿉니다.</p>
+              <p>정형 KPI가 없는 가설도 가격대 거래량, 기관 수급, 회복 속도 같은 관측 가능한 신호로 바꿉니다.</p>
             </div>
           </div>
           <div class="feature-card fade-up" style="transition-delay:0.1s">
@@ -1152,7 +1444,7 @@
                 <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 7v5l3 2"/></svg>
               </div>
               <h3>시나리오 점수</h3>
-              <p>사용자의 시나리오가 실제 시장 데이터와 얼마나 일치했는지 수익률과 독립적으로 평가합니다.</p>
+              <p>사용자의 가설이 실제 시장 데이터와 얼마나 일치했는지 수익률과 독립적으로 평가합니다.</p>
             </div>
           </div>
           <div class="feature-card fade-up" style="transition-delay:0.15s">
@@ -1212,7 +1504,7 @@
               <div class="step-num">5</div>
               <div>
                 <div class="step-title">리포트 확인</div>
-                <div class="step-desc">시나리오·실행 점수를 분리 평가</div>
+                <div class="step-desc">가설·실행 점수를 분리 평가</div>
               </div>
             </div>
             <div class="timeline-step">
@@ -1233,39 +1525,37 @@
         <div class="section-head fade-up">
           <div class="eyebrow">Core Learning</div>
           <h2>수익률 하나로는 배울 수 없습니다.</h2>
-          <p>Whyze는 시나리오 점수와 실행 점수를 두 축으로 분리해, 잘못된 성공과 잘못된 실패를 구분합니다.</p>
+          <p>Whyze는 가설 적중도와 실행 품질을 두 축으로 분리해, 잘못된 성공과 잘못된 실패를 구분합니다.</p>
         </div>
 
         <div class="matrix-container fade-up">
-          <div class="axis-y-label">시나리오 점수 낮음 ←→ 높음</div>
+          <div class="axis-y-label">가설 적중도 낮음 ←→ 높음</div>
 
           <div class="matrix-grid">
-            <!-- top-left: 시나리오 성공 + 실행 미흡 (강조) -->
+            <!-- Q1: 가설O + 실행O (top-left = 가설높음+실행낮음 → actually layout: top-left is high hypothesis, low execution) -->
+            <!-- Grid: top-left=Q2(가설O+실행X), top-right=Q1(가설O+실행O), bottom-left=Q4(가설X+실행X), bottom-right=Q3(가설X+실행O) -->
             <div class="matrix-cell q2">
-              <h4>시나리오 성공 + 실행 미흡</h4>
+              <h4>가설 성공 + 실행 미흡</h4>
               <p>판단은 맞았지만 실행이 나빴습니다. 진입·손절·비중을 교정하세요.</p>
+            </div>
+            <div class="matrix-cell q1">
+              <h4>가설 성공 + 실행 성공</h4>
+              <p>좋은 판단과 좋은 실행. 반복 가능한 패턴으로 저장합니다.</p>
               <div class="pulse-dot"></div>
             </div>
-            <!-- top-right: 시나리오 성공 + 실행 성공 -->
-            <div class="matrix-cell q1">
-              <h4>시나리오 성공 + 실행 성공</h4>
-              <p>좋은 판단과 좋은 실행. 반복 가능한 패턴으로 저장합니다.</p>
-            </div>
-            <!-- bottom-left: 시나리오 실패 + 실행 미흡 -->
             <div class="matrix-cell q4">
-              <h4>시나리오 실패 + 실행 미흡</h4>
-              <p>판단과 실행 모두 개선이 필요합니다. 시나리오 재설계부터 시작하세요.</p>
+              <h4>가설 실패 + 실행 미흡</h4>
+              <p>판단과 실행 모두 개선이 필요합니다. 가설 재설계부터 시작하세요.</p>
             </div>
-            <!-- bottom-right: 시나리오 실패 + 실행 성공 -->
             <div class="matrix-cell q3">
-              <h4>시나리오 실패 + 실행 성공</h4>
+              <h4>가설 실패 + 실행 성공</h4>
               <p>운 또는 변동성 수익. 가짜 학습을 경고하고 원인을 분리합니다.</p>
             </div>
           </div>
 
           <div class="axis-x-wrap">
-            <span class="axis-x-label">← 실행 점수 낮음</span>
-            <span class="axis-x-label">실행 점수 높음 →</span>
+            <span class="axis-x-label">← 실행 품질 낮음</span>
+            <span class="axis-x-label">실행 품질 높음 →</span>
           </div>
         </div>
       </div>
@@ -1318,7 +1608,7 @@
     <div class="container footer-inner">
       <div class="footer-brand">
         <div class="brand">
-          <div class="brand-icon">🧠</div>
+          <img class="brand-icon" src="whyze_icon_web_flat.png" alt="Whyze 로고" />
           <span>Whyze</span>
         </div>
         <span class="footer-tagline" style="margin-left:12px">의사결정 검증 엔진</span>
@@ -1334,6 +1624,8 @@
   <script type="module">
     import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 
+    document.documentElement.classList.add('js-ready');
+
     const SUPABASE_URL = "https://rmikrylqgzejmgwuxvez.supabase.co";
     const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJtaWtyeWxxZ3plam1nd3V4dmV6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1NTU5MzksImV4cCI6MjA5NDEzMTkzOX0.5c5stpk68p5JK2Wi69V12o4LBkgqvO2qghIHf0jpZ5U";
     const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -1347,11 +1639,29 @@
     // ── Intersection Observer: fade-up ──────────────────
     const fadeEls = document.querySelectorAll('.fade-up');
     const fadeObserver = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) { e.target.classList.add('visible'); fadeObserver.unobserve(e.target); }
-      });
-    }, { threshold: 0.10 });
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); fadeObserver.unobserve(e.target); } });
+    }, { threshold: 0.12 });
     fadeEls.forEach(el => fadeObserver.observe(el));
+
+    // ── Hero mockup carousel ────────────────────────────
+    const mockupSlides = [...document.querySelectorAll('.mockup-slide')];
+    const mockupDots = [...document.querySelectorAll('.mockup-dot')];
+    const mockupStepLabel = document.querySelector('.mockup-step-label');
+    const mockupTitle = document.querySelector('.app-topbar-title');
+    let mockupIndex = 0;
+
+    function showMockupSlide(nextIndex) {
+      if (!mockupSlides.length) return;
+      mockupIndex = (nextIndex + mockupSlides.length) % mockupSlides.length;
+      mockupSlides.forEach((slide, index) => slide.classList.toggle('active', index === mockupIndex));
+      mockupDots.forEach((dot, index) => dot.classList.toggle('active', index === mockupIndex));
+      const current = mockupSlides[mockupIndex];
+      if (mockupStepLabel) mockupStepLabel.textContent = current.dataset.step || '';
+      if (mockupTitle) mockupTitle.textContent = current.dataset.title || 'Whyze';
+    }
+
+    document.querySelector('[data-mockup-prev]')?.addEventListener('click', () => showMockupSlide(mockupIndex - 1));
+    document.querySelector('[data-mockup-next]')?.addEventListener('click', () => showMockupSlide(mockupIndex + 1));
 
     // ── Timeline steps sequential fade ─────────────────
     const timelineSteps = document.querySelectorAll('.timeline-step');
@@ -1367,36 +1677,6 @@
     }, { threshold: 0.2 });
     const tl = document.getElementById('timeline');
     if (tl) tlObserver.observe(tl);
-
-    // ── Flow carousel ───────────────────────────────────
-    const flowTabs = document.querySelectorAll('.flow-tab');
-    const stepSlides = document.querySelectorAll('.step-slide');
-    let currentStep = 0;
-    let autoTimer = null;
-
-    function goToStep(n) {
-      flowTabs[currentStep].classList.remove('active');
-      stepSlides[currentStep].classList.remove('active');
-      currentStep = (n + flowTabs.length) % flowTabs.length;
-      flowTabs[currentStep].classList.add('active');
-      stepSlides[currentStep].classList.add('active');
-      // scroll indicator into view on mobile
-      flowTabs[currentStep].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-    }
-
-    function startAuto() {
-      clearInterval(autoTimer);
-      autoTimer = setInterval(() => goToStep(currentStep + 1), 2800);
-    }
-
-    flowTabs.forEach((tab, i) => {
-      tab.addEventListener('click', () => {
-        goToStep(i);
-        startAuto();
-      });
-    });
-
-    startAuto();
 
     // ── Toggle chips ────────────────────────────────────
     const chips = document.querySelectorAll('.chip');
