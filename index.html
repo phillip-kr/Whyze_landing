@@ -179,6 +179,10 @@
       align-items: center;
     }
 
+    .hero-grid > * {
+      min-width: 0;
+    }
+
     .eyebrow {
       display: inline-flex;
       align-items: center;
@@ -475,6 +479,214 @@
       background: var(--green);
       font-size: 11px;
       flex: 0 0 auto;
+    }
+
+    .flow-panel {
+      display: none;
+      animation: flowPanelIn 0.26s ease both;
+    }
+
+    .flow-panel.active {
+      display: block;
+    }
+
+    @keyframes flowPanelIn {
+      from {
+        opacity: 0;
+        transform: translateX(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .flow-scenario {
+      padding: 14px 16px;
+      border-radius: 16px;
+      color: #06311f;
+      background: #effaf4;
+      border: 1px solid rgba(20, 184, 102, 0.22);
+      font-size: 13px;
+      line-height: 1.55;
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      margin-bottom: 12px;
+      word-break: keep-all;
+    }
+
+    .flow-field-grid,
+    .flow-signal-grid,
+    .flow-score-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .flow-field,
+    .flow-signal,
+    .flow-mini-card {
+      min-width: 0;
+      padding: 13px;
+      border-radius: 16px;
+      background: #ffffff;
+      border: 1px solid var(--line);
+      box-shadow: 0 8px 20px rgba(7, 17, 25, 0.04);
+    }
+
+    .flow-field span,
+    .flow-signal span,
+    .flow-mini-card span {
+      display: block;
+      color: #74808a;
+      font-size: 10px;
+      font-weight: 900;
+      margin-bottom: 7px;
+      letter-spacing: -0.035em;
+    }
+
+    .flow-field strong,
+    .flow-signal strong,
+    .flow-mini-card strong {
+      display: block;
+      color: #101920;
+      font-size: 13px;
+      line-height: 1.35;
+      letter-spacing: -0.045em;
+      word-break: keep-all;
+    }
+
+    .flow-signal-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .flow-signal em {
+      display: inline-flex;
+      margin-top: 9px;
+      padding: 5px 8px;
+      border-radius: 999px;
+      color: var(--green-dark);
+      background: var(--green-light);
+      font-size: 10px;
+      font-style: normal;
+      font-weight: 900;
+    }
+
+    .flow-signal em.mid {
+      color: #7c4a08;
+      background: #fff5df;
+    }
+
+    .flow-tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-bottom: 12px;
+    }
+
+    .flow-tag-row span {
+      display: inline-flex;
+      padding: 7px 10px;
+      border-radius: 999px;
+      color: var(--green-dark);
+      background: var(--green-light);
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: -0.04em;
+    }
+
+    .flow-table {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .flow-table div {
+      display: grid;
+      grid-template-columns: 0.9fr 0.8fr 1.35fr 0.9fr;
+      gap: 8px;
+      align-items: center;
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: #ffffff;
+      border: 1px solid var(--line);
+      color: #39444d;
+      font-size: 11px;
+      font-weight: 850;
+      letter-spacing: -0.035em;
+    }
+
+    .flow-score-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .flow-score-grid strong {
+      color: var(--green-dark);
+      font-size: 34px;
+      line-height: 1;
+    }
+
+    .flow-score-grid .orange strong {
+      color: var(--orange);
+    }
+
+    .flow-summary {
+      padding: 12px 14px;
+      border-radius: 16px;
+      color: var(--green-dark);
+      background: var(--green-light);
+      border: 1px solid rgba(20, 184, 102, 0.18);
+      font-size: 12px;
+      line-height: 1.55;
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      word-break: keep-all;
+    }
+
+    .flow-summary.warn {
+      color: #9a3d00;
+      background: #fff3e8;
+      border-color: rgba(242, 107, 24, 0.24);
+    }
+
+    .flow-controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px solid var(--line);
+    }
+
+    .flow-count {
+      color: #68737c;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .flow-buttons {
+      display: flex;
+      gap: 8px;
+    }
+
+    .flow-buttons button {
+      width: 38px;
+      height: 38px;
+      border-radius: 999px;
+      color: white;
+      background: var(--green);
+      box-shadow: 0 10px 22px rgba(20, 184, 102, 0.2);
+      font-size: 18px;
+      font-weight: 900;
+    }
+
+    .flow-buttons button:disabled {
+      color: #8b979f;
+      background: #eff4f1;
+      box-shadow: none;
+      cursor: not-allowed;
     }
 
     .section {
@@ -844,7 +1056,7 @@
 
     @media (max-width: 680px) {
       .page {
-        width: min(100vw - 24px, 1180px);
+        width: min(92vw, 1180px);
       }
 
       .nav-links {
@@ -861,6 +1073,7 @@
 
       .hero {
         padding: 44px 0 40px;
+        overflow: hidden;
       }
 
       h1 {
@@ -870,6 +1083,8 @@
 
       .hero-copy {
         font-size: 16px;
+        max-width: 100%;
+        word-break: break-all;
       }
 
       h1,
@@ -880,7 +1095,14 @@
       .card p,
       .signup-box p {
         word-break: normal;
-        overflow-wrap: break-word;
+        overflow-wrap: anywhere;
+      }
+
+      .hero-copy {
+        max-width: calc(100vw - 32px);
+        white-space: normal;
+        word-break: break-all !important;
+        overflow-wrap: anywhere !important;
       }
 
       .hero-actions {
@@ -894,19 +1116,35 @@
 
       .preview-main {
         padding: 16px;
+        overflow: hidden;
+        min-width: 0;
       }
 
       .mockup-shell {
         padding: 10px;
         border-radius: 26px;
+        max-width: 100%;
+        width: 100%;
+        overflow: hidden;
+      }
+
+      .app-preview {
+        max-width: 100%;
+        width: 100%;
+      }
+
+      .preview-body {
+        min-width: 0;
       }
 
       .preview-topbar {
         padding: 0 14px;
+        gap: 10px;
+        min-width: 0;
       }
 
       .preview-title {
-        font-size: 12px;
+        display: none;
       }
 
       .preview-topbar .pill {
@@ -923,12 +1161,32 @@
 
       .preview-cards,
       .preview-report,
+      .flow-field-grid,
+      .flow-signal-grid,
+      .flow-score-grid,
       .problem-grid,
       .feature-grid,
       .score-grid,
       .flow,
       .matrix {
         grid-template-columns: 1fr;
+      }
+
+      .flow-table div {
+        grid-template-columns: 1fr;
+      }
+
+      .flow-controls {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .flow-scenario,
+      .flow-field strong,
+      .flow-signal strong,
+      .flow-table div {
+        word-break: normal;
+        overflow-wrap: anywhere;
       }
 
       .flow-step::after {
@@ -997,47 +1255,107 @@
               <aside class="preview-sidebar">
                 <div class="preview-brand"><img src="whyze_icon_web_flat.png" alt="" /> Whyze</div>
                 <div class="preview-menu">
-                  <span class="active">가설 입력</span>
-                  <span>프록시 시그널</span>
-                  <span>검증 현황</span>
-                  <span>거래 내역</span>
-                  <span>종합 리포트</span>
-                  <span>개선 미션</span>
+                  <span class="active" data-flow-menu>가설 입력</span>
+                  <span data-flow-menu>프록시 시그널</span>
+                  <span data-flow-menu>KPI 추적</span>
+                  <span data-flow-menu>거래 내역</span>
+                  <span data-flow-menu>리포트 확인</span>
+                  <span data-flow-menu>개선 미션</span>
                 </div>
               </aside>
               <section class="preview-main">
                 <div class="preview-heading">
                   <div>
-                    <h3>가설 검증 리포트</h3>
-                    <p>입력한 가설, 추적 신호, 실제 거래 실행을 한 흐름으로 분석합니다.</p>
+                    <h3 data-flow-title>가설 입력</h3>
+                    <p data-flow-subtitle>투자 아이디어를 한 문장으로 구조화하는 시작 단계</p>
                   </div>
-                  <span class="pill">가설 성공 + 실행 미흡</span>
+                  <span class="pill" data-flow-step>STEP 1</span>
                 </div>
 
-                <div class="preview-cards">
-                  <div class="preview-card"><span>시나리오 점수</span><strong>72</strong></div>
-                  <div class="preview-card orange"><span>실행 점수</span><strong>48</strong></div>
-                  <div class="preview-card"><span>결과 수익률</span><strong>-1.6%</strong></div>
+                <div class="flow-panel active" data-flow-panel>
+                  <div class="flow-scenario">AI 반도체 수요 확대로 관련 장비주가 재평가될 것이다.</div>
+                  <div class="flow-field-grid">
+                    <div class="flow-field"><span>투자 유형</span><strong>성장 투자</strong></div>
+                    <div class="flow-field"><span>기간</span><strong>6개월</strong></div>
+                    <div class="flow-field"><span>목표</span><strong>+25% 이상</strong></div>
+                    <div class="flow-field"><span>손절 기준</span><strong>-10%</strong></div>
+                  </div>
+                  <div class="flow-tag-row">
+                    <span>AI 반도체 수요 증가</span>
+                    <span>장비사 수주 확대</span>
+                    <span>데이터센터 투자 증가</span>
+                  </div>
                 </div>
 
-                <div class="preview-report">
-                  <div class="report-box">
-                    <h4>시그널 추적 흐름</h4>
-                    <div class="mini-chart">
-                      <svg viewBox="0 0 420 140" preserveAspectRatio="none">
-                        <path d="M20 110 C65 102 82 82 120 88 S190 114 226 72 S292 44 338 64 S380 84 402 48" fill="none" stroke="#07834d" stroke-width="5" stroke-linecap="round" />
-                        <path d="M20 110 C65 102 82 82 120 88 S190 114 226 72 S292 44 338 64 S380 84 402 48 L402 140 L20 140 Z" fill="rgba(20,184,102,0.13)" />
-                      </svg>
-                    </div>
-                    <span class="pill">현재 지지 수준 72/100</span>
+                <div class="flow-panel" data-flow-panel>
+                  <div class="flow-scenario">원본 가설: AI 반도체 수요 확대로 관련 장비주가 재평가될 것이다.</div>
+                  <div class="flow-signal-grid">
+                    <div class="flow-signal"><strong>AI 서버 Capex 증가율</strong><em>신뢰도 높음</em></div>
+                    <div class="flow-signal"><strong>HBM 장비 수주 공시</strong><em>신뢰도 높음</em></div>
+                    <div class="flow-signal"><strong>반도체 장비 기업 신규 수주</strong><em>신뢰도 높음</em></div>
+                    <div class="flow-signal"><strong>데이터센터 투자 가이던스 상향</strong><em>신뢰도 중간</em></div>
+                    <div class="flow-signal"><strong>GPU 출하량 전망</strong><em class="mid">참고</em></div>
+                    <div class="flow-signal"><strong>반도체 장비 섹터 상대강도</strong><em>신뢰도 중간</em></div>
                   </div>
-                  <div class="report-box">
-                    <h4>다음 거래 미션</h4>
-                    <div class="check-list">
-                      <div><b>1</b> 신호 2개 이상 충족 후 진입</div>
-                      <div><b>2</b> 손절 기준을 ATR 기반으로 조정</div>
-                      <div><b>3</b> 청산 전 지지 점수 변화 확인</div>
-                    </div>
+                  <div class="flow-summary">AI는 투자 논리를 분석해 직접 KPI가 없는 아이디어를 관측 가능한 프록시 신호로 변환합니다.</div>
+                </div>
+
+                <div class="flow-panel" data-flow-panel>
+                  <div class="flow-scenario">추적 중인 가설: AI 반도체 수요 확대로 관련 장비주가 재평가될 것이다.</div>
+                  <div class="flow-table">
+                    <div><span>AI 서버 Capex 증가율</span><strong>+18%</strong><b>지지</b><em>강화</em></div>
+                    <div><span>HBM 장비 수주 공시</span><strong>3건 확인</strong><b>지지</b><em>강화</em></div>
+                    <div><span>장비 기업 신규 수주</span><strong>+22%</strong><b>지지</b><em>강화</em></div>
+                    <div><span>데이터센터 투자 가이던스</span><strong>상향</strong><b>지지</b><em>개선</em></div>
+                    <div><span>GPU 출하량 전망</span><strong>+12%</strong><b>중립</b><em>관찰</em></div>
+                    <div><span>장비 섹터 상대강도</span><strong>+8%</strong><b>지지</b><em>개선</em></div>
+                  </div>
+                  <div class="flow-summary">현재 가설은 부분 지지 상태입니다.</div>
+                </div>
+
+                <div class="flow-panel" data-flow-panel>
+                  <div class="flow-scenario">연결된 가설: AI 반도체 수요 확대로 관련 장비주가 재평가될 것이다.</div>
+                  <div class="flow-table">
+                    <div><span>2024.05.20</span><strong>매수</strong><b>반도체장비 ETF</b><em>계획 일치</em></div>
+                    <div><span>2024.05.28</span><strong>추가 매수</strong><b>반도체장비 ETF</b><em>조기 진입</em></div>
+                    <div><span>2024.06.05</span><strong>매수</strong><b>AI 장비주 A</b><em>비중 과다</em></div>
+                    <div><span>2024.06.12</span><strong>일부 매도</strong><b>AI 장비주 A</b><em>목표 일부 도달</em></div>
+                    <div><span>2024.06.18</span><strong>손절</strong><b>장비주 B</b><em>손절 지연</em></div>
+                  </div>
+                  <div class="flow-summary warn">계획 대비 실행 차이를 기록해 실행 평가의 근거 데이터를 축적합니다.</div>
+                </div>
+
+                <div class="flow-panel" data-flow-panel>
+                  <div class="flow-scenario">AI 반도체 수요 확대로 관련 장비주가 재평가될 것이다.</div>
+                  <div class="flow-score-grid">
+                    <div class="flow-mini-card"><span>시나리오 점수</span><strong>72</strong><em>/100</em></div>
+                    <div class="flow-mini-card orange"><span>실행 점수</span><strong>48</strong><em>/100</em></div>
+                  </div>
+                  <div class="flow-table">
+                    <div><span>가설 효과</span><strong>+0.42</strong><b>긍정 기여</b><em>신호 확인</em></div>
+                    <div><span>실행 효과</span><strong>-0.36</strong><b>부정 기여</b><em>조기 진입</em></div>
+                    <div><span>시장 효과</span><strong>-0.06</strong><b>중립 기여</b><em>시장 노이즈</em></div>
+                  </div>
+                  <div class="flow-summary warn">종합 판정: 가설 성공 + 실행 미흡</div>
+                </div>
+
+                <div class="flow-panel" data-flow-panel>
+                  <div class="flow-scenario">AI 반도체 수요 확대로 관련 장비주가 재평가될 것이다.</div>
+                  <div class="flow-summary">가설 자체를 폐기하기보다, 진입 확인 조건과 리스크 관리 기준을 강화해야 합니다.</div>
+                  <div class="flow-table" style="margin-top:12px">
+                    <div><span>미션 1</span><strong>HBM 장비 수주 공시 2건 이상 확인 후 진입</strong><b>판단</b><em>확인</em></div>
+                    <div><span>미션 2</span><strong>포지션 비중 15% 이하 유지</strong><b>실행</b><em>관리</em></div>
+                    <div><span>미션 3</span><strong>손절 기준 -10% 도달 시 자동 알림 설정</strong><b>리스크</b><em>알림</em></div>
+                    <div><span>미션 4</span><strong>섹터 상대강도 5거래일 연속 개선 여부 확인</strong><b>판단</b><em>관찰</em></div>
+                  </div>
+                  <div class="flow-summary">새 시나리오 작성</div>
+                </div>
+
+                <div class="flow-controls" aria-label="사용 흐름 단계 전환">
+                  <span class="flow-count" data-flow-count>1 / 6</span>
+                  <div class="flow-buttons">
+                    <button type="button" data-flow-prev aria-label="이전 사용 흐름 단계">‹</button>
+                    <button type="button" data-flow-next aria-label="다음 사용 흐름 단계">›</button>
                   </div>
                 </div>
               </section>
@@ -1202,6 +1520,48 @@
       message.classList.toggle("error", type === "error");
       message.style.display = "block";
     }
+
+    const flowTitles = [
+      ["가설 입력", "투자 아이디어를 한 문장으로 구조화하는 시작 단계"],
+      ["프록시 시그널 생성", "입력된 가설을 관측 가능한 신호로 번역하는 단계"],
+      ["KPI 추적", "확정된 프록시 시그널을 실시간으로 관찰하는 단계"],
+      ["거래 내역 기록", "실제 진입·청산 행동을 기록하고 실행을 남기는 단계"],
+      ["리포트 확인", "가설의 질과 실행의 질을 분리 평가하는 단계"],
+      ["피드백과 개선 미션", "다음 투자에서 무엇을 바꿔야 하는지 제안받는 단계"],
+    ];
+    const flowPanels = Array.from(document.querySelectorAll("[data-flow-panel]"));
+    const flowMenus = Array.from(document.querySelectorAll("[data-flow-menu]"));
+    const flowTitle = document.querySelector("[data-flow-title]");
+    const flowSubtitle = document.querySelector("[data-flow-subtitle]");
+    const flowStep = document.querySelector("[data-flow-step]");
+    const flowCount = document.querySelector("[data-flow-count]");
+    const flowPrev = document.querySelector("[data-flow-prev]");
+    const flowNext = document.querySelector("[data-flow-next]");
+    let activeFlowIndex = 0;
+
+    function showFlowStep(index) {
+      activeFlowIndex = Math.max(0, Math.min(index, flowPanels.length - 1));
+      flowPanels.forEach((panel, panelIndex) => {
+        panel.classList.toggle("active", panelIndex === activeFlowIndex);
+      });
+      flowMenus.forEach((item, itemIndex) => {
+        item.classList.toggle("active", itemIndex === activeFlowIndex);
+      });
+      const [title, subtitle] = flowTitles[activeFlowIndex];
+      flowTitle.textContent = title;
+      flowSubtitle.textContent = subtitle;
+      flowStep.textContent = `STEP ${activeFlowIndex + 1}`;
+      flowCount.textContent = `${activeFlowIndex + 1} / ${flowPanels.length}`;
+      flowPrev.disabled = activeFlowIndex === 0;
+      flowNext.disabled = activeFlowIndex === flowPanels.length - 1;
+    }
+
+    flowMenus.forEach((item, index) => {
+      item.addEventListener("click", () => showFlowStep(index));
+    });
+    flowPrev.addEventListener("click", () => showFlowStep(activeFlowIndex - 1));
+    flowNext.addEventListener("click", () => showFlowStep(activeFlowIndex + 1));
+    showFlowStep(0);
 
     form.addEventListener("submit", async function (event) {
       event.preventDefault();
